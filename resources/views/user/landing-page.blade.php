@@ -104,4 +104,179 @@
             </div>
         </div>
     </section>
+
+    {{-- Produk Card --}}
+    <section class="bg-white py-12 sm:py-16">
+        <div class="mx-auto max-w-6xl px-6 sm:px-8 lg:px-10">
+
+            <div class="flex items-end justify-between">
+                <div>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-orange-500">
+                        Produk pilihan
+                    </span>
+
+                    <h2 class="mt-1 text-lg font-bold text-[#3B2115]">
+                        Produk dari Tetangga, Bukan Gudang
+                    </h2>
+
+                    <p class="mt-2 text-xs text-[#8B7162]">
+                        Produk segar dan pilihan dari penjual di sekitar kamu.
+                    </p>
+                </div>
+
+                <a href="#"
+                   class="hidden text-xs font-semibold text-orange-600 hover:text-orange-700 sm:block">
+                    Lihat Semua →
+                </a>
+            </div>
+
+
+            <div class="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">
+
+                {{-- Product --}}
+                <div class="overflow-hidden rounded-xl border border-[#F3E5D9] bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+
+                    <div class="aspect-[4/3] overflow-hidden bg-[#FFF5EC]">
+                        <img
+                            src="{{ asset('storage/product-1.jpg') }}"
+                            alt="Produk lokal"
+                            class="h-full w-full object-cover transition duration-300 hover:scale-105"
+                        >
+                    </div>
+
+                    <div class="p-3">
+                        <h3 class="line-clamp-2 text-xs font-semibold text-[#3B2115]">
+                            Nasi Box Rumahan
+                        </h3>
+
+                        <p class="mt-1 text-[10px] text-gray-400">
+                            Bu Ani • 0.8 km
+                        </p>
+
+                        <div class="mt-3 flex items-center justify-between">
+                            <span class="text-xs font-bold text-orange-600">
+                                Rp25.000
+                            </span>
+
+                            <button
+                                class="flex h-7 w-7 items-center justify-center rounded-full bg-orange-500 text-white transition hover:bg-orange-600">
+                                +
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="overflow-hidden rounded-xl border border-[#F3E5D9] bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+
+                    <div class="aspect-[4/3] overflow-hidden bg-[#FFF5EC]">
+                        <img
+                            src="{{ asset('storage/product-2.jpg') }}"
+                            alt="Produk lokal"
+                            class="h-full w-full object-cover transition duration-300 hover:scale-105"
+                        >
+                    </div>
+
+                    <div class="p-3">
+                        <h3 class="line-clamp-2 text-xs font-semibold text-[#3B2115]">
+                            Keripik Pisang Coklat
+                        </h3>
+
+                        <p class="mt-1 text-[10px] text-gray-400">
+                            Kak Rina • 1.2 km
+                        </p>
+
+                        <div class="mt-3 flex items-center justify-between">
+                            <span class="text-xs font-bold text-orange-600">
+                                Rp18.000
+                            </span>
+
+                            <button
+                                class="flex h-7 w-7 items-center justify-center rounded-full bg-orange-500 text-white transition hover:bg-orange-600">
+                                +
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="overflow-hidden rounded-xl border border-[#F3E5D9] bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+
+                    <div class="aspect-[4/3] overflow-hidden bg-[#FFF5EC]">
+                        <img
+                            src="{{ asset('storage/product-3.jpg') }}"
+                            alt="Produk lokal"
+                            class="h-full w-full object-cover transition duration-300 hover:scale-105"
+                        >
+                    </div>
+
+                    <div class="p-3">
+                        <h3 class="line-clamp-2 text-xs font-semibold text-[#3B2115]">
+                            Dimsum Frozen Homemade
+                        </h3>
+
+                        <p class="mt-1 text-[10px] text-gray-400">
+                            Bu Sari • 1.5 km
+                        </p>
+
+                        <div class="mt-3 flex items-center justify-between">
+                            <span class="text-xs font-bold text-orange-600">
+                                Rp30.000
+                            </span>
+
+                            <button
+                                class="flex h-7 w-7 items-center justify-center rounded-full bg-orange-500 text-white transition hover:bg-orange-600">
+                                +
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="overflow-hidden rounded-xl border border-[#F3E5D9] bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+
+                    <div class="aspect-[4/3] overflow-hidden bg-[#FFF5EC]">
+                        <img
+                            src="{{ asset('storage/product-4.jpg') }}"
+                            alt="Produk lokal"
+                            class="h-full w-full object-cover transition duration-300 hover:scale-105"
+                        >
+                    </div>
+
+                    <div class="p-3">
+                        <h3 class="line-clamp-2 text-xs font-semibold text-[#3B2115]">
+                            Kue Kering Rumahan
+                        </h3>
+
+                        <p class="mt-1 text-[10px] text-gray-400">
+                            Pak Dedi • 2.1 km
+                        </p>
+
+                        <div class="mt-3 flex items-center justify-between">
+                            <span class="text-xs font-bold text-orange-600">
+                                Rp22.000
+                            </span>
+
+                            <button
+                                class="flex h-7 w-7 items-center justify-center rounded-full bg-orange-500 text-white transition hover:bg-orange-600">
+                                +
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="mt-6 text-center sm:hidden">
+                <a href="#" class="text-xs font-semibold text-orange-600">
+                    Lihat Semua Produk →
+                </a>
+            </div>
+
+        </div>
+    </section>
 @endsection

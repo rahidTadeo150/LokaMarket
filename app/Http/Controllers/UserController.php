@@ -9,4 +9,8 @@ class UserController extends Controller
     public function landingPage() {
         return view('user.landing-page');
     }
+
+    public function caraKerja() {
+        return view('user.cara-kerja');
+    }
 }

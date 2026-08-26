@@ -19,16 +19,24 @@
             <div class="flex items-center gap-x-10">
                 {{-- Menu --}}
                 <div class="hidden md:flex items-center gap-5 text-gray-600 font-medium text-sm">
-                    <a href="">
+                    <a href="{{ route('cust.landingPage') }}"
+                        class="{{ request()->routeIs('cust.landingPage') ? 'state-navbar-user' : 'hover-navbar-user' }}">
+                        Beranda
+                    </a>
+                    <a href=""
+                        class="hover-navbar-user">
                         Kategori
                     </a>
-                    <a href="">
+                    <a href=""
+                        class="hover-navbar-user">
                         Pilihan Produk
                     </a>
-                    <a href="">
+                    <a href="{{ route('cust.caraKerja') }}"
+                        class="{{ request()->routeIs('cust.caraKerja') ? 'state-navbar-user' : 'hover-navbar-user' }}">
                         Cara Kerja
                     </a>
-                    <a href="">
+                    <a href=""
+                        class="hover-navbar-user">
                         Tentang Kami
                     </a>
                 </div>

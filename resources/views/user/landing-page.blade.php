@@ -38,98 +38,69 @@
             <img
                 src="{{ asset('storage/hero-image.png') }}"
                 alt="Belanja produk lokal"
-                class="w-full max-w-md object-contain"
+                class="w-full md:w-1/2 object-cover"
             >
         </div>
     </section>
 
     {{-- Kategori --}}
     <section class="bg-[#FFF9F4] py-12 sm:py-16">
-        <div class="mx-auto max-w-6xl px-6 sm:px-8 lg:px-10">
-
+        <div class="flex flex-col px-6 gap-y-3">
             <div class="text-center">
-                <h2 class="text-lg font-bold text-[#3B2115]">
-                    Semua Kebutuhan Lokal, Satu Tempat
-                </h2>
-
-                <p class="mt-2 text-xs text-[#8B7162]">
-                    Temukan produk pilihan dari warga dan UMKM di sekitar kamu.
+                <p class="text-xs font-extrabold text-[#C1440E]">
+                    JELAJAHI KATEGORI
+                </p>
+                <p class="mt-1.5 text-2xl font-bold text-[#3A2317]">
+                    Apapun jenis kebutuhanmu LokaMarket Solusinya
                 </p>
             </div>
 
+            {{-- Kategori Card --}}
             <div class="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">
-
-                {{-- Category 1 --}}
-                <a href="#"
-                   class="group rounded-xl border border-[#F3E5D9] bg-white p-5 text-center shadow-sm transition hover:-translate-y-1 hover:shadow-md">
-
-                    <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-orange-50 text-2xl">
-                        🏠
+                <div class="px-10 rounded-xl border border-[#F3E5D9] bg-white p-5 flex flex-col items-center justify-center text-center shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+                    <div class="w-fit p-4 items-center justify-center rounded-full bg-orange-50">
+                        <i class="text-2xl lg:text-3xl text-[#C1440E] fa-solid fa-bowl-food"></i>
                     </div>
-
-                    <h3 class="mt-4 text-xs font-bold text-[#3B2115]">
+                    <p class="inline-block text-sm lg:text-base font-bold text-[#3B2115]">
                         Makanan & Minuman
-                    </h3>
-
-                    <p class="mt-1 text-[10px] text-gray-400">
-                        120+ produk
                     </p>
-                </a>
-
-
-                {{-- Category 2 --}}
-                <a href="#"
-                   class="group rounded-xl border border-[#F3E5D9] bg-white p-5 text-center shadow-sm transition hover:-translate-y-1 hover:shadow-md">
-
-                    <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-orange-50 text-2xl">
-                        👜
+                    <p class="inline-block text-[10px] lg:text-xs font-extralight text-gray-400">
+                        Masakan rumahan & minuman yang menggugah selera
+                    </p>
+                </div>
+                <div class="px-10 rounded-xl border border-[#F3E5D9] bg-white p-5 flex flex-col items-center justify-center text-center shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+                    <div class="w-fit p-4 items-center justify-center rounded-full bg-orange-50">
+                        <i class="text-2xl lg:text-3xl text-[#C1440E] fa-solid fa-cookie-bite"></i>
                     </div>
-
-                    <h3 class="mt-4 text-xs font-bold text-[#3B2115]">
-                        Aneka Kerajinan
-                    </h3>
-
-                    <p class="mt-1 text-[10px] text-gray-400">
-                        85+ produk
+                    <p class="inline-block text-sm lg:text-base font-bold text-[#3B2115]">
+                        Aneka Snack
                     </p>
-                </a>
-
-
-                {{-- Category 3 --}}
-                <a href="#"
-                   class="group rounded-xl border border-[#F3E5D9] bg-white p-5 text-center shadow-sm transition hover:-translate-y-1 hover:shadow-md">
-
-                    <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-orange-50 text-2xl">
-                        🍴
+                    <p class="inline-block text-[10px] lg:text-xs font-extralight text-gray-400">
+                        Beragam jajanan dari yang berat dan ringan
+                    </p>
+                </div>
+                <div class="px-10 rounded-xl border border-[#F3E5D9] bg-white p-5 flex flex-col items-center justify-center text-center shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+                    <div class="w-fit p-4 items-center justify-center rounded-full bg-orange-50">
+                        <i class="text-2xl lg:text-3xl text-[#C1440E] fa-solid fa-seedling"></i>
                     </div>
-
-                    <h3 class="mt-4 text-xs font-bold text-[#3B2115]">
-                        Buah & Sayur
-                    </h3>
-
-                    <p class="mt-1 text-[10px] text-gray-400">
-                        60+ produk
+                    <p class="inline-block text-sm lg:text-base font-bold text-[#3B2115]">
+                        Sayur & Hasil Bumi
                     </p>
-                </a>
-
-
-                {{-- Category 4 --}}
-                <a href="#"
-                   class="group rounded-xl border border-[#F3E5D9] bg-white p-5 text-center shadow-sm transition hover:-translate-y-1 hover:shadow-md">
-
-                    <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-orange-50 text-2xl">
-                        🏡
+                    <p class="inline-block text-[10px] lg:text-xs font-extralight text-gray-400">
+                        Segar langsung dari petani sekitar
+                    </p>
+                </div>
+                <div class="px-10 rounded-xl border border-[#F3E5D9] bg-white p-5 flex flex-col items-center justify-center text-center shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+                    <div class="w-fit p-4 items-center justify-center rounded-full bg-orange-50">
+                        <i class="text-2xl lg:text-3xl text-[#C1440E] fa-solid fa-scissors"></i>
                     </div>
-
-                    <h3 class="mt-4 text-xs font-bold text-[#3B2115]">
-                        Kebutuhan Rumah
-                    </h3>
-
-                    <p class="mt-1 text-[10px] text-gray-400">
-                        90+ produk
+                    <p class="inline-block text-sm lg:text-base font-bold text-[#3B2115]">
+                        Kerajinan Tangan
                     </p>
-                </a>
-
+                    <p class="inline-block text-[10px] lg:text-xs font-extralight text-gray-400">
+                        Aneka Kerajinan Tangan Yang Unik
+                    </p>
+                </div>
             </div>
         </div>
     </section>

@@ -107,30 +107,24 @@
 
     {{-- Produk Card --}}
     <section class="bg-white py-12 sm:py-16">
-        <div class="mx-auto max-w-6xl px-6 sm:px-8 lg:px-10">
-
+        <div class="px-6 lg:px-10">
             <div class="flex items-end justify-between">
                 <div>
-                    <span class="text-[10px] font-semibold uppercase tracking-wider text-orange-500">
+                    <p class="text-[10px] font-semibold uppercase tracking-wider text-orange-500">
                         Produk pilihan
-                    </span>
-
-                    <h2 class="mt-1 text-lg font-bold text-[#3B2115]">
-                        Produk dari Tetangga, Bukan Gudang
-                    </h2>
-
+                    </p>
+                    <p class="mt-1 text-lg font-bold text-[#3B2115]">
+                        Produk Lokal Dari Penjual Lokal
+                    </p>
                     <p class="mt-2 text-xs text-[#8B7162]">
-                        Produk segar dan pilihan dari penjual di sekitar kamu.
+                        Produk segar dan pilihan dari UMKM Lokal di sekitar kamu.
                     </p>
                 </div>
-
                 <a href="#"
                    class="hidden text-xs font-semibold text-orange-600 hover:text-orange-700 sm:block">
                     Lihat Semua →
                 </a>
             </div>
-
-
             <div class="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">
 
                 {{-- Product --}}

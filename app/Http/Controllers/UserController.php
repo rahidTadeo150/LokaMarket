@@ -13,4 +13,8 @@ class UserController extends Controller
     public function caraKerja() {
         return view('user.cara-kerja');
     }
+
+    public function loginPage() {
+        return view('user.auth.login-page');
+    }
 }

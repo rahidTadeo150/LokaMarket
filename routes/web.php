@@ -5,3 +5,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [UserController::class, 'landingPage'])->name('cust.landingPage');
 Route::get('/cara-kerja', [UserController::class, 'caraKerja'])->name('cust.caraKerja');
+Route::get('/login', [UserController::class, 'loginPage'])->name('login');

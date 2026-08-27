@@ -15,6 +15,6 @@ class UserController extends Controller
     }
 
      public function loginPage() {
-        return view('user.login-page');
+        return view('auth.login-page');
     }
 }

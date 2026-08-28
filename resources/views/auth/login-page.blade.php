@@ -1,32 +1,13 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <title>Masuk - LokaMarket</title>
-</head>
-<body class="min-h-screen overflow-x-hidden bg-[#FFF9F4] font-poppins text-[#3B2115]">
-    <header class="border-b border-[#F1DCC8] bg-white">
-        <div class="mx-auto flex h-16 max-w-[1440px] items-center justify-between gap-3 px-4 sm:h-[76px] sm:px-10 lg:px-14">
-            <a href="{{ route('cust.landingPage') }}" aria-label="Kembali ke halaman utama LokaMarket">
-                <img src="{{ asset('storage/logo-lokamarket.png') }}" alt="LokaMarket" class="h-10 w-auto sm:h-12">
-            </a>
-            <div class="flex shrink-0 items-center gap-2 text-[10px] sm:gap-4 sm:text-xs">
-                <span class="hidden text-[#72594B] sm:inline">Belum punya akun?</span>
-                <a href="{{ route('cust.register') }}" class="rounded-full border border-[#D9490B] px-4 py-2 font-semibold text-[#C1440E] transition hover:bg-[#FFF0E5] sm:px-7 sm:py-2.5">
-                    Daftar
-                </a>
-            </div>
-        </div>
-    </header>
+@extends('layouts.auth-customer')
 
-    <main class="mx-auto grid min-h-[calc(100vh-64px)] max-w-[1440px] items-center gap-6 px-4 py-6 sm:min-h-[calc(100vh-76px)] sm:px-10 sm:py-8 lg:grid-cols-[1fr_1fr] lg:gap-10 lg:px-28 lg:py-12">
-        <section class="relative hidden min-h-[485px] overflow-hidden rounded-[22px] bg-[#FFE5C5] px-10 py-10 lg:block lg:h-full">
+@section('title', 'Masuk - LokaMarket')
+
+@section('content')
+    <main class="mx-auto grid items-center gap-6 px-10 py-28 lg:grid-cols-[1fr_1fr] lg:gap-10 lg:px-20 lg:py-28">
+        <section class="relative hidden overflow-hidden rounded-[22px] bg-[#FFE5C5] px-10 py-10 lg:block lg:h-full">
             <div class="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-[#FFD98D] opacity-70 blur-2xl"></div>
             <img src="{{ asset('storage/logo-lokamarket.png') }}" alt="LokaMarket" class="relative h-12 w-auto">
-            <div class="relative mt-9 max-w-[290px]">
+            <div class="relative mt-9">
                 <h1 class="text-[27px] font-extrabold leading-[1.12] text-[#3B2115]">
                     Selamat Datang<br>
                     Kembali di<br>
@@ -36,14 +17,15 @@
                     Masuk untuk melanjutkan belanja produk UMKM lokal favoritmu dan pantau pesananmu.
                 </p>
                 <ul class="mt-5 space-y-3 text-xs text-[#4E382C]">
-                    <li class="flex items-center gap-2.5"><span class="flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[#FF8A12] text-[10px] text-white"><i class="fa-solid fa-check"></i></span>Ribuan produk UMKM lokal pilihan</li>
-                    <li class="flex items-center gap-2.5"><span class="flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[#FF8A12] text-[10px] text-white"><i class="fa-solid fa-check"></i></span>Transaksi aman &amp; terpercaya</li>
-                    <li class="flex items-center gap-2.5"><span class="flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[#FF8A12] text-[10px] text-white"><i class="fa-solid fa-check"></i></span>Dukung ekonomi warga sekitarmu</li>
+                    <li class="flex items-center gap-2.5"><span class="flex h-4.5 w-4.5 items-center justify-center rounded-full bg-[#FF8A12] text-[10px] text-white"><i class="fa-solid fa-check"></i></span>Ribuan produk UMKM lokal pilihan</li>
+                    <li class="flex items-center gap-2.5"><span class="flex h-4.5 w-4.5 items-center justify-center rounded-full bg-[#FF8A12] text-[10px] text-white"><i class="fa-solid fa-check"></i></span>Transaksi aman &amp; terpercaya</li>
+                    <li class="flex items-center gap-2.5"><span class="flex h-4.5 w-4.5 items-center justify-center rounded-full bg-[#FF8A12] text-[10px] text-white"><i class="fa-solid fa-check"></i></span>Dukung ekonomi warga sekitarmu</li>
                 </ul>
             </div>
         </section>
 
-        <section class="mx-auto w-full max-w-[500px] rounded-[18px] border border-[#F1DCC8] bg-white px-4 py-6 sm:rounded-[22px] sm:px-10 sm:py-9 lg:min-h-[485px] lg:h-full lg:px-11">
+        {{-- Form Login --}}
+        <section class="mx-auto w-full rounded-[18px] border border-slate-300 shadow-xl bg-white px-4 py-6 sm:rounded-[22px] sm:px-10 sm:py-9 lg:h-full lg:px-11">
             <div>
                 <h2 class="text-2xl font-extrabold text-[#3B2115] sm:text-[25px]">Masuk ke Akun</h2>
                 <p class="mt-0.5 text-xs text-[#72594B]">Senang bertemu lagi! Masukkan detail akunmu.</p>
@@ -68,8 +50,18 @@
                     <label for="password" class="mb-1 block text-[10px] font-bold text-[#5A4032]">Kata Sandi</label>
                     <div class="flex h-10 min-w-0 items-center gap-2 rounded-full border border-[#FFB477] px-3.5 focus-within:ring-2 focus-within:ring-[#FFD1AD] sm:h-9">
                         <i class="fa-solid fa-lock text-xs text-[#967C6C]"></i>
-                        <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Masukkan kata sandi" class="min-w-0 w-full bg-transparent text-xs text-[#3B2115] outline-none placeholder:text-[#A58C7D]">
-                        <button id="password-toggle" type="button" aria-label="Tampilkan kata sandi" class="text-[#967C6C] transition hover:text-[#C1440E]"><i class="fa-solid fa-eye text-xs"></i></button>
+                        <input id="password" 
+                                name="password" 
+                                type="password" 
+                                autocomplete="current-password" 
+                                placeholder="Masukkan kata sandi" 
+                                class="min-w-0 w-full bg-transparent text-xs text-[#3B2115] outline-none placeholder:text-[#A58C7D]">
+                        <button id="password-toggle" 
+                                type="button" 
+                                aria-label="Tampilkan kata sandi" 
+                                class="text-[#967C6C] transition hover:text-[#C1440E]">
+                                <i class="fa-solid fa-eye text-xs"></i>
+                        </button>
                     </div>
                 </div>
                 <div class="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 pt-0.5 text-[10px]">
@@ -91,17 +83,4 @@
             </p>
         </section>
     </main>
-    <script>
-        const passwordInput = document.getElementById('password');
-        const passwordToggle = document.getElementById('password-toggle');
-
-        passwordToggle.addEventListener('click', () => {
-            const isPassword = passwordInput.type === 'password';
-            passwordInput.type = isPassword ? 'text' : 'password';
-            passwordToggle.setAttribute('aria-label', isPassword ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi');
-            passwordToggle.querySelector('i').classList.toggle('fa-eye', !isPassword);
-            passwordToggle.querySelector('i').classList.toggle('fa-eye-slash', isPassword);
-        });
-    </script>
-</body>
-</html>
+@endsection

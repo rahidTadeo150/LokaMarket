@@ -1,2 +1,4 @@
 import './bootstrap';
-import './navbar-user';
+import './componet/navbar-user';
+import './pages/login-user';
+import './pages/register-user';

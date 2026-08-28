@@ -24,7 +24,7 @@
         </div>
         <div class="flex items-center gap-3">
             <span class="text-sm text-slate-600 hidden sm:inline">Sudah punya akun?</span>
-            <a href="/login" class="px-6 py-2 border border-[#D34E0E] text-[#D34E0E] rounded-full text-sm font-semibold hover:bg-orange-50 transition">Masuk</a>
+            <a href="{{ route('cust.login') }}"  class="px-6 py-2 border border-[#D34E0E] text-[#D34E0E] rounded-full text-sm font-semibold hover:bg-orange-50 transition">Masuk</a>
         </div>
     </header>
 
@@ -159,7 +159,7 @@
                 </div>
 
                 <div class="mt-6 text-center">
-                    <p class="text-xs text-slate-500">Sudah punya akun? <a href="/login" class="text-[#D34E0E] font-bold hover:underline">Masuk di sini</a></p>
+                    <p class="text-xs text-slate-500">Sudah punya akun? <a href="{{ route('cust.login') }}"  class="text-[#D34E0E] font-bold hover:underline">Masuk di sini</a></p>
                 </div>
             </div>
 

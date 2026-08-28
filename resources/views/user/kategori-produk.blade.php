@@ -4,57 +4,61 @@
 
 @section('content')
 
-    {{-- HERO --}}
-    <section class="overflow-hidden bg-linear-to-br from-[#FFF3E2] to-[#FBAD51]">
-        <div class="flex flex-col-reverse items-center justify-between gap-8 px-4 py-10 text-center sm:px-6 md:flex-row md:px-16 md:py-14 md:text-left">
-            <div class="flex flex-col items-center gap-y-3 md:items-start">
-                <span class="mb-2 flex w-fit items-center gap-1.5 rounded-full border border-orange-200 bg-white px-3 py-1 text-xs font-medium text-orange-600 shadow-sm">
-                    <span class="h-1.5 w-1.5 rounded-full bg-orange-500"></span>
-                    KATEGORI PRODUK
+   {{-- HERO --}}
+{{-- Container Utama Hero (Tambahkan kelas 'relative min-h-[450px] md:min-h-[500px]') --}}
+<section class="relative overflow-hidden bg-linear-to-br from-[#FFF3E2] to-[#FBAD51]">
+    <div class="flex flex-col-reverse items-center justify-between gap-8 px-4 py-10 sm:px-6 md:flex-row md:px-16 md:py-14">
+        
+        {{-- Teks Kiri --}}
+        <div class="flex flex-col items-center gap-y-3 text-center md:w-7/12 md:items-start md:text-left">
+            <span class="mb-2 flex w-fit items-center gap-1.5 rounded-full border border-orange-200 bg-white px-3 py-1 text-xs font-medium text-orange-600 shadow-sm">
+                <span class="h-1.5 w-1.5 rounded-full bg-orange-500"></span>
+                KATEGORI PRODUK
+            </span>
+            <div>
+                <p class="max-w-xl text-3xl font-bold leading-tight text-[#3B2115] sm:text-4xl lg:text-5xl">
+                    Semua Kebutuhan Lokal,
+                    <br>
+                    Satu Genggaman
+                </p>
+                <p class="mt-4 max-w-lg text-sm leading-6 text-[#72594B] sm:text-base">
+                    Jelajahi produk dari pedagang, petani, dan perajin di
+                    sekitarmu — urut berdasarkan kategori supaya lebih
+                    gampang ditemukan.
+                </p>
+            </div>
+
+            {{-- Search bar --}}
+            <form action="{{ route('cust.kategori') }}" method="GET"
+                  class="mt-6 flex w-full max-w-lg items-center gap-2 rounded-full border border-orange-100 bg-white p-2 shadow-sm sm:max-w-xl">
+                <span class="pl-3 text-orange-400">
+                    <i class="fa-solid fa-magnifying-glass"></i>
                 </span>
-                <div>
-                    <p class="max-w-xl text-3xl font-bold leading-tight text-[#3B2115] sm:text-4xl lg:text-5xl">
-                        Semua Kebutuhan Lokal,
-                        <br>
-                        Satu Genggaman
-                    </p>
-                    <p class="mt-4 max-w-lg text-sm leading-6 text-[#72594B] sm:text-base">
-                        Jelajahi produk dari pedagang, petani, dan perajin di
-                        sekitarmu — urut berdasarkan kategori supaya lebih
-                        gampang ditemukan.
-                    </p>
-                </div>
-
-                {{-- Search bar --}}
-                <form action="{{ route('cust.kategori') }}" method="GET"
-                      class="mt-6 flex w-full max-w-lg items-center gap-2 rounded-full border border-orange-100 bg-white p-2 shadow-sm sm:max-w-xl">
-                    <span class="pl-3 text-orange-400">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </span>
-                    <input
-                        type="text"
-                        name="q"
-                        value="{{ request('q') }}"
-                        placeholder="Cari kategori atau nama produk..."
-                        class="w-full border-0 bg-transparent text-sm text-[#3B2115] placeholder:text-gray-400 focus:outline-none focus:ring-0"
-                    >
-                    <button type="submit"
-                            class="shrink-0 rounded-full bg-[#FF6B00] px-6 py-3 text-xs font-semibold text-white shadow-sm transition hover:bg-[#E85D00]">
-                        Cari
-                    </button>
-                </form>
-            </div>
-
-            {{-- Hero image --}}
-            <div class="w-full md:w-2/5">
-                <img
-                    src="{{ asset('storage/hero-image.png') }}"
-                    alt="Kategori produk lokal"
-                    class="mx-auto w-full max-w-sm object-contain"
+                <input
+                    type="text"
+                    name="q"
+                    value="{{ request('q') }}"
+                    placeholder="Cari kategori atau nama produk..."
+                    class="w-full border-0 bg-transparent text-sm text-[#3B2115] placeholder:text-gray-400 focus:outline-none focus:ring-0"
                 >
-            </div>
+                <button type="submit"
+                        class="shrink-0 rounded-full bg-[#FF6B00] px-6 py-3 text-xs font-semibold text-white shadow-sm transition hover:bg-[#E85D00]">
+                    Cari
+                </button>
+            </form>
         </div>
-    </section>
+
+        {{-- Hero Image Kanan (Presisi persis seperti Figma) --}}
+        <div class="relative flex w-full justify-center md:absolute md:right-0 md:top-0 md:bottom-0 md:w-5/12 md:justify-end">
+            <img
+                src="{{ asset('storage/kategori.png') }}"
+                alt="Kategori produk lokal"
+                class="h-auto max-h-[350px] w-auto object-contain md:h-full md:max-h-none md:w-full md:object-cover md:object-right-bottom"
+            >
+        </div>
+
+    </div>
+</section>
 
     {{-- Kategori Grid --}}
     <section id="kategori" class="bg-[#FFF9F4] py-12 sm:py-16">

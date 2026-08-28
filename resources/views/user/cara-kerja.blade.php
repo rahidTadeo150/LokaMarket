@@ -48,8 +48,7 @@
                         Cari Produk
                     </h3>
                     <p class="mt-2 text-sm leading-6 text-gray-500">
-                        Temukan berbagai produk lokal yang kamu butuhkan
-                        melalui pilihan kategori dan pencarian produk.
+                        Jelajahi ribuan produk UMKM lokal lewat kategori, pencarian, atau rekomendasi di sekitarmu.
                     </p>
                     <div class="mt-5 h-1 w-12 rounded-full bg-orange-500 transition-all duration-300 group-hover:w-full"></div>
                 </div>
@@ -66,8 +65,7 @@
                         Tambahkan ke Keranjang
                     </h3>
                     <p class="mt-2 text-sm leading-6 text-gray-500">
-                        Pilih produk yang kamu inginkan dan tambahkan
-                        produk tersebut ke dalam keranjang belanja.
+                        Pilih produk favorit, atur jumlah, lalu masukkan ke keranjang belanja.
                     </p>
                     <div class="mt-5 h-1 w-12 rounded-full bg-orange-500 transition-all duration-300 group-hover:w-full"></div>
                 </div>
@@ -90,8 +88,7 @@
                     </h3>
 
                     <p class="mt-2 text-sm leading-6 text-gray-500">
-                        Periksa pesananmu, masukkan informasi pengiriman,
-                        lalu lakukan pembayaran dengan metode yang tersedia.
+                        Selesaikan pesanan dengan metode pembayaran aman dengan transfer e-wallet, atau COD.
                     </p>
 
                     <div class="mt-5 h-1 w-12 rounded-full bg-orange-500 transition-all duration-300 group-hover:w-full"></div>
@@ -113,8 +110,7 @@
                         Terima Pesanan
                     </h3>
                     <p class="mt-2 text-sm leading-6 text-gray-500">
-                        Pesanan akan diproses oleh penjual dan dikirim
-                        langsung ke alamat tujuanmu.
+                        Produk dikirim langsung dari penjual lokal, Menuju Alamat Anda
                     </p>
                     <div class="mt-5 h-1 w-12 rounded-full bg-orange-500 transition-all duration-300 group-hover:w-full"></div>
                 </div>
@@ -146,7 +142,7 @@
             <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
                 <div class="group rounded-2xl border border-orange-100 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
                     <div class="mb-5 flex items-center justify-between">
-                        <span class="text-3xl font-bold text-orange-100">
+                        <span class="text-3xl font-bold text-orange-400">
                             01
                         </span>
                         <div class="flex h-10 w-10 items-center justify-center rounded-full bg-orange-500 text-white">
@@ -157,64 +153,60 @@
                         Daftar Toko
                     </h3>
                     <p class="mt-2 text-sm leading-6 text-gray-500">
-                        Buat akun dan daftarkan tokomu untuk mulai
-                        berjualan di LokaMarket.
+                        Buat akun penjual gratis, lengkapi profil toko & data usahamu dalam hitungan menit.
                     </p>
-                    <div class="mt-5 h-1 w-12 rounded-full bg-orange-500 transition-all duration-300 group-hover:w-20"></div>
+                    <div class="mt-5 h-1 w-12 rounded-full bg-orange-500 transition-all duration-300 group-hover:w-full"></div>
                 </div>
                 <div class="group rounded-2xl border border-orange-100 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
                     <div class="mb-5 flex items-center justify-between">
-                        <span class="text-3xl font-bold text-orange-100">
+                        <span class="text-3xl font-bold text-orange-400">
                             02
                         </span>
                         <div class="flex h-10 w-10 items-center justify-center rounded-full bg-orange-500 text-white">
-                            <i class="fa-solid fa-user"></i>
+                            <i class="fa-solid fa-box"></i>
                         </div>
                     </div>
                     <h3 class="text-base font-bold text-gray-900">
-                        Lengkapi Profil
+                        Unggah Produkmu
                     </h3>
                     <p class="mt-2 text-sm leading-6 text-gray-500">
-                        Lengkapi informasi toko dan data yang diperlukan
-                        agar tokomu terlihat lebih profesional.
+                        Tambahkan foto, deskripsi, harga, dan stok produk yang ingin kamu jual.
                     </p>
-                    <div class="mt-5 h-1 w-12 rounded-full bg-orange-500 transition-all duration-300 group-hover:w-20"></div>
+                    <div class="mt-5 h-1 w-12 rounded-full bg-orange-500 transition-all duration-300 group-hover:w-full"></div>
                 </div>
                 <div class="group rounded-2xl border border-orange-100 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
                     <div class="mb-5 flex items-center justify-between">
-                        <span class="text-3xl font-bold text-orange-100">
+                        <span class="text-3xl font-bold text-orange-400">
                             03
                         </span>
                         <div class="flex h-10 w-10 items-center justify-center rounded-full bg-orange-500 text-white">
-                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            <i class="fa-solid fa-bell"></i>
                         </div>
                     </div>
                     <h3 class="text-base font-bold text-gray-900">
-                        Tambahkan Produk
+                        Terima Pesanan
                     </h3>
                     <p class="mt-2 text-sm leading-6 text-gray-500">
-                        Upload produk, tambahkan foto, harga, deskripsi,
-                        dan stok produk yang ingin kamu jual.
+                        Dapat notifikasi tiap ada pesanan masuk, siapkan & kirim produk ke pembeli.
                     </p>
-                    <div class="mt-5 h-1 w-12 rounded-full bg-orange-500 transition-all duration-300 group-hover:w-20"></div>
+                    <div class="mt-5 h-1 w-12 rounded-full bg-orange-500 transition-all duration-300 group-hover:w-full"></div>
                 </div>
                 <div class="group rounded-2xl border border-orange-100 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
                     <div class="mb-5 flex items-center justify-between">
-                        <span class="text-3xl font-bold text-orange-100">
+                        <span class="text-3xl font-bold text-orange-400">
                             04
                         </span>
                         <div class="flex h-10 w-10 items-center justify-center rounded-full bg-orange-500 text-white">
-                            <i class="fa-solid fa-chart-line"></i>
+                            <i class="fa-solid fa-wallet"></i>
                         </div>
                     </div>
                     <h3 class="text-base font-bold text-gray-900">
-                        Kelola Toko
+                        Cairkan Dana
                     </h3>
                     <p class="mt-2 text-sm leading-6 text-gray-500">
-                        Kelola pesanan, stok, produk, dan pantau perkembangan
-                        tokomu melalui dashboard penjual.
+                        Pembayaran masuk otomatis ke saldo tokomu, cairkan kapan saja ke rekeningmu.
                     </p>
-                    <div class="mt-5 h-1 w-12 rounded-full bg-orange-500 transition-all duration-300 group-hover:w-20"></div>
+                    <div class="mt-5 h-1 w-12 rounded-full bg-orange-500 transition-all duration-300 group-hover:w-full"></div>
                 </div>
             </div>
             <div class="mt-10 text-center">

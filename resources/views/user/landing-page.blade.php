@@ -27,7 +27,7 @@
                        class="inline-flex items-center justify-center rounded-full bg-[#FF6B00] px-5 py-3 text-xs font-semibold text-white shadow-sm transition hover:bg-[#E85D00] hover:-translate-y-0.5">
                         Mulai Belanja
                     </a>
-                    <a href="#cara-kerja"
+                    <a href="{{ route('cust.caraKerja') }}"
                        class="inline-flex items-center justify-center rounded-full border border-orange-400 bg-white px-5 py-3 text-xs font-semibold text-[#FF6B00] transition hover:bg-orange-50">
                         Cara Kerja
                     </a>

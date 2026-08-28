@@ -65,10 +65,12 @@
 
                 <span>Cara Kerja</span>
             </a>
-            <a href="#"
+            <a href="{{ route('cust.tentangKami') }}"
                class="flex items-center gap-4 rounded-xl px-4 py-3 text-sm font-medium
-                      text-gray-600 transition-all duration-200
-                      hover:bg-orange-50 hover:text-orange-600">
+                      transition-all duration-200
+                      {{ request()->routeIs('cust.tentangKami')
+                          ? 'sidebar-menu-active'
+                          : 'sidebar-menu-default' }}">
                 <i class="fa-solid fa-circle-info w-5 text-center"></i>
                 <span>Tentang Kami</span>
             </a>
@@ -113,14 +115,14 @@
                         class="{{ request()->routeIs('cust.caraKerja') ? 'state-navbar-user' : 'hover-navbar-user' }}">
                         Cara Kerja
                     </a>
-                    <a href=""
-                        class="hover-navbar-user">
+                    <a href="{{ route('cust.tentangKami') }}"
+                        class="{{ request()->routeIs('cust.tentangKami') ? 'state-navbar-user' : 'hover-navbar-user' }}">
                         Tentang Kami
                     </a>
                 </div>
 
                 {{-- Tombol Daftar --}}
-                <a href=""
+                <a href="{{ route('cust.login') }}"
                     class="rounded-full bg-linear-to-br from-[#F2600C] to-[#FDB813] px-4 py-2 font-semibold text-sm text-white shadow-sm transition-all duration-200 hover:translate-y-0.5 hover:bg-blue-700 hover:shadow-md">
                     Daftar Customer
                 </a>

@@ -26,9 +26,9 @@
                 <span class="text-xs font-extrabold uppercase tracking-wider text-orange-600">
                     UNTUK PEMBELI
                 </span>
-                <h2 class="mt-1.5 text-2xl font-bold text-gray-900 md:text-3xl">
+                <p class="mt-1.5 text-2xl font-bold text-gray-900 md:text-3xl">
                     Belanja dalam 4 Langkah Mudah
-                </h2>
+                </p>
                 <p class="mx-auto mt-3 max-w-xl text-sm text-gray-500">
                     Nikmati pengalaman berbelanja produk lokal dengan proses
                     yang cepat, aman, dan mudah.
@@ -44,9 +44,9 @@
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </div>
                     </div>
-                    <h3 class="text-base font-bold text-gray-900">
+                    <p class="text-base font-bold text-gray-900">
                         Cari Produk
-                    </h3>
+                    </p>
                     <p class="mt-2 text-sm leading-6 text-gray-500">
                         Jelajahi ribuan produk UMKM lokal lewat kategori, pencarian, atau rekomendasi di sekitarmu.
                     </p>
@@ -61,9 +61,9 @@
                             <i class="fa-solid fa-cart-shopping"></i>
                         </div>
                     </div>
-                    <h3 class="text-base font-bold text-gray-900">
+                    <p class="text-base font-bold text-gray-900">
                         Tambahkan ke Keranjang
-                    </h3>
+                    </p>
                     <p class="mt-2 text-sm leading-6 text-gray-500">
                         Pilih produk favorit, atur jumlah, lalu masukkan ke keranjang belanja.
                     </p>
@@ -83,9 +83,9 @@
 
                     </div>
 
-                    <h3 class="text-base font-bold text-gray-900">
+                    <p class="text-base font-bold text-gray-900">
                         Checkout & Bayar
-                    </h3>
+                    </p>
 
                     <p class="mt-2 text-sm leading-6 text-gray-500">
                         Selesaikan pesanan dengan metode pembayaran aman dengan transfer e-wallet, atau COD.
@@ -106,9 +106,9 @@
                             <i class="fa-solid fa-box"></i>
                         </div>
                     </div>
-                    <h3 class="text-base font-bold text-gray-900">
+                    <p class="text-base font-bold text-gray-900">
                         Terima Pesanan
-                    </h3>
+                    </p>
                     <p class="mt-2 text-sm leading-6 text-gray-500">
                         Produk dikirim langsung dari penjual lokal, Menuju Alamat Anda
                     </p>
@@ -117,7 +117,7 @@
             </div>
             <div class="mt-10 text-center">
                 <a href="#"
-                   class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#F2600C] to-[#FDB813] px-6 py-3 text-sm font-semibold text-white shadow-md transition duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                   class="inline-flex items-center gap-2 rounded-full bg-linear-to-r from-[#F2600C] to-[#FDB813] px-6 py-3 text-sm font-semibold text-white shadow-md transition duration-300 hover:-translate-y-0.5 hover:shadow-lg">
                     Mulai Belanja
                     <i class="fa-solid fa-arrow-right text-xs"></i>
                 </a>
@@ -131,9 +131,9 @@
                 <span class="text-xs font-bold uppercase tracking-wider text-orange-600">
                     UNTUK PENJUAL
                 </span>
-                <h2 class="mt-2 text-2xl font-bold text-gray-900 md:text-3xl">
+                <p class="mt-2 text-2xl font-bold text-gray-900 md:text-3xl">
                     Buka Toko dalam 4 Langkah
-                </h2>
+                </p>
                 <p class="mx-auto mt-3 max-w-xl text-sm text-gray-500">
                     Mulai jual produkmu dan kembangkan bisnis bersama
                     LokaMarket dengan mudah.
@@ -149,9 +149,9 @@
                             <i class="fa-solid fa-store"></i>
                         </div>
                     </div>
-                    <h3 class="text-base font-bold text-gray-900">
+                    <p class="text-base font-bold text-gray-900">
                         Daftar Toko
-                    </h3>
+                    </p>
                     <p class="mt-2 text-sm leading-6 text-gray-500">
                         Buat akun penjual gratis, lengkapi profil toko & data usahamu dalam hitungan menit.
                     </p>
@@ -166,9 +166,9 @@
                             <i class="fa-solid fa-box"></i>
                         </div>
                     </div>
-                    <h3 class="text-base font-bold text-gray-900">
+                    <p class="text-base font-bold text-gray-900">
                         Unggah Produkmu
-                    </h3>
+                    </p>
                     <p class="mt-2 text-sm leading-6 text-gray-500">
                         Tambahkan foto, deskripsi, harga, dan stok produk yang ingin kamu jual.
                     </p>
@@ -183,9 +183,9 @@
                             <i class="fa-solid fa-bell"></i>
                         </div>
                     </div>
-                    <h3 class="text-base font-bold text-gray-900">
+                    <p class="text-base font-bold text-gray-900">
                         Terima Pesanan
-                    </h3>
+                    </p>
                     <p class="mt-2 text-sm leading-6 text-gray-500">
                         Dapat notifikasi tiap ada pesanan masuk, siapkan & kirim produk ke pembeli.
                     </p>
@@ -200,9 +200,9 @@
                             <i class="fa-solid fa-wallet"></i>
                         </div>
                     </div>
-                    <h3 class="text-base font-bold text-gray-900">
+                    <p class="text-base font-bold text-gray-900">
                         Cairkan Dana
-                    </h3>
+                    </p>
                     <p class="mt-2 text-sm leading-6 text-gray-500">
                         Pembayaran masuk otomatis ke saldo tokomu, cairkan kapan saja ke rekeningmu.
                     </p>
@@ -211,7 +211,7 @@
             </div>
             <div class="mt-10 text-center">
                 <a href="#"
-                   class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#F2600C] to-[#FDB813] px-6 py-3 text-sm font-semibold text-white shadow-md transition duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                   class="inline-flex items-center gap-2 rounded-full bg-linear-to-r from-[#F2600C] to-[#FDB813] px-6 py-3 text-sm font-semibold text-white shadow-md transition duration-300 hover:-translate-y-0.5 hover:shadow-lg">
                     Daftar Sebagai Penjual
                     <i class="fa-solid fa-arrow-right text-xs"></i>
                 </a>

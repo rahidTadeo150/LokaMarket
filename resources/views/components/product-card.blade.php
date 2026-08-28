@@ -1,13 +1,13 @@
 @props(['product'])
 
 <div class="product-card group relative overflow-hidden rounded-2xl bg-white shadow-md transition-all 
-            duration-300 hover:shadow-xl hover:scale-105">
+            duration-300 hover:-translate-y-1 hover:shadow-lg">
     {{-- Product Image Container --}}
-    <div class="relative overflow-hidden bg-gray-200">
+    <div class="relative overflow-hidden bg-[#FFF5EC]">
         {{-- Badge --}}
         <div class="absolute top-3 left-3 z-10 inline-flex items-center gap-2">
             @if($product['badge'] ?? null)
-                <span class="rounded-full bg-orange-500 px-3 py-1 text-xs font-semibold text-white">
+                <span class="rounded-full bg-[#FF6B00] px-3 py-1 text-xs font-semibold text-white">
                     {{ $product['badge'] }}
                 </span>
             @endif
@@ -15,8 +15,8 @@
 
         {{-- Wishlist Button --}}
         <button class="absolute top-3 right-3 z-10 flex h-9 w-9 items-center justify-center 
-                     rounded-full bg-white text-gray-500 shadow-md transition hover:bg-red-50 
-                     hover:text-red-500">
+                     rounded-full border border-[#F3E5D9] bg-white text-[#8B7162] shadow-sm transition hover:bg-[#FFF0E5] 
+                     hover:text-[#C1440E]">
             <i class="fa-solid fa-heart text-lg"></i>
         </button>
 
@@ -32,7 +32,7 @@
         <div class="absolute inset-0 flex items-center justify-center bg-black/0 transition-all 
                    duration-300 group-hover:bg-black/30">
             <button class="translate-y-10 rounded-full bg-white px-6 py-2 font-semibold 
-                         text-gray-800 shadow-lg transition-all duration-300 hover:bg-orange-500 
+                         text-[#3B2115] shadow-lg transition-all duration-300 hover:bg-[#FF6B00] 
                          hover:text-white group-hover:translate-y-0">
                 Lihat Detail
             </button>
@@ -40,7 +40,7 @@
     </div>
 
     {{-- Product Info --}}
-    <div class="p-4">
+    <div class="border-t border-[#F3E5D9] p-4">
         {{-- Rating --}}
         <div class="mb-2 flex items-center gap-1">
             @php
@@ -54,30 +54,30 @@
                     <i class="fa-regular fa-star text-xs text-gray-300"></i>
                 @endif
             @endfor
-            <span class="ml-1 text-xs text-gray-500">({{ $reviewCount }})</span>
+            <span class="ml-1 text-xs text-[#8B7162]">({{ $reviewCount }})</span>
         </div>
 
         {{-- Product Name --}}
-        <h3 class="product-name mb-3 line-clamp-2 text-sm font-semibold text-gray-800 
-                   transition group-hover:text-orange-600">
+        <h3 class="product-name mb-3 line-clamp-2 text-sm font-semibold text-[#3B2115] 
+               transition group-hover:text-[#C1440E]">
             {{ $product['name'] }}
         </h3>
 
         {{-- Price --}}
         <div class="mb-4">
-            <div class="text-lg font-bold text-orange-600">
+            <div class="text-lg font-bold text-[#C1440E]">
                 Rp {{ number_format($product['price'], 0, ',', '.') }}
             </div>
             @if($product['originalPrice'] ?? null)
-                <p class="text-xs text-gray-400 line-through">
+                <p class="text-xs text-[#A58C7D] line-through">
                     Rp {{ number_format($product['originalPrice'], 0, ',', '.') }}
                 </p>
             @endif
         </div>
 
         {{-- Add to Cart Button --}}
-        <button class="w-full rounded-lg bg-orange-500 px-4 py-2 font-semibold text-white 
-                     transition hover:bg-orange-600 active:scale-95">
+        <button class="w-full rounded-full bg-[#FF6B00] px-4 py-2 font-semibold text-white 
+                 transition hover:bg-[#E85D00] active:scale-95">
             <i class="fa-solid fa-shopping-cart mr-2"></i>
             Tambah Keranjang
         </button>

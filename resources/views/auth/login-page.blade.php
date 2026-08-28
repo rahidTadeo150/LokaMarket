@@ -15,7 +15,7 @@
             </a>
             <div class="flex shrink-0 items-center gap-2 text-[10px] sm:gap-4 sm:text-xs">
                 <span class="hidden text-[#72594B] sm:inline">Belum punya akun?</span>
-                <a href="#" class="rounded-full border border-[#D9490B] px-4 py-2 font-semibold text-[#C1440E] transition hover:bg-[#FFF0E5] sm:px-7 sm:py-2.5">
+                <a href="{{ route('cust.register') }}" class="rounded-full border border-[#D9490B] px-4 py-2 font-semibold text-[#C1440E] transition hover:bg-[#FFF0E5] sm:px-7 sm:py-2.5">
                     Daftar
                 </a>
             </div>
@@ -83,7 +83,12 @@
                 <i class="fa-brands fa-google text-lg text-[#D9490B]"></i>Google
             </button>
 
-            <p class="mt-8 text-center text-[10px] text-[#72594B] sm:mt-16">Belum punya akun? <a href="#" class="font-bold text-[#C1440E] hover:text-[#9E350B]">Daftar sekarang</a></p>
+            <p class="mt-8 text-center text-[10px] text-[#72594B] sm:mt-16">
+                Belum punya akun?
+                <a href="{{ route('cust.register') }}" class="font-bold text-[#C1440E] hover:text-[#9E350B]">
+                    Daftar sekarang
+                </a>
+            </p>
         </section>
     </main>
     <script>

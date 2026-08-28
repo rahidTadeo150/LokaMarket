@@ -21,12 +21,25 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
+
             return redirect()->intended('/');
         }
 
         return back()->withErrors([
             'email' => 'Email atau password salah.',
         ])->onlyInput('email');
+    }
+
+    // Halaman register pembeli
+    public function showRegisterForm()
+    {
+        return view('auth.register-pembeli');
+    }
+
+    // Halaman register penjual
+    public function showRegisterPenjualForm()
+    {
+        return view('auth.register-penjual');
     }
 
     public function logout(Request $request)

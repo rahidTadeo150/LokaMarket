@@ -23,7 +23,7 @@
     </header>
 
     <main class="mx-auto grid min-h-[calc(100vh-64px)] max-w-[1440px] items-center gap-6 px-4 py-6 sm:min-h-[calc(100vh-76px)] sm:px-10 sm:py-8 lg:grid-cols-[1fr_1fr] lg:gap-10 lg:px-28 lg:py-12">
-        <section class="relative hidden min-h-[485px] overflow-hidden rounded-[22px] bg-[#FFE5C5] px-10 py-10 lg:block">
+        <section class="relative hidden min-h-[485px] overflow-hidden rounded-[22px] bg-[#FFE5C5] px-10 py-10 lg:block lg:h-full">
             <div class="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-[#FFD98D] opacity-70 blur-2xl"></div>
             <img src="{{ asset('storage/logo-lokamarket.png') }}" alt="LokaMarket" class="relative h-12 w-auto">
             <div class="relative mt-9 max-w-[290px]">
@@ -43,7 +43,7 @@
             </div>
         </section>
 
-        <section class="mx-auto w-full max-w-[500px] rounded-[18px] border border-[#F1DCC8] bg-white px-4 py-6 sm:rounded-[22px] sm:px-10 sm:py-9 lg:min-h-[485px] lg:px-11">
+        <section class="mx-auto w-full max-w-[500px] rounded-[18px] border border-[#F1DCC8] bg-white px-4 py-6 sm:rounded-[22px] sm:px-10 sm:py-9 lg:min-h-[485px] lg:h-full lg:px-11">
             <div>
                 <h2 class="text-2xl font-extrabold text-[#3B2115] sm:text-[25px]">Masuk ke Akun</h2>
                 <p class="mt-0.5 text-xs text-[#72594B]">Senang bertemu lagi! Masukkan detail akunmu.</p>

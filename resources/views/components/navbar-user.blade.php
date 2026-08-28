@@ -46,10 +46,12 @@
                 <i class="fa-solid fa-layer-group w-5 text-center"></i>
                 <span>Kategori</span>
             </a>
-            <a href="#"
+            <a href="{{ route('cust.pilihanProduk') }}"
                class="flex items-center gap-4 rounded-xl px-4 py-3 text-sm font-medium
-                      text-gray-600 transition-all duration-200
-                      hover:bg-orange-50 hover:text-orange-600">
+                      transition-all duration-200
+                      {{ request()->routeIs('cust.pilihanProduk')
+                          ? 'sidebar-menu-active'
+                          : 'sidebar-menu-default' }}">
 
                 <i class="fa-solid fa-box-open w-5 text-center"></i>
                 <span>Pilihan Produk</span>
@@ -107,8 +109,8 @@
                         class="hover-navbar-user">
                         Kategori
                     </a>
-                    <a href=""
-                        class="hover-navbar-user">
+                    <a href="{{ route('cust.pilihanProduk') }}"
+                        class="{{ request()->routeIs('cust.pilihanProduk') ? 'state-navbar-user' : 'hover-navbar-user' }}">
                         Pilihan Produk
                     </a>
                     <a href="{{ route('cust.caraKerja') }}"

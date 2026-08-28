@@ -38,7 +38,7 @@
                 <i class="fa-solid fa-house w-5 text-center"></i>
                 <span>Beranda</span>
             </a>
-            <a href="#"
+            <a href="{{route('cust.kategori') }}"
                class="flex items-center gap-4 rounded-xl px-4 py-3 text-sm font-medium
                       text-gray-600 transition-all duration-200
                       hover:bg-orange-50 hover:text-orange-600">
@@ -105,7 +105,7 @@
                         class="{{ request()->routeIs('cust.landingPage') ? 'state-navbar-user' : 'hover-navbar-user' }}">
                         Beranda
                     </a>
-                    <a href=""
+                    <a href="{{ route('cust.kategori') }}"
                         class="hover-navbar-user">
                         Kategori
                     </a>

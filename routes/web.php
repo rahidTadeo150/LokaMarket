@@ -12,3 +12,15 @@ Route::get('/cara-kerja', [UserController::class, 'caraKerjaPage'])->name('cust.
 Route::get('/tentang-kami', [UserController::class, 'tentangKamiPage'])->name('cust.tentangKami');
 Route::get('/pilihan-produk', [ProductController::class, 'pilihanProduk'])->name('cust.pilihanProduk');
 
+// Tampilan Form Pembeli
+Route::get('/register', function () {
+    return view('auth.register-pembeli');
+});
+
+// Tampilan Form Penjual (UMKM)
+Route::get('/register-penjual', function () {
+    return view('auth.register-penjual');
+});
+
+
+

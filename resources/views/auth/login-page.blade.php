@@ -49,15 +49,6 @@
                 <p class="mt-0.5 text-xs text-[#72594B]">Senang bertemu lagi! Masukkan detail akunmu.</p>
             </div>
 
-            <div class="mt-5 grid gap-3 sm:grid-cols-2">
-                <button type="button" class="flex h-10 items-center justify-center gap-3 rounded-full border border-[#F1DCC8] text-[10px] font-bold text-[#3B2115] transition hover:bg-[#FFF9F4] sm:h-9">
-                    <i class="fa-brands fa-google text-lg text-[#D9490B]"></i>Google
-                </button>
-                <button type="button" class="flex h-10 items-center justify-center gap-3 rounded-full border border-[#F1DCC8] text-[10px] font-bold text-[#3B2115] transition hover:bg-[#FFF9F4] sm:h-9">
-                    <i class="fa-brands fa-facebook text-lg text-[#C1440E]"></i>Facebook
-                </button>
-            </div>
-
             <div class="my-5 flex items-center gap-3 text-[9px] text-[#A58C7D]">
                 <span class="h-px flex-1 bg-[#F1DCC8]"></span>
                 atau masuk dengan email
@@ -87,6 +78,10 @@
                 </div>
                 <button type="submit" class="h-10 w-full rounded-full bg-[#E95309] text-xs font-bold text-white shadow-sm transition hover:bg-[#C1440E] hover:shadow-md">Masuk</button>
             </form>
+
+            <button type="button" class="mt-3 flex h-10 w-full items-center justify-center gap-3 rounded-full border border-[#F1DCC8] text-[10px] font-bold text-[#3B2115] transition hover:bg-[#FFF9F4] sm:h-9">
+                <i class="fa-brands fa-google text-lg text-[#D9490B]"></i>Google
+            </button>
 
             <p class="mt-8 text-center text-[10px] text-[#72594B] sm:mt-16">Belum punya akun? <a href="#" class="font-bold text-[#C1440E] hover:text-[#9E350B]">Daftar sekarang</a></p>
         </section>

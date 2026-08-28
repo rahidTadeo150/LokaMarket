@@ -5,7 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/login-user', [authController::class, 'loginPage'])->name('cust.login');
+Route::get('/login-user', [authController::class, 'showLoginForm'])->name('cust.login');
 
 Route::get('/', [UserController::class, 'landingPage'])->name('cust.landingPage');
 Route::get('/cara-kerja', [UserController::class, 'caraKerjaPage'])->name('cust.caraKerja');

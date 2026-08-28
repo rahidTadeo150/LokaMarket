@@ -65,10 +65,12 @@
 
                 <span>Cara Kerja</span>
             </a>
-            <a href="#"
+            <a href="{{ route('cust.tentangKami') }}"
                class="flex items-center gap-4 rounded-xl px-4 py-3 text-sm font-medium
-                      text-gray-600 transition-all duration-200
-                      hover:bg-orange-50 hover:text-orange-600">
+                      transition-all duration-200
+                      {{ request()->routeIs('cust.tentangKami')
+                          ? 'sidebar-menu-active'
+                          : 'sidebar-menu-default' }}">
                 <i class="fa-solid fa-circle-info w-5 text-center"></i>
                 <span>Tentang Kami</span>
             </a>
@@ -76,11 +78,11 @@
     </div>
 </aside>
 <nav class="bg-white shadow-sm sticky top-0 z-50">
-    <div class="w-full px-4">
-        <div class="flex items-center justify-between h-20 md:h-16">
+    <div class="w-full px-3 sm:px-4">
+        <div class="flex h-16 items-center justify-between gap-2 sm:h-20 md:h-16">
             <div class="flex items-center">
                 {{-- Hamburger --}}
-                <button class="text-xl md:hidden"
+                <button class="flex h-10 w-10 shrink-0 items-center justify-center text-xl md:hidden"
                         onclick="openSidebar()">
                     <i class="fa-solid fa-bars"></i>
                 </button>
@@ -88,13 +90,13 @@
                 {{-- Logo --}}
                 <a href=""
                     class="inline-flex">
-                    <img src="{{ asset('storage\logo-lokamarket.png') }}" 
+                    <img src="{{ asset('storage/logo-lokamarket.png') }}" 
                         alt=""
-                        class="w-44">
+                        class="w-32 sm:w-40 md:w-44">
                 </a>
             </div>
 
-            <div class="flex items-center gap-x-10">
+            <div class="flex min-w-0 items-center gap-2 sm:gap-5 md:gap-x-10">
                 {{-- Menu --}}
                 <div class="hidden md:flex items-center gap-5 text-gray-600 font-medium text-sm">
                     <a href="{{ route('cust.landingPage') }}"
@@ -113,15 +115,15 @@
                         class="{{ request()->routeIs('cust.caraKerja') ? 'state-navbar-user' : 'hover-navbar-user' }}">
                         Cara Kerja
                     </a>
-                    <a href=""
-                        class="hover-navbar-user">
+                    <a href="{{ route('cust.tentangKami') }}"
+                        class="{{ request()->routeIs('cust.tentangKami') ? 'state-navbar-user' : 'hover-navbar-user' }}">
                         Tentang Kami
                     </a>
                 </div>
 
                 {{-- Tombol Daftar --}}
-                <a href=""
-                    class="rounded-full bg-linear-to-br from-[#F2600C] to-[#FDB813] px-4 py-2 font-semibold text-sm text-white shadow-sm transition-all duration-200 hover:translate-y-0.5 hover:bg-blue-700 hover:shadow-md">
+                <a href="{{ route('cust.login') }}"
+                    class="shrink-0 whitespace-nowrap rounded-full bg-linear-to-br from-[#F2600C] to-[#FDB813] px-3 py-2 text-xs font-semibold text-white shadow-sm transition-all duration-200 hover:translate-y-0.5 hover:bg-blue-700 hover:shadow-md sm:px-4 sm:text-sm">
                     Daftar Customer
                 </a>
             </div>

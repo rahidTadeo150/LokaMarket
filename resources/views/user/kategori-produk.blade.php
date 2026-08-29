@@ -77,7 +77,7 @@
                 <div class="mt-10 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
     
                     @forelse ($kategoriList as $kategori)
-                        <a href="{{ route('cust.pilihanProduk') }}"
+                        <a href="{{ route('cust.pilihanProduk', ['category' => $kategori['nama']]) }}"
                             class="group relative rounded-xl border border-[#F3E5D9] bg-white p-4 text-left shadow-sm transition hover:-translate-y-1 hover:shadow-md sm:p-6">
     
                             <span class="absolute right-4 top-4 rounded-full bg-orange-50 px-2.5 py-1 text-[10px] font-semibold text-orange-600">

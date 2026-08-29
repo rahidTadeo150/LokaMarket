@@ -28,8 +28,7 @@
         </p>
         <div class="space-y-1">
             <a href="{{ route('cust.landingPage') }}"
-               class="flex items-center gap-4 rounded-xl px-4 py-3 text-sm font-medium
-                      transition-all duration-200
+               class="flex items-center gap-4 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200
                       {{ request()->routeIs('cust.landingPage')
                           ? 'sidebar-menu-active'
                           : 'sidebar-menu-default' }}">
@@ -38,16 +37,16 @@
                 <span>Beranda</span>
             </a>
             <a href="{{route('cust.kategori') }}"
-               class="flex items-center gap-4 rounded-xl px-4 py-3 text-sm font-medium
-                      text-gray-600 transition-all duration-200
-                      hover:bg-orange-50 hover:text-orange-600">
+               class="flex items-center gap-4 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200
+                      {{ request()->routeIs('cust.kategori')
+                          ? 'sidebar-menu-active'
+                          : 'sidebar-menu-default' }}">
 
                 <i class="fa-solid fa-layer-group w-5 text-center"></i>
                 <span>Kategori</span>
             </a>
             <a href="{{ route('cust.pilihanProduk') }}"
-               class="flex items-center gap-4 rounded-xl px-4 py-3 text-sm font-medium
-                      transition-all duration-200
+               class="flex items-center gap-4 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200
                       {{ request()->routeIs('cust.pilihanProduk')
                           ? 'sidebar-menu-active'
                           : 'sidebar-menu-default' }}">
@@ -56,8 +55,7 @@
                 <span>Pilihan Produk</span>
             </a>
             <a href="{{ route('cust.caraKerja') }}"
-               class="flex items-center gap-4 rounded-xl px-4 py-3 text-sm font-medium
-                      transition-all duration-200
+               class="flex items-center gap-4 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200
                       {{ request()->routeIs('cust.caraKerja')
                           ? 'sidebar-menu-active'
                           : 'sidebar-menu-default' }}">
@@ -67,8 +65,7 @@
                 <span>Cara Kerja</span>
             </a>
             <a href="{{ route('cust.tentangKami') }}"
-               class="flex items-center gap-4 rounded-xl px-4 py-3 text-sm font-medium
-                      transition-all duration-200
+               class="flex items-center gap-4 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200
                       {{ request()->routeIs('cust.tentangKami')
                           ? 'sidebar-menu-active'
                           : 'sidebar-menu-default' }}">
@@ -102,7 +99,7 @@
                         Beranda
                     </a>
                     <a href="{{ route('cust.kategori') }}"
-                        class="hover-navbar-user">
+                        class="{{ request()->routeIs('cust.kategori') ? 'state-navbar-user' : 'hover-navbar-user' }}">
                         Kategori
                     </a>
                     <a href="{{ route('cust.pilihanProduk') }}"

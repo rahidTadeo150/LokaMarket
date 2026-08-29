@@ -8,6 +8,17 @@
 
 @theme {
     --font-poppins: "Poppins", sans-serif;
+    --animate-kategori-slide: kategori-slide 40s linear infinite;
+
+    @keyframes kategori-slide {
+        from {
+            transform: translateX(0);
+        }
+
+        to {
+            transform: translateX(-50%);
+        }
+    }
 }
 
 body {

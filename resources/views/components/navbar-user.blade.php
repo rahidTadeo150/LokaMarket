@@ -21,7 +21,6 @@
             <i class="fa-solid fa-xmark text-lg"></i>
         </button>
     </div>
-
     {{-- Menu Sidebar --}}
     <div class="px-4 py-6">
         <p class="mb-3 px-3 text-xs font-semibold uppercase tracking-wider text-gray-400">
@@ -88,8 +87,6 @@
                         onclick="openSidebar()">
                     <i class="fa-solid fa-bars"></i>
                 </button>
-
-                {{-- Logo --}}
                 <a href=""
                     class="inline-flex">
                     <img src="{{ asset('storage/logo-lokamarket.png') }}" 
@@ -97,7 +94,6 @@
                         class="w-32 sm:w-40 md:w-44">
                 </a>
             </div>
-
             <div class="flex min-w-0 items-center gap-2 sm:gap-5 md:gap-x-10">
                 {{-- Menu --}}
                 <div class="hidden md:flex items-center gap-5 text-gray-600 font-medium text-sm">

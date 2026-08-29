@@ -3,6 +3,8 @@
         <a href="{{ route('cust.landingPage') }}" aria-label="Kembali ke halaman utama LokaMarket">
             <img src="{{ asset('storage/logo-lokamarket.png') }}" alt="LokaMarket" class="h-10 w-auto sm:h-12">
         </a>
+        
+        {{-- Daftar/Login Button --}}
         @if (request()->routeIs('cust.login'))
             <div class="flex shrink-0 items-center gap-2 text-[10px] sm:gap-4 sm:text-xs">
                 <span class="hidden text-[#72594B] sm:inline">

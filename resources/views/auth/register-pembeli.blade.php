@@ -130,7 +130,7 @@
                     <div class="grow border-t border-slate-200"></div>
                 </div>
                 <button type="button" 
-                        class="mt-3 py-4 flex w-full items-center justify-center gap-3 rounded-full border border-[#D34E0E] text-sm font-bold text-[#3B2115] transition hover:bg-[#FFF9F4] hover:-translate-y-0.5 sm:h-9">
+                        class="mt-3 py-3 md:py-5 flex w-full items-center justify-center gap-3 rounded-full border border-[#D34E0E] text-sm font-bold text-[#3B2115] transition hover:bg-[#FFF9F4] hover:-translate-y-0.5 sm:h-9">
                     <i class="fa-brands fa-google text-xl text-[#D9490B]"></i>Google
                 </button>
                 <div class="mt-6 text-center">

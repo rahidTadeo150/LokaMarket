@@ -79,7 +79,7 @@
                 <span class="h-px flex-1 bg-[#F1DCC8]"></span>
             </div>
             <button type="button" 
-                    class="mt-3 py-4 flex w-full items-center justify-center gap-3 rounded-full border border-[#D34E0E] text-sm font-bold text-[#3B2115] transition hover:bg-[#FFF9F4] hover:-translate-y-0.5 sm:h-9">
+                    class="mt-3 py-3 md:py-5 flex w-full items-center justify-center gap-3 rounded-full border border-[#D34E0E] text-sm font-bold text-[#3B2115] transition hover:bg-[#FFF9F4] hover:-translate-y-0.5 sm:h-9">
                 <i class="fa-brands fa-google text-xl text-[#D9490B]"></i>Google
             </button>
             <p class="mt-8 text-center text-[10px] text-[#72594B] sm:mt-16">

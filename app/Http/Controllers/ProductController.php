@@ -9,13 +9,24 @@ class ProductController extends Controller
     /**
      * Show the pilihan produk page
      */
-    public function pilihanProduk()
+    public function pilihanProduk(Request $request)
     {
-        // Sample products data - bisa diganti dengan database query nanti
+        $categories = [
+            'Makanan',
+            'Minuman',
+            'Fashion',
+            'Kerajinan',
+            'Hasil Bumi',
+            'Sembako',
+            'Kesehatan',
+            'Oleh-Oleh',
+        ];
+
         $products = [
             [
                 'id' => 1,
                 'name' => 'Ikan Pencil Bur Isi',
+                'category' => 'Makanan',
                 'price' => 12000,
                 'originalPrice' => null,
                 'image' => 'https://via.placeholder.com/300x300/FF6B35/FFFFFF?text=Ikan+Pencil',
@@ -26,6 +37,7 @@ class ProductController extends Controller
             [
                 'id' => 2,
                 'name' => 'Kopi Tubruk Gak Man',
+                'category' => 'Minuman',
                 'price' => 8000,
                 'originalPrice' => 15000,
                 'image' => 'https://via.placeholder.com/300x300/8B5A3C/FFFFFF?text=Kopi+Tubruk',
@@ -36,6 +48,7 @@ class ProductController extends Controller
             [
                 'id' => 3,
                 'name' => 'Kripik Tempe Renyah',
+                'category' => 'Makanan',
                 'price' => 15000,
                 'originalPrice' => null,
                 'image' => 'https://via.placeholder.com/300x300/FFD700/FFFFFF?text=Kripik+Tempe',
@@ -46,6 +59,7 @@ class ProductController extends Controller
             [
                 'id' => 4,
                 'name' => 'Nasi Anyaman Bambu',
+                'category' => 'Kerajinan',
                 'price' => 45000,
                 'originalPrice' => null,
                 'image' => 'https://via.placeholder.com/300x300/228B22/FFFFFF?text=Anyaman+Bambu',
@@ -56,6 +70,7 @@ class ProductController extends Controller
             [
                 'id' => 5,
                 'name' => 'Batik Tuli Motif Perang',
+                'category' => 'Fashion',
                 'price' => 150000,
                 'originalPrice' => null,
                 'image' => 'https://via.placeholder.com/300x300/A0522D/FFFFFF?text=Batik+Tuli',
@@ -66,6 +81,7 @@ class ProductController extends Controller
             [
                 'id' => 6,
                 'name' => 'Madu Hutan Asli',
+                'category' => 'Hasil Bumi',
                 'price' => 60000,
                 'originalPrice' => null,
                 'image' => 'https://via.placeholder.com/300x300/D2691E/FFFFFF?text=Madu+Hutan',
@@ -76,6 +92,7 @@ class ProductController extends Controller
             [
                 'id' => 7,
                 'name' => 'Jambu Bersisi Karasen',
+                'category' => 'Hasil Bumi',
                 'price' => 18000,
                 'originalPrice' => null,
                 'image' => 'https://via.placeholder.com/300x300/FF8C00/FFFFFF?text=Jambu+Karasen',
@@ -86,6 +103,7 @@ class ProductController extends Controller
             [
                 'id' => 8,
                 'name' => 'Jidisui Herbal Alami',
+                'category' => 'Kesehatan',
                 'price' => 22000,
                 'originalPrice' => null,
                 'image' => 'https://via.placeholder.com/300x300/4169E1/FFFFFF?text=Jidisui+Herbal',
@@ -95,8 +113,29 @@ class ProductController extends Controller
             ],
         ];
 
+        $selectedCategories = $request->input('category', []);
+        $selectedCategories = is_array($selectedCategories) ? $selectedCategories : [$selectedCategories];
+        $selectedCategories = array_values(array_filter(array_map('trim', $selectedCategories)));
+
+        if (! empty($selectedCategories)) {
+            $products = array_values(array_filter($products, function ($product) use ($selectedCategories) {
+                return in_array($product['category'], $selectedCategories, true);
+            }));
+        }
+
+        $sort = $request->input('sort', 'default');
+
+        if ($sort === 'price_low') {
+            usort($products, fn ($a, $b) => $a['price'] <=> $b['price']);
+        } elseif ($sort === 'price_high') {
+            usort($products, fn ($a, $b) => $b['price'] <=> $a['price']);
+        }
+
         return view('user.pilihan-produk', [
             'products' => $products,
+            'categories' => $categories,
+            'selectedCategories' => $selectedCategories,
+            'sort' => $sort,
         ]);
     }
 }

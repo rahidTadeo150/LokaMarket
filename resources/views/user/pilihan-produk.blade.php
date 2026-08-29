@@ -45,14 +45,20 @@
 
                 <div class="grid grid-cols-1 gap-6 md:grid-cols-5">
                     <aside id="filterSidebar" class="md:col-span-1 hidden md:block">
-                        <x-product-filter></x-product-filter>
+                        <x-product-filter :categories="$categories" :selected-categories="$selectedCategories" :sort="$sort" />
                     </aside>
                     <div class="md:col-span-4">
-                        <div class="grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                            @foreach($products as $product)
-                                <x-product-card :product="$product"></x-product-card>
-                            @endforeach
-                        </div>
+                        @if (empty($products))
+                            <div class="rounded-2xl border border-dashed border-[#F1DCC8] bg-white p-8 text-center text-[#72594B]">
+                                Tidak ada produk yang sesuai dengan filter yang dipilih.
+                            </div>
+                        @else
+                            <div class="grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                                @foreach($products as $product)
+                                    <x-product-card :product="$product"></x-product-card>
+                                @endforeach
+                            </div>
+                        @endif
                         <div class="mt-12 flex justify-center">
                             <button class="rounded-full border-2 border-[#FF6B00] px-8 py-3 
                                          font-semibold text-[#C1440E] transition hover:bg-[#FFF0E5]">
@@ -76,7 +82,7 @@
                         </div>
                     </div>
                     <div class="overflow-y-auto p-4">
-                        <x-product-filter></x-product-filter>
+                        <x-product-filter :categories="$categories" :selected-categories="$selectedCategories" :sort="$sort" />
                     </div>
                 </div>
             </div>

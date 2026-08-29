@@ -34,13 +34,6 @@
                             </button>
                         </div>
                     </div>
-                    <div class="flex gap-2">
-                        <button class="flex items-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-[#72594B] transition hover:border-[#FF6B00] hover:text-[#C1440E]"
-                                onclick="toggleFilter()">
-                            <i class="fa-solid fa-sliders"></i>
-                            <span>Filter</span>
-                        </button>
-                    </div>
                 </div>
 
                 <div class="grid grid-cols-1 gap-6 md:grid-cols-5">

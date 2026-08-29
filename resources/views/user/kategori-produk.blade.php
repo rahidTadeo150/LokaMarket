@@ -7,12 +7,10 @@
         {{-- HERO --}}
         <section class="relative overflow-hidden bg-linear-to-br from-[#FFF3E2] to-[#FBAD51]">
             <div class="flex flex-col-reverse items-center justify-between gap-8 px-4 py-10 sm:px-6 md:flex-row md:px-16 md:py-14">
-                
-                {{-- Teks Kiri --}}
                 <div class="flex flex-col items-center gap-y-3 text-center md:w-7/12 md:items-start md:text-left">
-                    <span class="mb-2 flex w-fit items-center gap-1.5 rounded-full border border-orange-200 bg-white px-3 py-1 text-xs font-medium text-orange-600 shadow-sm">
+                    <span class="mb-2 flex w-fit uppercase items-center gap-1.5 rounded-full border border-orange-200 bg-white px-3 py-1 text-xs font-medium text-orange-600 shadow-sm">
                         <span class="h-1.5 w-1.5 rounded-full bg-orange-500"></span>
-                        KATEGORI PRODUK
+                        kategori Produk
                     </span>
                     <div>
                         <p class="max-w-xl text-3xl font-bold leading-tight text-[#3B2115] sm:text-4xl lg:text-5xl">
@@ -26,7 +24,7 @@
                             gampang ditemukan.
                         </p>
                     </div>
-        
+
                     {{-- Search bar --}}
                     <form action="{{ route('cust.kategori') }}" method="GET"
                             class="mt-6 flex w-full max-w-lg items-center gap-2 rounded-full border border-orange-100 bg-white p-2 shadow-sm sm:max-w-xl">
@@ -50,9 +48,9 @@
                 {{-- Hero Image Kanan (Presisi persis seperti Figma) --}}
                 <div class="relative flex w-full justify-center md:absolute md:right-0 md:top-0 md:bottom-0 md:w-5/12 md:justify-end">
                     <img
-                        src="{{ asset('storage/kategori.png') }}"
+                        src="{{ asset('storage/hero-kategori.png') }}"
                         alt="Kategori produk lokal"
-                        class="h-auto max-h-[350px] w-auto object-contain md:h-full md:max-h-none md:w-full md:object-cover md:object-right-bottom"
+                        class="h-auto w-full object-cover md:h-full md:max-h-none md:w-full md:object-cover md:object-bottom"
                     >
                 </div>
         

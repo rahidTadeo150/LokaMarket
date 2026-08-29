@@ -1,12 +1,18 @@
-const input = document.getElementById(inputId);
-const icon = document.getElementById(iconId);
+window.togglePassword = function (inputId, button) {
+    const passwordInput = document.getElementById(inputId);
+    const icon = button.querySelector('i');
 
-window.toggleVisibility = function(inputId, iconId) {
-    if (input.type === "password") {
-        input.type = "text";
-        icon.classList.replace("fa-eye", "fa-eye-slash");
-    } else {
-        input.type = "password";
-        icon.classList.replace("fa-eye-slash", "fa-eye");
-    }
+    const isPassword = passwordInput.type === 'password';
+
+    passwordInput.type = isPassword ? 'text' : 'password';
+
+    button.setAttribute(
+        'aria-label',
+        isPassword
+            ? 'Sembunyikan kata sandi'
+            : 'Tampilkan kata sandi'
+    );
+
+    icon.classList.toggle('fa-eye', !isPassword);
+    icon.classList.toggle('fa-eye-slash', isPassword);
 };

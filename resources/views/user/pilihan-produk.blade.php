@@ -43,7 +43,7 @@
 
                 <div class="grid grid-cols-1 gap-6 md:grid-cols-[240px_minmax(0,1fr)]">
                     <aside id="filterSidebar" class="hidden md:block">
-                        <div class="rounded-2xl border border-[#F1DCC8] bg-[#FFF7F0] p-4 shadow-sm">
+                        <div class="sticky top-24 rounded-2xl border border-[#F1DCC8] bg-[#FFF7F0] p-4 shadow-sm">
                             <x-product-filter :categories="$categories" :selected-categories="$selectedCategories" :sort="$sort" />
                         </div>
                     </aside>

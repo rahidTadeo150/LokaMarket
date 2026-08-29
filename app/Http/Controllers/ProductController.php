@@ -118,8 +118,9 @@ class ProductController extends Controller
         $selectedCategories = array_values(array_filter(array_map('trim', $selectedCategories)));
 
         if (! empty($selectedCategories)) {
-            $products = array_values(array_filter($products, function ($product) use ($selectedCategories) {
-                return in_array($product['category'], $selectedCategories, true);
+            $selectedCategory = $selectedCategories[0];
+            $products = array_values(array_filter($products, function ($product) use ($selectedCategory) {
+                return $product['category'] === $selectedCategory;
             }));
         }
 

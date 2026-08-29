@@ -30,17 +30,19 @@
             <!-- Form Register -->
             <div class="lg:col-span-7 rounded-3xl border border-slate-300 bg-white p-8 shadow-xl md:p-12">
                 <div class="mb-6">
-                    <h3 class="text-2xl md:text-3xl font-bold text-slate-900">Buat Akun Baru</h3>
-                    <p class="text-xs text-slate-500 mt-1">Isi data dirimu untuk mulai bergabung.</p>
+                    <h3 class="text-2xl md:text-3xl font-bold text-[#3B2115]">Buat Akun Baru</h3>
+                    <p class="text-xs text-[#72594B] mt-1">Isi data dirimu untuk mulai bergabung.</p>
                 </div>
                 <form action="/register" method="POST" class="space-y-4">
                     @csrf
                     <input type="hidden" name="role" value="pembeli">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-bold text-slate-800 mb-1.5">Nama Lengkap</label>
+                            <label class="block text-xs font-bold text-[#5A4032] mb-1.5">Nama Lengkap</label>
                             <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-sm"><i class="fa-regular fa-user"></i></span>
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-sm">
+                                    <i class="fa-regular fa-user"></i>
+                                </span>
                                 <input type="text" 
                                         name="name" 
                                         value="{{ old('name') }}" 
@@ -49,7 +51,7 @@
                             </div>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-800 mb-1.5">No. Telepon</label>
+                            <label class="block text-xs font-bold text-[#5A4032] mb-1.5">No. Telepon</label>
                             <div class="relative">
                                 <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-sm"><i class="fa-solid fa-mobile-screen"></i></span>
                                 <input type="tel" 
@@ -61,7 +63,7 @@
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-800 mb-1.5">Email</label>
+                        <label class="block text-xs font-bold text-[#5A4032] mb-1.5">Email</label>
                         <div class="relative">
                             <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-sm"><i class="fa-regular fa-envelope"></i></span>
                             <input type="email" 
@@ -73,7 +75,7 @@
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-bold text-slate-800 mb-1.5">Kata Sandi</label>
+                            <label class="block text-xs font-bold text-[#5A4032] mb-1.5">Kata Sandi</label>
                             <div class="relative">
                                 <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-sm"><i class="fa-solid fa-lock"></i></span>
                                 <input type="password" 
@@ -82,22 +84,32 @@
                                         placeholder="Buat kata sandi" 
                                         required
                                         class="w-full pl-10 pr-10 py-2.5 rounded-full border border-slate-300 text-xs md:text-sm focus:outline-none focus:border-orange-500">
-                                <button type="button" onclick="toggleVisibility('password', 'eye1')" class="absolute inset-y-0 right-0 pr-4 text-slate-400"><i id="eye1" class="fa-regular fa-eye"></i></button>
+                                <button type="button" 
+                                        id="password-toggle"
+                                        aria-label="Tampilkan kata sandi" 
+                                        onclick="togglePassword('password', this)" 
+                                        class="absolute inset-y-0 right-0 pr-4 text-slate-400">
+                                        <i class="fa-solid fa-eye text-xs"></i>
+                                </button>
                             </div>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-800 mb-1.5">Konfirmasi Sandi</label>
+                            <label class="block text-xs font-bold text-[#5A4032] mb-1.5">Konfirmasi Sandi</label>
                             <div class="relative">
                                 <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-sm"><i class="fa-solid fa-lock"></i></span>
                                 <input type="password" 
-                                        id="password_confirmation" 
-                                        name="password_confirmation" 
+                                        id="konfirmasi-password" 
+                                        name="konfirmasi_password"
                                         placeholder="Ulangi kata sandi" 
                                         required
                                         class="w-full pl-10 pr-10 py-2.5 rounded-full border border-slate-300 text-xs md:text-sm focus:outline-none focus:border-orange-500">
-                                <button type="button" 
-                                        onclick="toggleVisibility('password_confirmation', 'eye2')" 
-                                        class="absolute inset-y-0 right-0 pr-4 text-slate-400"><i id="eye2" class="fa-regular fa-eye"></i></button>
+                                <button type="button"
+                                        id="password-toggle"
+                                        aria-label="Tampilkan kata sandi" 
+                                        onclick="togglePassword('konfirmasi-password', this)" 
+                                        class="absolute inset-y-0 right-0 pr-4 text-slate-400">
+                                        <i class="fa-solid fa-eye text-xs"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -117,7 +129,10 @@
                     <span class="shrink mx-4 text-xs text-slate-400">atau daftar dengan</span>
                     <div class="grow border-t border-slate-200"></div>
                 </div>
-                <button type="button" class="w-full py-2.5 border border-slate-200 rounded-full flex items-center justify-center gap-2 text-xs font-semibold text-slate-700 hover:bg-slate-50"><i class="fa-brands fa-google text-red-500"></i> Google</button>
+                <button type="button" 
+                        class="mt-3 py-4 flex w-full items-center justify-center gap-3 rounded-full border border-[#D34E0E] text-sm font-bold text-[#3B2115] transition hover:bg-[#FFF9F4] hover:-translate-y-0.5 sm:h-9">
+                    <i class="fa-brands fa-google text-xl text-[#D9490B]"></i>Google
+                </button>
                 <div class="mt-6 text-center">
                     <p class="text-xs text-slate-500">Sudah punya akun? <a href="{{ route('cust.login') }}"  class="text-[#D34E0E] font-bold hover:underline">Masuk di sini</a></p>
                 </div>

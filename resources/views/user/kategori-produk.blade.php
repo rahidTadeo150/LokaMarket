@@ -78,22 +78,19 @@
                         Pilih Kategori yang Kamu Cari
                     </p>
                     <p class="mt-2 text-sm text-[#8B7162]">
-                        8 kategori, ratusan UMKM lokal siap kirim hari ini.
+                        13 kategori, ratusan UMKM lokal siap kirim hari ini.
                     </p>
                 </div>
                 <div class="mt-10 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
                     @forelse ($kategoriList as $kategori)
                         <a href="{{ route('cust.pilihanProduk', ['category' => $kategori['nama']]) }}"
-                            class="group relative rounded-xl border border-[#F3E5D9] bg-white p-4 text-left shadow-sm transition hover:-translate-y-1 hover:shadow-md sm:p-6">
-    
-                            <span class="absolute right-4 top-4 rounded-full bg-orange-50 px-2.5 py-1 text-[10px] font-semibold text-orange-600">
-                                {{ $kategori['jumlah'] }}
+                            class="group relative rounded-xl border border-[#F3E5D9] bg-white p-4 text-left shadow-sm transition ease-in-out duration-600 hover:border-2 hover:border-orange-400 hover:-translate-y-1 hover:shadow-lg sm:p-6">
+                            <span class="absolute right-3 top-3 rounded-full bg-orange-600 px-2.5 py-1 text-[10px] font-semibold text-white">
+                                {{ $kategori['jumlah'] }} Produk
                             </span>
-    
                             <div class="flex h-14 w-14 items-center justify-center rounded-full bg-orange-50 transition group-hover:bg-orange-100">
                                 <i class="fa-solid {{ $kategori['icon'] }} text-2xl text-[#C1440E] lg:text-3xl"></i>
                             </div>
-    
                             <p class="mt-4 text-base font-bold text-[#3B2115] lg:text-lg">
                                 {{ $kategori['nama'] }}
                             </p>

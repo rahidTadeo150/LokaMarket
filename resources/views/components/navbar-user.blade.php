@@ -154,7 +154,7 @@
                         {{-- Dropdown Profile --}}
                         <div id="profileMenu"
                             class="absolute right-0 top-16 hidden w-52 rounded-2xl border border-gray-100 bg-white p-2 shadow-xl">
-                            <a href=""
+                            <a href="{{ route('cust.myProfile') }}"
                             class="flex items-center gap-3 rounded-xl px-3 py-2.5
                                     text-sm text-gray-600 transition hover:bg-orange-50 hover:text-orange-600">
 

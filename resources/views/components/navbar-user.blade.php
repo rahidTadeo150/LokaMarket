@@ -115,12 +115,80 @@
                         Tentang Kami
                     </a>
                 </div>
+                <div class="flex items-center gap-2 sm:gap-3">
+                    {{-- Keranjang --}}
+                    <a href=""
+                    class="relative flex h-10 w-10 items-center justify-center rounded-full
+                            text-gray-600 transition-all duration-200
+                            hover:bg-orange-50 hover:text-orange-600">
+                        <i class="fa-solid fa-cart-shopping text-lg"></i>
+                        <span class="absolute -right-0.5 -top-0.5 flex h-5 min-w-5
+                                    items-center justify-center rounded-full
+                                    bg-orange-500 px-1 text-[10px] font-bold text-white">
+                            0
+                        </span>
+                    </a>
+                    {{-- Profile --}}
+                    <div class="relative">
+                        <button type="button"
+                                onclick="toggleProfileMenu()"
+                                class="flex items-center gap-2 rounded-full px-2 py-1.5
+                                    transition-all duration-200 hover:bg-gray-50">
+                            <div class="flex h-9 w-9 items-center justify-center rounded-full
+                                        bg-linear-to-br from-[#F2600C] to-[#FDB813]
+                                        text-sm font-bold text-white shadow-sm">
+                               T
+                               {{-- {{ strtoupper(substr(Auth::guard('pelanggan')->user()->nama, 0, 1)) }} --}}
+                            </div>
+                            <div class="hidden lg:block text-left">
+                                <p class="max-w-28 truncate text-xs font-semibold text-gray-800">
+                                    Nama User
+                                </p>
+                                <p class="text-[10px] text-gray-400">
+                                    Customer
+                                </p>
+                            </div>
+                            <i class="fa-solid fa-chevron-down hidden text-[10px] text-gray-400 lg:block"></i>
+                        </button>
 
+                        {{-- Dropdown Profile --}}
+                        <div id="profileMenu"
+                            class="absolute right-0 top-16 hidden w-52 rounded-2xl border border-gray-100 bg-white p-2 shadow-xl">
+                            <a href=""
+                            class="flex items-center gap-3 rounded-xl px-3 py-2.5
+                                    text-sm text-gray-600 transition hover:bg-orange-50 hover:text-orange-600">
+
+                                <i class="fa-solid fa-user w-5 text-center"></i>
+
+                                <span>Profil Saya</span>
+                            </a>
+                            <a href=""
+                            class="flex items-center gap-3 rounded-xl px-3 py-2.5
+                                    text-sm text-gray-600 transition hover:bg-orange-50 hover:text-orange-600">
+
+                                <i class="fa-solid fa-box w-5 text-center"></i>
+
+                                <span>Pesanan Saya</span>
+                            </a>
+                            <div class="my-1 border-t border-gray-100"></div>
+                            <form action="" method="POST">
+                                @csrf
+                                <button type="submit"
+                                        class="flex w-full items-center gap-3 rounded-xl px-3 py-2.5
+                                            text-sm text-red-500 transition hover:bg-red-50">
+
+                                    <i class="fa-solid fa-right-from-bracket w-5 text-center"></i>
+                                    <span>Keluar</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 {{-- Tombol Daftar --}}
-                <a href="{{ route('cust.login') }}"
+                {{-- <a href="{{ route('cust.login') }}"
                     class="shrink-0 whitespace-nowrap rounded-full bg-linear-to-br from-[#F2600C] to-[#FDB813] px-3 py-2 text-xs font-semibold text-white shadow-sm transition-all duration-200 hover:translate-y-0.5 hover:bg-blue-700 hover:shadow-md sm:px-4 sm:text-sm">
                     Daftar Customer
-                </a>
+                </a> --}}
             </div>
 
         </div>

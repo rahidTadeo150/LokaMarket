@@ -3,7 +3,7 @@
 @section('title', 'Profil Saya - LokaMarket')
 
 @section('content')
-    <section class="bg-[#FFF9F2] px-20 py-8">
+    <section class="bg-[#FFF9F2] px-8 md:px-10 lg:px-20 py-8">
         <div class="mx-auto">
             {{-- Header --}}
             <div class="mb-10">
@@ -205,33 +205,31 @@
                     <div class="rounded-xl border border-orange-100 bg-white p-5 shadow-sm">
                         <div class="flex items-start justify-between">
                             <div>
-                                <h2 class="text-sm font-bold text-[#3D2418]">
+                                <h2 class="text-xl font-bold text-[#3D2418]">
                                     Alamat Utama
                                 </h2>
                                 <div class="mt-3 flex gap-3">
-                                    <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-50 text-orange-500">
-                                        <i class="fa-solid fa-location-dot text-xs"></i>
+                                    <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 text-orange-500">
+                                        <i class="fa-solid fa-location-dot"></i>
                                     </div>
                                     <div>
-                                        <p class="text-xs font-semibold text-[#3D2418]">
+                                        <p class=" font-semibold text-[#3D2418]">
                                             Rino Amelia
                                         </p>
 
-                                        <p class="mt-1 max-w-lg text-[10px] leading-5 text-gray-500">
-                                            Jl. Merdeka No. 123, RT 02/RW 05,
-                                            Desa Sukamaju, Kecamatan Banyuwangi,
-                                            Kabupaten Banyuwangi, Jawa Timur.
+                                        <p class="mt-1 text-xs leading-5 text-gray-500">
+                                            Jl. Merdeka No. 123, RT 02/RW 05, Desa Sukamaju, Kecamatan Banyuwangi, Kabupaten Banyuwangi, Jawa Timur.
                                         </p>
                                     </div>
                                 </div>
                             </div>
-                            <span class="rounded-full bg-orange-50 px-2.5 py-1 text-[8px] font-bold uppercase text-orange-600">
+                            <span class="rounded-full bg-orange-50 px-2.5 py-1 text-[10px] font-bold uppercase text-orange-600">
                                 Utama
                             </span>
                         </div>
                         <div class="mt-4 flex justify-end border-t border-gray-100 pt-3">
                             <a href="#"
-                            class="text-[10px] font-semibold text-orange-500 hover:text-orange-600">
+                            class="text-sm font-semibold text-orange-500 hover:text-orange-600">
                                 Ubah Alamat
                             </a>
                         </div>

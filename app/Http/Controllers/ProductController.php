@@ -6,9 +6,6 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    /**
-     * Show the pilihan produk page
-     */
     public function pilihanProduk(Request $request)
     {
         $categories = [
@@ -138,5 +135,9 @@ class ProductController extends Controller
             'selectedCategories' => $selectedCategories,
             'sort' => $sort,
         ]);
+    }
+    public function detailProdukPage(Request $request)
+    {
+      return view('user.detail-produk');
     }
 }

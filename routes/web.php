@@ -19,5 +19,6 @@ Route::get('/tentang-kami', [UserController::class, 'tentangKamiPage'])->name('c
 Route::get('/pilihan-produk', [ProductController::class, 'pilihanProduk'])->name('cust.pilihanProduk');
 Route::get('/kategori-produk', [CategoryController::class, 'index'])->name('cust.kategori');
 Route::get('/detail-produk', [ProductController::class, 'detailProdukPage'])->name('cust.detailProduk');
+Route::get('/detail-toko', [ProductController::class, 'detailTokoPage'])->name('cust.detailToko');
 
 Route::get('/register-penjual', [AuthController::class, 'showRegisterPenjualForm'])->name('seller.register');

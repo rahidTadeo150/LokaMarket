@@ -123,9 +123,9 @@
                                     </p>
                                 </div>
                             </div>
-                            <button class="shrink-0 rounded-full border border-orange-500 px-4 py-2 text-xs font-semibold text-orange-600 hover:bg-orange-500 hover:text-white transition">
+                            <a href="{{ route('cust.detailToko') }}" class="shrink-0 inline-flex items-center justify-center rounded-full border border-orange-500 px-4 py-2 text-xs font-semibold text-orange-600 hover:bg-orange-500 hover:text-white transition">
                                 Lihat Toko
-                            </button>
+                            </a>
                         </div>
                     </div>
                     <div class="mt-5">

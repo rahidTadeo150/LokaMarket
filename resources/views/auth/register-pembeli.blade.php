@@ -14,12 +14,10 @@
     <!-- Navbar -->
     <header class="w-full bg-white border-b border-orange-100/60 py-4 px-6 md:px-12 flex items-center justify-between">
         <div class="flex items-center gap-2">
-            <div class="w-10 h-10 bg-[#E05315] rounded-xl flex items-center justify-center text-white text-xl shadow-md shadow-orange-500/20">
-                <i class="fa-solid fa-basket-shopping"></i>
-            </div>
             <div>
-                <h1 class="font-extrabold text-lg text-[#E05315] leading-none">LokaMarket</h1>
-                <span class="text-[10px] text-slate-400 font-medium">Pusat UMKM Lokal</span>
+                <a href="/" class="inline-block">
+                <img src="{{ asset('images/upscalemedia-transformed (1)-Photoroom 5.png') }}" alt="LokaMarket" class="h-10 w-auto">
+                </a>
             </div>
         </div>
         <div class="flex items-center gap-3">
@@ -35,15 +33,11 @@
             <!-- Banner Kiri -->
             <div class="lg:col-span-5 bg-gradient-to-br from-amber-100/80 via-orange-100/50 to-amber-200/60 rounded-3xl p-8 md:p-10 flex flex-col justify-between min-h-[520px] shadow-sm">
                 <div>
-                    <div class="flex items-center gap-2 mb-10">
-                        <div class="w-9 h-9 bg-[#E05315] rounded-xl flex items-center justify-center text-white text-lg shadow-sm">
-                            <i class="fa-solid fa-basket-shopping"></i>
-                        </div>
-                        <div>
-                            <span class="font-extrabold text-base text-[#E05315] leading-none block">LokaMarket</span>
-                            <span class="text-[9px] text-slate-500 font-medium">Pusat UMKM Lokal</span>
-                        </div>
-                    </div>
+                    <div class="mb-10">
+                    <a href="/" class="inline-block">
+                       <img src="{{ asset('images/upscalemedia-transformed (1)-Photoroom 5.png') }}" alt="LokaMarket" class="h-10 w-auto">
+                    </a>
+                </div>
 
                     <h2 class="text-3xl font-extrabold text-slate-900 leading-tight">Gabung Bersama<br>500+ UMKM Lokal</h2>
                     <p class="text-sm text-slate-600 mt-3 leading-relaxed">Buat akun gratis dan mulai belanja atau jual produk UMKM favoritmu hari ini.</p>

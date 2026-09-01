@@ -33,7 +33,7 @@
         <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
             
             <!-- Banner Kiri -->
-            <div class="lg:col-span-5 bg-gradient-to-br from-amber-100/80 via-orange-100/50 to-amber-200/60 rounded-3xl p-8 md:p-10 flex flex-col justify-between min-h-[600px] shadow-sm">
+            <div class="lg:col-span-5 bg-linear-to-br from-amber-100/80 via-orange-100/50 to-amber-200/60 rounded-3xl p-8 md:p-10 flex flex-col justify-between min-h-[600px] shadow-sm">
                 <div>
                     <div class="flex items-center gap-2 mb-10">
                         <div class="w-9 h-9 bg-[#E05315] rounded-xl flex items-center justify-center text-white text-lg shadow-sm">
@@ -168,9 +168,9 @@
                 </form>
 
                 <div class="relative flex py-4 items-center mt-2">
-                    <div class="flex-grow border-t border-slate-200"></div>
-                    <span class="flex-shrink mx-4 text-xs text-slate-400">atau daftar dengan</span>
-                    <div class="flex-grow border-t border-slate-200"></div>
+                    <div class="grow border-t border-slate-200"></div>
+                    <span class="shrink mx-4 text-xs text-slate-400">atau daftar dengan</span>
+                    <div class="grow border-t border-slate-200"></div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
@@ -187,19 +187,5 @@
     </main>
 
     <footer class="py-4 text-center text-xs text-slate-400">&copy; 2026 LokaMarket. All rights reserved.</footer>
-
-    <script>
-        function toggleVisibility(inputId, iconId) {
-            const input = document.getElementById(inputId);
-            const icon = document.getElementById(iconId);
-            if (input.type === "password") {
-                input.type = "text";
-                icon.classList.replace("fa-eye", "fa-eye-slash");
-            } else {
-                input.type = "password";
-                icon.classList.replace("fa-eye-slash", "fa-eye");
-            }
-        }
-    </script>
 </body>
 </html>

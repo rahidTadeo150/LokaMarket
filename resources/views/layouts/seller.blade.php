@@ -11,10 +11,7 @@
     </title>
 </head>
 <body>
-    <x-navbar-user></x-navbar-user>
+    <x-navbar-seller></x-navbar-seller>
     @yield('content')
-    <x-footer></x-footer>
 </body>
 </html>
-
-

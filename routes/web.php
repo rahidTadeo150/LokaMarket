@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\sellerController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
@@ -22,3 +23,6 @@ Route::get('/detail-produk', [ProductController::class, 'detailProdukPage'])->na
 Route::get('/detail-toko', [ProductController::class, 'detailTokoPage'])->name('cust.detailToko');
 
 Route::get('/register-penjual', [AuthController::class, 'showRegisterPenjualForm'])->name('seller.register');
+
+Route::get('/dashboard-seller', [sellerController::class, 'dashboardSeller'])->name('seller.dashboard');
+

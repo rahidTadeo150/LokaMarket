@@ -1,141 +1,137 @@
-@php
-    $shop = [
-        'name' => 'Geprek WW',
-        'tagline' => 'Banyuwangi',
-        'city' => 'Banyuwangi, Jawa Timur',
-        'joined' => 'Bergabung 2022',
-        'description' => 'Warung GEPREK WW menyajikan ayam geprek dengan rasa pedas, kriuk, dan bumbu khas Banyuwangi. Cocok untuk pecinta makanan pedas dengan cita rasa autentik.',
-        'phone' => '0812-3456-7890',
-        'address' => 'Jl. D. I. Panjaitan No. 45, Banyuwangi',
-        'operational_hours' => '08.00 - 20.00 WIB',
-        'hero_image' => 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=1200&q=80',
-        'avatar' => 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=400&q=80',
-    ];
-
-    $products = [
-        ['name' => 'Kulit Ayam Geprek', 'image' => 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=800&q=80', 'price' => 12000, 'label' => 'Paling Laris'],
-        ['name' => 'Ayam Geprek', 'image' => 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80', 'price' => 18000, 'label' => 'Best Seller'],
-        ['name' => 'Es Pisang Ijo', 'image' => 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80', 'price' => 8000, 'label' => 'Minuman'],
-        ['name' => 'Tahu Walik', 'image' => 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=800&q=80', 'price' => 10000, 'label' => 'Cemilan'],
-        ['name' => 'Ayam Geprek', 'image' => 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=800&q=80', 'price' => 18000, 'label' => 'Paling Laris'],
-        ['name' => 'Kulit Ayam Geprek', 'image' => 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80', 'price' => 12000, 'label' => 'Diskon'],
-        ['name' => 'Es Pisang Ijo', 'image' => 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80', 'price' => 8000, 'label' => 'Baru'],
-        ['name' => 'Tahu Walik', 'image' => 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=800&q=80', 'price' => 10000, 'label' => 'Cemilan'],
-    ];
-@endphp
-
 @extends('layouts.customer')
 
 @section('title', 'Detail Toko - LokaMarket')
 
 @section('content')
-    <div class="min-h-screen bg-[#f8f4ef] text-slate-800">
-
-        <section class="max-w-6xl mx-auto px-4 py-6">
-            <div class="rounded-[28px] overflow-hidden bg-gradient-to-r from-[#f0bf77] via-[#f2b166] to-[#f0a14a] shadow-sm border border-orange-200/50">
-                <div class="px-6 py-8 md:px-10">
-                    <div class="flex items-center justify-between gap-4 flex-wrap">
-                        <div class="flex items-center gap-4">
-                            <div class="w-16 h-16 md:w-20 md:h-20 rounded-full border-4 border-white bg-white/40 overflow-hidden shadow-md">
-                                <img src="{{ $shop['avatar'] }}" alt="{{ $shop['name'] }}" class="w-full h-full object-cover">
-                            </div>
-                            <div>
-                                <h1 class="text-2xl md:text-4xl font-black text-[#512b1a] tracking-tight">{{ $shop['name'] }}</h1>
-                                <div class="flex items-center gap-2 mt-1 text-sm text-[#5d2f1d]">
-                                    <span class="inline-flex items-center gap-1"><i class="fa-solid fa-location-dot text-xs"></i> {{ $shop['tagline'] }}</span>
-                                    <span class="text-[#754830]">•</span>
-                                    <span>{{ $shop['joined'] }}</span>
-                                </div>
+    <main class="min-h-screen bg-[#f8f4ef] text-slate-800">
+        {{-- Header Toko --}}
+        <section class="relative">
+            {{-- Banner --}}
+            <div class="h-64 md:h-72 bg-linear-to-r from-[#FFE0B2] via-[#FFC477] to-[#FFB45B]">
+                <div class="mx-auto h-full px-4">
+                    <button type="button"
+                            onclick="history.back()"
+                            class="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full bg-white/90 px-4 py-2 text-sm font-semibold text-[#3B2115] shadow-sm backdrop-blur transition hover:bg-white hover:shadow-md md:left-6">
+                        <i class="fa-solid fa-arrow-left text-xs"></i>
+                        <span>Kembali</span>
+                    </button>
+                </div>
+            </div>
+            <div class="max-w-6xl mx-auto px-4">
+                <div class="relative">
+                    <div class="absolute -top-16 left-4 md:left-6">
+                        <div class="h-28 w-28 md:h-32 md:w-32 overflow-hidden rounded-full border-4 border-white bg-white shadow-lg">
+                            <img
+                                src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=400&q=80"
+                                alt="Geprek WW"
+                                class="h-full w-full object-cover">
+                        </div>
+                    </div>
+                    <div class="min-h-32 px-4 pt-4 pb-5 md:px-6">
+                        <div class="ml-32 md:ml-40">
+                            <h1 class="text-xl font-black tracking-tight text-[#3B2115] md:text-3xl">
+                                Geprek WW
+                            </h1>
+                            <div class="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-[#5D4037] md:text-sm">
+                                <span class="inline-flex items-center gap-1.5">
+                                    <i class="fa-solid fa-location-dot text-[#3B2115]"></i>
+                                    Banyuwangi, Jawa Timur
+                                </span>
+                                <span class="inline-flex items-center gap-1.5">
+                                    <i class="fa-solid fa-store text-[#3B2115]"></i>
+                                    Bergabung 2022
+                                </span>
                             </div>
                         </div>
-                        <button class="bg-white text-[#a85a1d] font-semibold px-5 py-2.5 rounded-full shadow-sm hover:bg-orange-50 transition">
-                            Chat Toko
-                        </button>
+                        <div class="mt-4 flex justify-end md:-mt-1">
+                            <button type="button"
+                                    class="rounded-full bg-[#E85D04] px-6 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-[#D94F00] hover:shadow-md">
+                                <i class="fa-regular fa-comment-dots mr-1.5"></i>
+                                Chat Toko
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="max-w-6xl mx-auto px-4 pb-8">
-            <div class="rounded-[26px] bg-white border border-orange-100 shadow-sm p-5 md:p-7">
-                <div class="flex items-start justify-between gap-4 flex-wrap">
-                    <div>
-                        <h2 class="text-2xl font-bold text-slate-800">Tentang Toko</h2>
-                    </div>
-                    <button class="bg-[#f5a623] text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-[#e89b12] transition">
-                        Chat Toko
-                    </button>
-                </div>
 
+        {{-- Tentang Toko --}}
+        <section class="max-w-6xl mx-auto px-4 pb-8">
+            <div class="rounded-lg bg-white border border-orange-100 shadow-sm p-5 md:p-7">
+                <p class="text-2xl font-bold text-slate-800">
+                    Tentang Toko
+                </p>
                 <div class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5 text-sm text-slate-600">
                     <p class="leading-7">
-                        {{ $shop['description'] }}
+                        Warung GEPREK WW menyajikan ayam geprek dengan rasa pedas,
+                        kriuk, dan bumbu khas Banyuwangi. Cocok untuk pecinta makanan
+                        pedas dengan cita rasa autentik.
                     </p>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div class="rounded-2xl border border-orange-100 bg-[#fffaf4] p-4">
                             <div class="flex items-center gap-2 text-[#7b3d1a] font-semibold mb-2">
                                 <i class="fa-solid fa-clock"></i>
-                                <span>Jam Operasional</span>
+                                <span>Email</span>
                             </div>
-                            <p>{{ $shop['operational_hours'] }}</p>
+                            <p>
+                                GebrekHW@gmail.com
+                            </p>
                         </div>
                         <div class="rounded-2xl border border-orange-100 bg-[#fffaf4] p-4">
                             <div class="flex items-center gap-2 text-[#7b3d1a] font-semibold mb-2">
                                 <i class="fa-solid fa-phone"></i>
                                 <span>Kontak</span>
                             </div>
-                            <p>{{ $shop['phone'] }}</p>
+                            <p>
+                                0812-3456-7890
+                            </p>
+                        </div>
+                        <div class="rounded-2xl border border-orange-100 bg-[#fffaf4] p-4 sm:col-span-2">
+                            <div class="flex items-center gap-2 text-[#7b3d1a] font-semibold mb-2">
+                                <i class="fa-solid fa-clock"></i>
+                                <span>Jam Operasional</span>
+                            </div>
+                            <p>
+                                08.00 - 20.00 WIB
+                            </p>
                         </div>
                         <div class="rounded-2xl border border-orange-100 bg-[#fffaf4] p-4 sm:col-span-2">
                             <div class="flex items-center gap-2 text-[#7b3d1a] font-semibold mb-2">
                                 <i class="fa-solid fa-location-dot"></i>
                                 <span>Alamat</span>
                             </div>
-                            <p>{{ $shop['address'] }}</p>
+                            <p>
+                                Jl. D. I. Panjaitan No. 45, Banyuwangi
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
+
+        {{-- Semua Produk --}}
         <section class="max-w-6xl mx-auto px-4 pb-10">
             <div class="flex items-center justify-between mb-5">
-                <h2 class="text-2xl font-bold text-slate-800">Semua Produk</h2>
+                <p class="text-2xl font-bold text-slate-800">
+                    Semua Produk
+                </p>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                @foreach($products as $product)
-                    <article class="group rounded-[22px] border border-orange-100 bg-white p-3 shadow-sm hover:shadow-md transition">
-                        <div class="relative overflow-hidden rounded-[18px] bg-[#f8f4ef]">
-                            <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}" class="w-full h-44 object-cover group-hover:scale-105 transition duration-300">
-                            <button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 text-slate-500 shadow-sm hover:text-[#f5a623] transition">
-                                <i class="fa-regular fa-heart text-xs"></i>
-                            </button>
-                        </div>
-                        <div class="mt-3 space-y-2">
-                            <div class="flex items-center justify-between gap-2">
-                                <span class="inline-flex items-center rounded-full bg-orange-50 border border-orange-200 px-2 py-1 text-[10px] font-semibold text-orange-600">
-                                    {{ $product['label'] }}
-                                </span>
-                                <button class="w-8 h-8 rounded-full bg-orange-50 text-orange-500 hover:bg-orange-100 transition">
-                                    <i class="fa-solid fa-plus text-xs"></i>
-                                </button>
-                            </div>
-                            <h3 class="font-bold text-lg text-slate-800 leading-tight">{{ $product['name'] }}</h3>
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-[11px] text-slate-400">Harga</p>
-                                    <p class="font-bold text-[#f5a623]">Rp {{ number_format($product['price'], 0, ',', '.') }}</p>
-                                </div>
-                                <div class="flex items-center gap-1 text-[#f5a623] text-xs">
-                                    <i class="fa-solid fa-star"></i>
-                                    <span>4.8</span>
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-                @endforeach
+            {{-- Produk List --}}
+            <div class="grid grid-cols-2 gap-3 sm:gap-5 xl:grid-cols-4">
+                <x-product-card
+                    link="{{ route('cust.detailProduk') }}"
+                    thumbnailImage="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=700&q=80"
+                    nama="Ayam Geprek Pedas"
+                    diskon="12"
+                    kategori="Makanan"
+                    lokasi="Banyuwangi"
+                    rating="4.8"
+                    reviews="96"
+                    harga="18.000"/>
             </div>
         </section>
-    </div>
+    </main>
 @endsection

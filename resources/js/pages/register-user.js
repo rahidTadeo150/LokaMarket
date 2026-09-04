@@ -1,21 +1,25 @@
 document.addEventListener('DOMContentLoaded', () => {
-
     const submitBtn = document.getElementById('submitBtn');
     const registerForm = document.getElementById('registerForm');
-
+    
+    submitBtn.disabled = true;
+    
     const inputForm = {
-        nama: {
-            input: document.getElementById('nama'),
-            borderField: document.getElementById('nama'),
-            error: document.getElementById('nama-error'),
+        username: {
+            input: document.getElementById('username'),
+            borderField: document.getElementById('username'),
+            error: document.getElementById('username-error'),
             validate: (v) => {
                 v = v.replace(/[^a-zA-Z\s]/g, '');
-                document.getElementById('nama').value = v;
+
+                document.getElementById('username').value = v;
+
                 if (!v) {
-                    return 'Nama tidak boleh kosong!';
+                    return 'username tidak boleh kosong!';
                 }
+                
                 if (v.length < 5) {
-                    return 'Nama minimal 5 karakter!';
+                    return 'username minimal 5 karakter!';
                 }
                 return '';
             }
@@ -27,7 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
             validate: (v) => {
                 v = v.replace(/[^\d]/g, '');
                 v = v.replace(/^0+/, '');
+
                 document.getElementById('no_telp').value = v;
+
                 if (!v) {
                     return 'Nomor telepon tidak boleh kosong!';
                 }
@@ -50,9 +56,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!v) {
                     return 'Email tidak boleh kosong!';
                 }
+
                 if (/\s/.test(v)) {
                     return 'Email tidak boleh ada spasi!';
                 }
+
                 if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
                     return 'Format email tidak valid!';
                 }
@@ -67,9 +75,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!v) {
                     return 'Kata sandi tidak boleh kosong!';
                 }
+
                 if (v.length < 8) {
                     return 'Kata sandi minimal 8 karakter!';
                 }
+                
                 if (/\s/.test(v)) {
                     return 'Kata sandi tidak boleh mengandung spasi!';
                 }
@@ -81,10 +91,11 @@ document.addEventListener('DOMContentLoaded', () => {
             borderField: document.getElementById('konfirmasi-password'),
             error: document.getElementById('konfirmasi-password-error'),
             validate: (v) => {
+                const password = document.getElementById('password').value;
                 if (!v) {
                     return 'Konfirmasi kata sandi tidak boleh kosong!';
                 }
-                const password = document.getElementById('password').value;
+
                 if (v !== password) {
                     return 'Konfirmasi kata sandi tidak sama!';
                 }
@@ -92,26 +103,33 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     };
+
     function validateField(field) {
         const value = field.input.value.trim();
         const message = field.validate(value);
+
         field.borderField.classList.remove(
             'border-red-400',
             'border-green-400'
         );
+
         if (message) {
             field.borderField.classList.add('border-red-400');
             field.error.textContent = message;
             field.error.classList.remove('hidden');
+
             return false;
         }
         field.borderField.classList.add('border-green-400');
         field.error.textContent = '';
         field.error.classList.add('hidden');
+
         return true;
     }
+
     function validateTerms() {
         const terms = document.getElementById('terms');
+        
         if (!terms.checked) {
             return false;
         }
@@ -119,43 +137,51 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     function validateForm() {
         let valid = true;
+
         Object.values(inputForm).forEach(field => {
             if (!validateField(field)) {
                 valid = false;
             }
         });
+
         if (!validateTerms()) {
             valid = false;
         }
+
         submitBtn.disabled = !valid;
+
         return valid;
     }
+
     Object.values(inputForm).forEach(field => {
         field.input.addEventListener('input', () => {
             validateField(field);
             validateForm();
         });
+
         field.input.addEventListener('blur', () => {
             validateField(field);
             validateForm();
         });
     });
+
     document.getElementById('terms').addEventListener('change', () => {
         validateForm();
     });
+
     registerForm.addEventListener('submit', (e) => {
         if (!validateForm()) {
             e.preventDefault();
+
             const firstError = Object.values(inputForm)
                 .find(field => {
                     return field.borderField.classList.contains('border-red-400');
                 });
+                
             if (firstError) {
                 firstError.input.focus();
             }
             return;
         }
     });
-    submitBtn.disabled = true;
-
 });

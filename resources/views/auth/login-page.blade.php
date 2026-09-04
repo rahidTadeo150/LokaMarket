@@ -30,7 +30,13 @@
                 <h2 class="text-2xl font-extrabold text-[#3B2115] sm:text-[25px]">Masuk ke Akun</h2>
                 <p class="mt-0.5 text-xs text-[#72594B]">Senang bertemu lagi! Masukkan detail akunmu.</p>
             </div>
-            <form action="#" method="POST" class="space-y-3">
+            @if (session('success'))
+            <x-alert-success-relative></x-alert-success-relative>
+            @endif
+            @if (session('error'))
+            <x-alert-error-relative></x-alert-error-relative>
+            @endif
+            <form action="{{ route('cust.loginCustomer') }}" method="POST" class="space-y-3">
                 @csrf
                 <div>
                     <label for="email" class="mb-3 block text-xs font-bold text-[#5A4032]">Email</label>

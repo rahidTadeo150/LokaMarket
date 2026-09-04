@@ -3,150 +3,156 @@
 @section('title', 'Masuk - LokaMarket')
 
 @section('content')
-    <main class="px-10 md:px-20 py-28">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-            
-            <!-- Banner Kiri -->
-            <section class="relative hidden overflow-hidden rounded-[22px] bg-[#FFE5C5] px-10 py-10 lg:col-span-5 lg:block lg:h-full">
-                <div class="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-[#FFD98D] opacity-70 blur-2xl"></div>
-                <img src="{{ asset('storage/logo-lokamarket.png') }}" alt="LokaMarket" class="relative h-12 w-auto">
-                <div class="relative mt-9">
-                    <h1 class="text-[27px] font-extrabold leading-[1.12] text-[#3B2115]">
-                        Selamat Datang<br>
-                        Ke Platform Produk UMKM<br>
-                        LokaMarket
-                    </h1>
-                    <p class="mt-4 text-xs leading-5 text-[#72594B]">
-                        Masuk untuk melanjutkan belanja produk UMKM lokal favoritmu dan pantau pesananmu.
-                    </p>
-                    <ul class="mt-5 space-y-3 text-xs text-[#4E382C]">
-                        <li class="flex items-center gap-2.5"><span class="flex h-fit w-fit p-1 items-center justify-center rounded-full bg-[#FF8A12] text-[10px] text-white"><i class="fa-solid fa-check"></i></span>Ribuan produk UMKM lokal pilihan</li>
-                        <li class="flex items-center gap-2.5"><span class="flex h-fit w-fit p-1 items-center justify-center rounded-full bg-[#FF8A12] text-[10px] text-white"><i class="fa-solid fa-check"></i></span>Transaksi aman &amp; terpercaya</li>
-                        <li class="flex items-center gap-2.5"><span class="flex h-fit w-fit p-1 items-center justify-center rounded-full bg-[#FF8A12] text-[10px] text-white"><i class="fa-solid fa-check"></i></span>Dukung ekonomi warga sekitarmu</li>
-                    </ul>
-                </div>
-            </section>
+        <main class="px-10 md:px-20 py-28">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                
+                <!-- Banner Kiri -->
+                <section class="relative hidden overflow-hidden rounded-[22px] bg-[#FFE5C5] px-10 py-10 lg:col-span-5 lg:block lg:h-full">
+                    <div class="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-[#FFD98D] opacity-70 blur-2xl"></div>
+                    <img src="{{ asset('storage/logo-lokamarket.png') }}" alt="LokaMarket" class="relative h-12 w-auto">
+                    <div class="relative mt-9">
+                        <h1 class="text-[27px] font-extrabold leading-[1.12] text-[#3B2115]">
+                            Selamat Datang<br>
+                            Ke Platform Produk UMKM<br>
+                            LokaMarket
+                        </h1>
+                        <p class="mt-4 text-xs leading-5 text-[#72594B]">
+                            Masuk untuk melanjutkan belanja produk UMKM lokal favoritmu dan pantau pesananmu.
+                        </p>
+                        <ul class="mt-5 space-y-3 text-xs text-[#4E382C]">
+                            <li class="flex items-center gap-2.5"><span class="flex h-fit w-fit p-1 items-center justify-center rounded-full bg-[#FF8A12] text-[10px] text-white"><i class="fa-solid fa-check"></i></span>Ribuan produk UMKM lokal pilihan</li>
+                            <li class="flex items-center gap-2.5"><span class="flex h-fit w-fit p-1 items-center justify-center rounded-full bg-[#FF8A12] text-[10px] text-white"><i class="fa-solid fa-check"></i></span>Transaksi aman &amp; terpercaya</li>
+                            <li class="flex items-center gap-2.5"><span class="flex h-fit w-fit p-1 items-center justify-center rounded-full bg-[#FF8A12] text-[10px] text-white"><i class="fa-solid fa-check"></i></span>Dukung ekonomi warga sekitarmu</li>
+                        </ul>
+                    </div>
+                </section>
 
-            <!-- Form Register -->
-            <div class="lg:col-span-7 rounded-3xl border border-slate-300 bg-white p-8 shadow-xl md:p-12">
-                <div class="mb-6">
-                    <h3 class="text-2xl md:text-3xl font-bold text-[#3B2115]">Buat Akun Baru</h3>
-                    <p class="text-xs text-[#72594B] mt-1">Isi data dirimu untuk mulai bergabung.</p>
-                </div>
-                <form id="registerForm" action="" method="POST" class="space-y-4" novalidate">
-                    @csrf
-                    <input type="hidden" name="role" value="pembeli">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Form Register -->
+                <div class="lg:col-span-7 rounded-3xl border border-slate-300 bg-white p-8 shadow-xl md:p-12">
+                    <div class="mb-6">
+                        <h3 class="text-2xl md:text-3xl font-bold text-[#3B2115]">Buat Akun Baru</h3>
+                        <p class="text-xs text-[#72594B] mt-1">Isi data dirimu untuk mulai bergabung.</p>
+                    </div>
+                    @if (session('success'))
+                    <x-alert-success-relative></x-alert-success-relative>
+                    @endif
+                    @if (session('error'))
+                    <x-alert-error-relative></x-alert-error-relative>
+                    @endif
+                    <form id="registerForm" action="{{ route('cust.registerNewCustomer') }}" method="POST" class="space-y-4" novalidate">
+                        @csrf
+                        <input type="hidden" name="role" value="pembeli">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-[#5A4032] mb-1.5">Username</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-sm">
+                                        <i class="fa-regular fa-user"></i>
+                                    </span>
+                                    <input type="text" 
+                                            name="username" 
+                                            id="username"
+                                            value="{{ old('username') }}" 
+                                            placeholder="Masukan Username" required
+                                            class="w-full pl-10 pr-4 py-2.5 rounded-full border border-slate-300 text-xs md:text-sm focus:outline-none focus:border-orange-500">
+                                </div>
+                                <p id="username-error" class="hidden mt-1.5 ml-3 text-xs font-medium text-red-500"></p>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-[#5A4032] mb-1.5">No. Telepon</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-sm"><i class="fa-solid fa-mobile-screen"></i></span>
+                                    <input type="tel" 
+                                            name="no_telp" 
+                                            id="no_telp"
+                                            value="{{ old('phone') }}" 
+                                            placeholder="08xx-xxxx-xxxx" required
+                                            class="w-full pl-10 pr-4 py-2.5 rounded-full border border-slate-300 text-xs md:text-sm focus:outline-none focus:border-orange-500">
+                                </div>
+                                <p id="no-telp-error" class="hidden mt-1.5 ml-3 text-xs font-medium text-red-500"></p>
+                            </div>
+                        </div>
                         <div>
-                            <label class="block text-xs font-bold text-[#5A4032] mb-1.5">Nama Lengkap</label>
+                            <label class="block text-xs font-bold text-[#5A4032] mb-1.5">Email</label>
                             <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-sm">
-                                    <i class="fa-regular fa-user"></i>
-                                </span>
-                                <input type="text" 
-                                        name="nama" 
-                                        id="nama"
-                                        value="{{ old('name') }}" 
-                                        placeholder="Nama kamu" required
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-sm"><i class="fa-regular fa-envelope"></i></span>
+                                <input type="email" 
+                                        name="email" 
+                                        id="email"
+                                        value="{{ old('email') }}" 
+                                        placeholder="nama@email.com" required
                                         class="w-full pl-10 pr-4 py-2.5 rounded-full border border-slate-300 text-xs md:text-sm focus:outline-none focus:border-orange-500">
                             </div>
-                            <p id="nama-error" class="hidden mt-1.5 ml-3 text-xs font-medium text-red-500"></p>
+                            <p id="email-error" class="hidden mt-1.5 ml-3 text-xs font-medium text-red-500"></p>
                         </div>
-                        <div>
-                            <label class="block text-xs font-bold text-[#5A4032] mb-1.5">No. Telepon</label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-sm"><i class="fa-solid fa-mobile-screen"></i></span>
-                                <input type="tel" 
-                                        name="no_telp" 
-                                        id="no_telp"
-                                        value="{{ old('phone') }}" 
-                                        placeholder="08xx-xxxx-xxxx" required
-                                        class="w-full pl-10 pr-4 py-2.5 rounded-full border border-slate-300 text-xs md:text-sm focus:outline-none focus:border-orange-500">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-[#5A4032] mb-1.5">Kata Sandi</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-sm"><i class="fa-solid fa-lock"></i></span>
+                                    <input type="password" 
+                                            id="password" 
+                                            name="password" 
+                                            placeholder="Buat kata sandi" 
+                                            required
+                                            class="w-full pl-10 pr-10 py-2.5 rounded-full border border-slate-300 text-xs md:text-sm focus:outline-none focus:border-orange-500">
+                                    <button type="button" 
+                                            id="password-toggle"
+                                            aria-label="Tampilkan kata sandi" 
+                                            onclick="togglePassword('password', this)" 
+                                            class="absolute inset-y-0 right-0 pr-4 text-slate-400">
+                                            <i class="fa-solid fa-eye text-xs"></i>
+                                    </button>
+                                </div>
+                                <p id="password-error" class="hidden mt-1.5 ml-3 text-xs font-medium text-red-500"></p>
                             </div>
-                            <p id="no-telp-error" class="hidden mt-1.5 ml-3 text-xs font-medium text-red-500"></p>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-[#5A4032] mb-1.5">Email</label>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-sm"><i class="fa-regular fa-envelope"></i></span>
-                            <input type="email" 
-                                    name="email" 
-                                    id="email"
-                                    value="{{ old('email') }}" 
-                                    placeholder="nama@email.com" required
-                                    class="w-full pl-10 pr-4 py-2.5 rounded-full border border-slate-300 text-xs md:text-sm focus:outline-none focus:border-orange-500">
-                        </div>
-                        <p id="email-error" class="hidden mt-1.5 ml-3 text-xs font-medium text-red-500"></p>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-bold text-[#5A4032] mb-1.5">Kata Sandi</label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-sm"><i class="fa-solid fa-lock"></i></span>
-                                <input type="password" 
-                                        id="password" 
-                                        name="password" 
-                                        placeholder="Buat kata sandi" 
-                                        required
-                                        class="w-full pl-10 pr-10 py-2.5 rounded-full border border-slate-300 text-xs md:text-sm focus:outline-none focus:border-orange-500">
-                                <button type="button" 
-                                        id="password-toggle"
-                                        aria-label="Tampilkan kata sandi" 
-                                        onclick="togglePassword('password', this)" 
-                                        class="absolute inset-y-0 right-0 pr-4 text-slate-400">
-                                        <i class="fa-solid fa-eye text-xs"></i>
-                                </button>
+                            <div>
+                                <label class="block text-xs font-bold text-[#5A4032] mb-1.5">Konfirmasi Sandi</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-sm"><i class="fa-solid fa-lock"></i></span>
+                                    <input type="password" 
+                                            id="konfirmasi-password" 
+                                            name="konfirmasi_password"
+                                            placeholder="Ulangi kata sandi" 
+                                            required
+                                            class="w-full pl-10 pr-10 py-2.5 rounded-full border border-slate-300 text-xs md:text-sm focus:outline-none focus:border-orange-500">
+                                    <button type="button"
+                                            id="password-toggle"
+                                            aria-label="Tampilkan kata sandi" 
+                                            onclick="togglePassword('konfirmasi-password', this)" 
+                                            class="absolute inset-y-0 right-0 pr-4 text-slate-400">
+                                            <i class="fa-solid fa-eye text-xs"></i>
+                                    </button>
+                                </div>
+                                <p id="konfirmasi-password-error" class="hidden mt-1.5 ml-3 text-xs font-medium text-red-500"></p>
                             </div>
-                            <p id="password-error" class="hidden mt-1.5 ml-3 text-xs font-medium text-red-500"></p>
                         </div>
-                        <div>
-                            <label class="block text-xs font-bold text-[#5A4032] mb-1.5">Konfirmasi Sandi</label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-sm"><i class="fa-solid fa-lock"></i></span>
-                                <input type="password" 
-                                        id="konfirmasi-password" 
-                                        name="konfirmasi_password"
-                                        placeholder="Ulangi kata sandi" 
-                                        required
-                                        class="w-full pl-10 pr-10 py-2.5 rounded-full border border-slate-300 text-xs md:text-sm focus:outline-none focus:border-orange-500">
-                                <button type="button"
-                                        id="password-toggle"
-                                        aria-label="Tampilkan kata sandi" 
-                                        onclick="togglePassword('konfirmasi-password', this)" 
-                                        class="absolute inset-y-0 right-0 pr-4 text-slate-400">
-                                        <i class="fa-solid fa-eye text-xs"></i>
-                                </button>
-                            </div>
-                            <p id="konfirmasi-password-error" class="hidden mt-1.5 ml-3 text-xs font-medium text-red-500"></p>
+                        <div class="flex items-center gap-2 pt-1">
+                            <input type="checkbox" 
+                                    id="terms" 
+                                    name="terms" 
+                                    required 
+                                    class="w-4 h-4 text-orange-600 rounded border-slate-300 accent-orange-600">
+                            <label for="terms" class="text-xs text-slate-600">Saya menyetujui <a href="#" class="text-[#D34E0E] font-bold hover:underline">Syarat & Ketentuan</a> serta Kebijakan Privasi</label>
                         </div>
+                        <button type="submit" 
+                                id="submitBtn"
+                                disabled
+                                class="w-full py-3 bg-[#D34E0E] hover:bg-[#b8430a] text-white font-bold rounded-full transition text-sm shadow-md mt-2">Daftar Sekarang</button>
+                    </form>
+                    <div class="relative flex py-4 items-center mt-2">
+                        <div class="grow border-t border-slate-200"></div>
+                        <span class="shrink mx-4 text-xs text-slate-400">atau daftar dengan</span>
+                        <div class="grow border-t border-slate-200"></div>
                     </div>
-                    <div class="flex items-center gap-2 pt-1">
-                        <input type="checkbox" 
-                                id="terms" 
-                                name="terms" 
-                                required 
-                                class="w-4 h-4 text-orange-600 rounded border-slate-300 accent-orange-600">
-                        <label for="terms" class="text-xs text-slate-600">Saya menyetujui <a href="#" class="text-[#D34E0E] font-bold hover:underline">Syarat & Ketentuan</a> serta Kebijakan Privasi</label>
+                    <button type="button" 
+                            class="mt-3 py-3 md:py-5 flex w-full items-center justify-center gap-3 rounded-full border border-[#D34E0E] text-sm font-bold text-[#3B2115] transition hover:bg-[#FFF9F4] hover:-translate-y-0.5 sm:h-9">
+                        <i class="fa-brands fa-google text-xl text-[#D9490B]"></i>Google
+                    </button>
+                    <div class="mt-6 text-center">
+                        <p class="text-xs text-slate-500">Sudah punya akun? <a href="{{ route('cust.login') }}"  class="text-[#D34E0E] font-bold hover:underline">Masuk di sini</a></p>
                     </div>
-                    <button type="submit" 
-                            id="submitBtn"
-                            disabled
-                            class="w-full py-3 bg-[#D34E0E] hover:bg-[#b8430a] text-white font-bold rounded-full transition text-sm shadow-md mt-2">Daftar Sekarang</button>
-                </form>
-                <div class="relative flex py-4 items-center mt-2">
-                    <div class="grow border-t border-slate-200"></div>
-                    <span class="shrink mx-4 text-xs text-slate-400">atau daftar dengan</span>
-                    <div class="grow border-t border-slate-200"></div>
-                </div>
-                <button type="button" 
-                        class="mt-3 py-3 md:py-5 flex w-full items-center justify-center gap-3 rounded-full border border-[#D34E0E] text-sm font-bold text-[#3B2115] transition hover:bg-[#FFF9F4] hover:-translate-y-0.5 sm:h-9">
-                    <i class="fa-brands fa-google text-xl text-[#D9490B]"></i>Google
-                </button>
-                <div class="mt-6 text-center">
-                    <p class="text-xs text-slate-500">Sudah punya akun? <a href="{{ route('cust.login') }}"  class="text-[#D34E0E] font-bold hover:underline">Masuk di sini</a></p>
                 </div>
             </div>
-        </div>
-    </main>
+        </main>
 @endsection

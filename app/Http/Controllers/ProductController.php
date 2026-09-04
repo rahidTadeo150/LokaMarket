@@ -143,6 +143,73 @@ class ProductController extends Controller
 
     public function detailTokoPage(Request $request)
     {
-        return view('user.detail-toko');
-    }
+     $shop = [
+        'name' => 'Geprek WW',
+        'tagline' => 'Banyuwangi',
+        'city' => 'Banyuwangi, Jawa Timur',
+        'joined' => 'Bergabung 2022',
+        'description' => 'Warung GEPREK WW menyajikan ayam geprek dengan rasa pedas, kriuk, dan bumbu khas Banyuwangi. Cocok untuk pecinta makanan pedas dengan cita rasa autentik.',
+        'phone' => '0812-3456-7890',
+        'address' => 'Jl. D. I. Panjaitan No. 45, Banyuwangi',
+        'operational_hours' => '08.00 - 20.00 WIB',
+        'hero_image' => 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=1200&q=80',
+        'avatar' => 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=400&q=80',
+    ];
+
+    $products = [
+        [
+            'name' => 'Kulit Ayam Geprek',
+            'image' => 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=800&q=80',
+            'price' => 12000,
+            'label' => 'Paling Laris'
+        ],
+        [
+            'name' => 'Ayam Geprek',
+            'image' => 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80',
+            'price' => 18000,
+            'label' => 'Best Seller'
+        ],
+        [
+            'name' => 'Es Pisang Ijo',
+            'image' => 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80',
+            'price' => 8000,
+            'label' => 'Minuman'
+        ],
+        [
+            'name' => 'Tahu Walik',
+            'image' => 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=800&q=80',
+            'price' => 10000,
+            'label' => 'Cemilan'
+        ],
+        [
+            'name' => 'Ayam Geprek',
+            'image' => 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=800&q=80',
+            'price' => 18000,
+            'label' => 'Paling Laris'
+        ],
+        [
+            'name' => 'Kulit Ayam Geprek',
+            'image' => 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80',
+            'price' => 12000,
+            'label' => 'Diskon'
+        ],
+        [
+            'name' => 'Es Pisang Ijo',
+            'image' => 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80',
+            'price' => 8000,
+            'label' => 'Baru'
+        ],
+        [
+            'name' => 'Tahu Walik',
+            'image' => 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=800&q=80',
+            'price' => 10000,
+            'label' => 'Cemilan'
+        ],
+    ];
+
+    return view('user.detail-toko', [
+        'shop' => $shop,
+        'products' => $products,
+    ]);
+}
 }

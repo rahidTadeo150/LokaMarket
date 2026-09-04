@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\kategori;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -136,6 +137,7 @@ class ProductController extends Controller
             'sort' => $sort,
         ]);
     }
+    
     public function detailProdukPage(Request $request)
     {
       return view('user.detail-produk');
@@ -145,4 +147,10 @@ class ProductController extends Controller
     {
         return view('user.detail-toko');
     }
+
+    public function kategoriPage(Request $request)
+    {
+        $kategoriList = kategori::withCount('produks')->orderBy('nama', 'asc')->get();
+        return view('user.kategori-produk', compact('kategoriList'));
+    }                         
 }

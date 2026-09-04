@@ -18,7 +18,7 @@ Route::get('/cara-kerja', [UserController::class, 'caraKerjaPage'])->name('cust.
 Route::get('/tentang-kami', [UserController::class, 'tentangKamiPage'])->name('cust.tentangKami');
 
 Route::get('/pilihan-produk', [ProductController::class, 'pilihanProduk'])->name('cust.pilihanProduk');
-Route::get('/kategori-produk', [CategoryController::class, 'index'])->name('cust.kategori');
+Route::get('/kategori-produk', [ProductController::class, 'kategoriPage'])->name('cust.kategori');
 Route::get('/detail-produk', [ProductController::class, 'detailProdukPage'])->name('cust.detailProduk');
 Route::get('/detail-toko', [ProductController::class, 'detailTokoPage'])->name('cust.detailToko');
 

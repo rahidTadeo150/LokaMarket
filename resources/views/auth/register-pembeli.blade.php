@@ -33,7 +33,7 @@
                     <h3 class="text-2xl md:text-3xl font-bold text-[#3B2115]">Buat Akun Baru</h3>
                     <p class="text-xs text-[#72594B] mt-1">Isi data dirimu untuk mulai bergabung.</p>
                 </div>
-                <form action="/register" method="POST" class="space-y-4">
+                <form id="registerForm" action="" method="POST" class="space-y-4" novalidate">
                     @csrf
                     <input type="hidden" name="role" value="pembeli">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -44,22 +44,26 @@
                                     <i class="fa-regular fa-user"></i>
                                 </span>
                                 <input type="text" 
-                                        name="name" 
+                                        name="nama" 
+                                        id="nama"
                                         value="{{ old('name') }}" 
                                         placeholder="Nama kamu" required
                                         class="w-full pl-10 pr-4 py-2.5 rounded-full border border-slate-300 text-xs md:text-sm focus:outline-none focus:border-orange-500">
                             </div>
+                            <p id="nama-error" class="hidden mt-1.5 ml-3 text-xs font-medium text-red-500"></p>
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-[#5A4032] mb-1.5">No. Telepon</label>
                             <div class="relative">
                                 <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-sm"><i class="fa-solid fa-mobile-screen"></i></span>
                                 <input type="tel" 
-                                        name="phone" 
+                                        name="no_telp" 
+                                        id="no_telp"
                                         value="{{ old('phone') }}" 
                                         placeholder="08xx-xxxx-xxxx" required
                                         class="w-full pl-10 pr-4 py-2.5 rounded-full border border-slate-300 text-xs md:text-sm focus:outline-none focus:border-orange-500">
                             </div>
+                            <p id="no-telp-error" class="hidden mt-1.5 ml-3 text-xs font-medium text-red-500"></p>
                         </div>
                     </div>
                     <div>
@@ -68,10 +72,12 @@
                             <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-sm"><i class="fa-regular fa-envelope"></i></span>
                             <input type="email" 
                                     name="email" 
+                                    id="email"
                                     value="{{ old('email') }}" 
                                     placeholder="nama@email.com" required
                                     class="w-full pl-10 pr-4 py-2.5 rounded-full border border-slate-300 text-xs md:text-sm focus:outline-none focus:border-orange-500">
                         </div>
+                        <p id="email-error" class="hidden mt-1.5 ml-3 text-xs font-medium text-red-500"></p>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
@@ -92,6 +98,7 @@
                                         <i class="fa-solid fa-eye text-xs"></i>
                                 </button>
                             </div>
+                            <p id="password-error" class="hidden mt-1.5 ml-3 text-xs font-medium text-red-500"></p>
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-[#5A4032] mb-1.5">Konfirmasi Sandi</label>
@@ -111,6 +118,7 @@
                                         <i class="fa-solid fa-eye text-xs"></i>
                                 </button>
                             </div>
+                            <p id="konfirmasi-password-error" class="hidden mt-1.5 ml-3 text-xs font-medium text-red-500"></p>
                         </div>
                     </div>
                     <div class="flex items-center gap-2 pt-1">
@@ -122,6 +130,8 @@
                         <label for="terms" class="text-xs text-slate-600">Saya menyetujui <a href="#" class="text-[#D34E0E] font-bold hover:underline">Syarat & Ketentuan</a> serta Kebijakan Privasi</label>
                     </div>
                     <button type="submit" 
+                            id="submitBtn"
+                            disabled
                             class="w-full py-3 bg-[#D34E0E] hover:bg-[#b8430a] text-white font-bold rounded-full transition text-sm shadow-md mt-2">Daftar Sekarang</button>
                 </form>
                 <div class="relative flex py-4 items-center mt-2">
@@ -137,7 +147,6 @@
                     <p class="text-xs text-slate-500">Sudah punya akun? <a href="{{ route('cust.login') }}"  class="text-[#D34E0E] font-bold hover:underline">Masuk di sini</a></p>
                 </div>
             </div>
-
         </div>
     </main>
 @endsection

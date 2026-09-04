@@ -15,8 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('no_telp', 20)->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+             $table->enum('role', [
+                'customer',
+                'pemilik_toko',
+                'admin'
+            ])->default('customer');
             $table->rememberToken();
             $table->timestamps();
         });

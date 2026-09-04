@@ -10,6 +10,7 @@ class UserController extends Controller
     public function myProfilePage() {
         return view('user.profil-user');
     }
+    
     public function landingPage() {
         return view('user.landing-page');
     }

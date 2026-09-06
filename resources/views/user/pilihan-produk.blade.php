@@ -24,11 +24,14 @@
 
                     <div class="flex-1">
                         <div class="relative">
-                            <input type="text" 
+                            <input type="text"
                                     id="searchInput"
-                                    placeholder="Cari produk pilihan..." 
+                                    placeholder="Cari produk pilihan..."
+                                    autocomplete="off"
                                     class="w-full rounded-full border border-gray-300 bg-white px-6 py-3 pr-12 text-[#3B2115] placeholder-[#A58C7D] transition focus:border-[#FF6B00] focus:outline-none focus:ring-2 focus:ring-[#FFD1AD]">
-                            <button type="button" class="absolute right-2 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-[#FF6B00] text-white transition hover:bg-[#E85D00]">
+
+                            <button type="button"
+                                    class="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-[#FF6B00] text-white transition hover:bg-[#E85D00]">
                                 <i class="fa-solid fa-magnifying-glass text-sm"></i>
                             </button>
                         </div>
@@ -48,14 +51,47 @@
                     </aside>
 
                     <div class="grid grid-cols-2 gap-3 sm:gap-5 xl:grid-cols-4">
-                        @forelse ($produk as $item)
-                        <x-card-produk :produk="$item" />
-                        @empty  
-                        <p>Produk belum tersedia.</p>
-                        @endforelse
-                    </div>
 
+                    @forelse ($produk as $item)
+                    <x-card-produk :produk="$item" />
+
+                    @empty
+                        <div class="col-span-full py-12 text-center">
+                            <i class="fa-regular fa-face-frown text-4xl text-orange-300"></i>
+
+                            <h3 class="mt-4 text-lg font-bold text-[#3B2115]">
+                                Produk belum tersedia
+                            </h3>
+
+                            <p class="mt-1 text-sm text-[#72594B]">
+                                Belum ada produk yang tersedia saat ini.
+                            </p>
+                        </div>
+                    @endforelse
+                    
+                    <div id="searchEmpty"
+                        class="col-span-full hidden py-16 text-center">
+
+                        <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#FFF1E5]">
+                            <i class="fa-solid fa-magnifying-glass text-2xl text-[#FF6B00]"></i>
+                        </div>
+                        <h3 class="mt-5 text-lg font-bold text-[#3B2115]">
+                            Produk tidak ditemukan
+                        </h3>
+                        <p class="mt-2 text-sm text-[#72594B]">
+                            Tidak ada produk yang sesuai dengan pencarian
+                            "<span id="searchKeyword" class="font-semibold text-[#C1440E]"></span>"
+                        </p>
+                        <button type="button"
+                                id="clearSearch"
+                                class="mt-5 rounded-full bg-[#FF6B00] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#E85D00]">
+                            <i class="fa-solid fa-rotate-left mr-2"></i>
+                            Hapus Pencarian
+                        </button>
+
+                    </div>
                 </div>
+                
                 <div id="filterBackdrop" class="fixed inset-0 z-40 hidden bg-[#3B2115]/40" 
                      onclick="toggleFilter()"></div>
 

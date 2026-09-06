@@ -1,7 +1,7 @@
 @props(['produk'])
 
 <a href="{{ route('cust.detailProduk', $produk->slug) }}"
-   class="group block overflow-hidden rounded-2xl border border-orange-100 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+   class="produk-card group block overflow-hidden rounded-2xl border border-orange-100 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
     <div class="relative overflow-hidden bg-[#FFF3E5]">
             @if ($produk->gambar)
             <img src="{{ asset('storage/' . $produk->gambar) }}"
@@ -42,7 +42,7 @@
             </span>
         </div>
 
-        <h3 class="line-clamp-2 min-h-12 text-sm font-bold text-[#3B2115] transition group-hover:text-orange-600">
+        <h3 class="nama-produk line-clamp-2 min-h-12 text-sm font-bold text-[#3B2115] transition group-hover:text-orange-600">
             {{ $produk->nama }}
         </h3>
 

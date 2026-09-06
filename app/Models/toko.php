@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class toko extends Model
 {
-    protected $tab = "toko";
+    protected $table = "toko";
     protected $fillable = [
         'user_id',
         'nama_toko',

@@ -1,4 +1,4 @@
-<a href="{{ $link }}"
+<a href="{{ route('cust.detailProduk') }}"
     class="group block overflow-hidden rounded-2xl border border-[#F1DCC8] bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
     <div class="relative overflow-hidden bg-[#FFF3E5]">
         <img src="{{ $thumbnailImage }}"

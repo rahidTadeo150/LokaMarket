@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\produk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -44,7 +45,11 @@ class UserController extends Controller
     }
     
     public function landingPage() {
-        return view('user.landing-page');
+        $produk = produk::with('kategori')->inRandomOrder()->take(4);
+
+        return view('user.landing-page', [
+            'produk' => $produk->get(),
+        ]);
     }
 
     public function caraKerjaPage() {

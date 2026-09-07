@@ -10,13 +10,36 @@ class ProductController extends Controller
 {
     public function pilihanProduk(Request $request)
     {
-       $produk = produk::with(['kategori', 'toko'])
-        ->where('is_active', true)
-        ->where('stok', '>', 0)
-        ->latest()
-        ->get();
 
-        return view('user.pilihan-produk', compact('produk'));
+        $kategori = kategori::orderBy('nama', 'asc')->get();
+        $produk = produk::orderBy('nama', 'asc')->with('kategori');
+
+        if ($request->filled('kategori')) {
+            $produk->where('slug', $request->kategori);
+        }
+
+        switch ($request->input('sort', 'default')) {
+
+            case 'price_low':
+                $produk->orderBy('harga', 'asc');
+                break;
+
+            case 'price_high':
+                $produk->orderBy('harga', 'desc');
+                break;
+
+
+            default:
+                $produk->orderBy('created_at', 'asc');
+                break;
+        }
+
+        return view('user.pilihan-produk', [
+            'produk' => $produk->get(),
+            'kategori' => $kategori,
+            'selectedKategori' => $request->category,
+            'sort' => $request->input('sort', 'default'),
+        ]);
     }
     
     public function detailProdukPage(Request $request)

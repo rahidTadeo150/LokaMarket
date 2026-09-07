@@ -22,6 +22,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 Route::middleware(['auth', 'role:customer'])->group(function () {
 
     Route::get('/my-profile', [UserController::class, 'myProfilePage'])->name('cust.myProfile');
+    Route::get('/edit-profil', [UserController::class, 'editProfilePage'])->name('cust.editProfile');
+    Route::put('/edit-profil', [UserController::class, 'updateProfile'])->name('cust.updateProfile');
     Route::get('/detail-produk', [ProductController::class, 'detailProdukPage'])->name('cust.detailProduk');
     Route::get('/detail-toko', [ProductController::class, 'detailTokoPage'])->name('cust.detailToko');
 });

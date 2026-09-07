@@ -88,7 +88,7 @@
                                     Informasi pribadi akun Anda
                                 </p>
                             </div>
-                            <a href="#"
+                            <a href="{{ route('cust.editProfile') }}"
                             class="rounded-md bg-orange-500 px-5 py-1.5 text-xs font-semibold text-white transition hover:bg-orange-600">
                                 Edit Profil
                             </a>

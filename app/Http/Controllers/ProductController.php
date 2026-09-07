@@ -10,9 +10,8 @@ class ProductController extends Controller
 {
     public function pilihanProduk(Request $request)
     {
-
         $kategori = kategori::orderBy('nama', 'asc')->get();
-        $produk = produk::orderBy('nama', 'asc')->with('kategori');
+        $produk = produk::with('kategori');
 
         if ($request->filled('kategori')) {
             $produk->where('slug', $request->kategori);

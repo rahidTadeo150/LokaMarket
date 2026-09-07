@@ -9,10 +9,10 @@
 
                 <div class="text-center">
                     <h1 class="text-3xl font-bold text-[#3B2115] sm:text-4xl md:text-5xl">
-                        Produk Pilihan Minggu Ini
+                        Produk UMKM Untuk Anda
                     </h1>
                     <p class="mt-4 text-base text-[#72594B] sm:text-lg">
-                        Produk terbaik UMKM terpilih yang tepat tinggalkan dari kami
+                        Produk terbaik UMKM untuk kebutuhan anda
                     </p>
                 </div>
 
@@ -45,7 +45,7 @@
                 </div>
                 <div class="grid grid-cols-1 gap-6 md:grid-cols-[240px_minmax(0,1fr)]">
                     <aside id="filterSidebar" class="hidden md:block">
-                        <div class="sticky top-24 rounded-2xl border border-[#F1DCC8] bg-[#FFF7F0] p-4 shadow-sm">
+                        <div class="sticky top-24 rounded-xl border border-[#F1DCC8] bg-[#FFF7F0] p-4 shadow-sm">
                             <x-product-filter
                                 :kategori="$kategori"
                                 :selectedKategori="request('kategori')"

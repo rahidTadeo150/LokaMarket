@@ -55,14 +55,14 @@
 
     </div>
 
-    <div class="flex gap-2 pt-4">
+    <div class="flex w-full justify-between items-center py-4 px-2">
 
         <a href="{{ route('cust.pilihanProduk') }}"
-            class="flex-1 rounded-full border border-[#F1DCC8] bg-white px-3 py-3 text-center text-sm font-semibold text-[#72594B] transition hover:bg-[#FFF0E5]">
+            class="rounded-full border border-[#F1DCC8] bg-white p-3 text-center text-xs text-[#72594B] transition hover:bg-[#FFF0E5]">
             Reset Filter
         </a>
         <button type="submit"
-                class="flex-1 rounded-full bg-[#FF6B00] px-3 py-3 text-sm font-semibold text-white transition hover:bg-[#E85D00]">
+                class="rounded-full bg-[#FF6B00] p-3 text-xs text-white transition hover:bg-[#E85D00]">
             Terapkan
         </button>
 

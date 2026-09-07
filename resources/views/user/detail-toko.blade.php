@@ -121,7 +121,7 @@
 
             {{-- Produk List --}}
             <div class="grid grid-cols-2 gap-3 sm:gap-5 xl:grid-cols-4">
-                <x-product-card
+                {{-- <x-product-card
                     link="{{ route('cust.detailProduk') }}"
                     thumbnailImage="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=700&q=80"
                     nama="Ayam Geprek Pedas"
@@ -130,7 +130,7 @@
                     lokasi="Banyuwangi"
                     rating="4.8"
                     reviews="96"
-                    harga="18.000"/>
+                    harga="18.000"/> --}}
             </div>
         </section>
     </main>

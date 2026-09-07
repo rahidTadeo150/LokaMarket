@@ -83,7 +83,7 @@
                 </div>
                 <div class="mt-10 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
                     @forelse ($kategoriList as $kategori)
-                        <a href="{{ route('cust.pilihanProduk', ['category' => $kategori->slug]) }}"
+                        <a href="{{ route('cust.pilihanProduk', ['kategori' => $kategori->slug]) }}"
                         class="group relative rounded-xl border border-[#F3E5D9] bg-white p-4 text-left shadow-sm transition duration-300 ease-in-out hover:-translate-y-1 hover:border-2 hover:border-orange-400 hover:shadow-lg sm:p-6">
                             <span class="absolute right-3 top-3 rounded-full bg-orange-600 px-2.5 py-1 text-[10px] font-semibold text-white">
                                 {{ $kategori->produks_count }} Produk

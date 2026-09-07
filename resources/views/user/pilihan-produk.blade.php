@@ -46,14 +46,17 @@
                 <div class="grid grid-cols-1 gap-6 md:grid-cols-[240px_minmax(0,1fr)]">
                     <aside id="filterSidebar" class="hidden md:block">
                         <div class="sticky top-24 rounded-2xl border border-[#F1DCC8] bg-[#FFF7F0] p-4 shadow-sm">
-                            <x-product-filter/>
+                            <x-product-filter
+                                :kategori="$kategori"
+                                :selectedKategori="request('kategori')"
+                                :sort="request('sort', 'default')"/>
                         </div>
                     </aside>
 
                     <div class="grid grid-cols-2 gap-3 sm:gap-5 xl:grid-cols-4">
 
                     @forelse ($produk as $item)
-                    <x-card-produk :produk="$item" />
+                    <x-card-produk :produk="$item"/>
 
                     @empty
                         <div class="col-span-full py-12 text-center">
@@ -95,8 +98,7 @@
                 <div id="filterBackdrop" class="fixed inset-0 z-40 hidden bg-[#3B2115]/40" 
                      onclick="toggleFilter()"></div>
 
-                <div id="mobileFilter" class="fixed bottom-0 left-0 right-0 z-50 hidden max-h-[70vh] 
-                     transform rounded-t-2xl bg-[#FFF9F4] transition-transform duration-300">
+                <div id="mobileFilter" class="fixed bottom-0 left-0 right-0 z-50 hidden max-h-[70vh] transform rounded-t-2xl bg-[#FFF9F4] transition-transform duration-300">
                     <div class="sticky top-0 border-b border-[#F1DCC8] bg-[#FFF9F4] px-4 py-4">
                         <div class="flex items-center justify-between">
 
@@ -109,7 +111,10 @@
                     </div>
 
                     <div class="overflow-y-auto p-4">
-                        <x-product-filter/>
+                        <x-product-filter
+                            :kategori="$kategori"
+                            :selectedKategori="request('kategori')"
+                            :sort="request('sort', 'default')"/>
                     </div>
                     
                 </div>
@@ -135,19 +140,6 @@
                 mobileFilter.style.transform = 'translateY(100%)';
                 document.body.style.overflow = 'auto';
             }
-        }
-
-        const searchInput = document.getElementById('searchInput');
-        if (searchInput) {
-            searchInput.addEventListener('input', function(e) {
-                const searchTerm = e.target.value.toLowerCase();
-                const cards = document.querySelectorAll('.product-card');
-
-                cards.forEach(card => {
-                    const productName = card.querySelector('.product-name')?.textContent.toLowerCase() ?? '';
-                    card.style.display = productName.includes(searchTerm) ? '' : 'none';
-                });
-            });
         }
     </script>
 @endsection

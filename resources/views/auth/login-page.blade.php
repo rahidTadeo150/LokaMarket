@@ -75,7 +75,7 @@
                 </div>
                 <div class="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 pt-0.5 text-[10px]">
                     <label class="flex items-center gap-2 text-[#72594B]"><input type="checkbox" name="remember" class="h-3.5 w-3.5 accent-[#FF7900]">Ingat saya</label>
-                    <a href="#" class="font-bold text-[#C1440E] hover:text-[#9E350B]">Lupa kata sandi?</a>
+                    <a href="{{ route('password.request') }}" class="font-bold text-[#C1440E] hover:text-[#9E350B]">Lupa kata sandi?</a>
                 </div>
                 <button type="submit" class="h-10 w-full rounded-full bg-[#E95309] text-xs font-bold text-white shadow-sm transition hover:bg-[#C1440E] hover:shadow-md">Masuk</button>
             </form>

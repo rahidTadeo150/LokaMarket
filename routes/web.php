@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/login-user', [AuthController::class, 'showLoginForm'])->name('cust.login');
 Route::post('/login-user', [AuthController::class, 'loginCustomer'])->name('cust.loginCustomer');
+Route::get('/lupa-password', [AuthController::class, 'showForgotPasswordForm'])->name('password.request');
+Route::post('/lupa-password', [AuthController::class, 'sendResetLink'])->name('password.email');
+Route::get('/reset-password/{token}', [AuthController::class, 'showResetPasswordForm'])->name('password.reset');
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 Route::get('/register-customer', [AuthController::class, 'showRegisterForm'])->name('cust.register');
 Route::post('/register-customer', [AuthController::class, 'registerCustomer'])->name('cust.registerNewCustomer');
 Route::get('/register-penjual', [AuthController::class, 'showRegisterPenjualForm'])->name('seller.register');

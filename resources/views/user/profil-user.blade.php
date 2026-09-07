@@ -22,13 +22,13 @@
                 <div class="rounded-xl border border-orange-100 bg-white p-5 shadow-sm">
                     <div class="flex flex-col items-center text-center">
                         <div class="flex h-20 w-20 items-center justify-center rounded-full bg-orange-500 text-lg font-bold text-white shadow-sm">
-                            RA
+                            {{ strtoupper(substr($user->username, 0, 1)) }}
                         </div>
                         <h2 class="mt-3 font-bold text-[#3D2418]">
-                            Rino Amelia
+                            {{ $user->username }}
                         </h2>
                         <p class="mt-1 text-xs font-light text-gray-400">
-                            Member sejak 12 Juni 2024
+                            Member sejak {{ $user->created_at->translatedFormat('d F Y') }}
                         </p>
                     </div>
 
@@ -99,7 +99,7 @@
                                     Nama Lengkap
                                 </p>
                                 <p class="mt-1 text-sm font-semibold text-[#3D2418]">
-                                    Rino Amelia
+                                    {{ $user->username }}
                                 </p>
                             </div>
                             <div class="border-b border-gray-100 py-3">
@@ -107,7 +107,7 @@
                                     Email
                                 </p>
                                 <p class="mt-1 text-sm font-semibold text-[#3D2418]">
-                                    rino.amelia@gmail.com
+                                    {{ $user->email }}
                                 </p>
                             </div>
                             <div class="border-b border-gray-100 py-3">
@@ -115,7 +115,7 @@
                                     No. Telepon
                                 </p>
                                 <p class="mt-1 text-sm font-semibold text-[#3D2418]">
-                                    0812-3456-7890
+                                    {{ $user->no_telp }}
                                 </p>
                             </div>
                             <div class="border-b border-gray-100 py-3">
@@ -123,23 +123,7 @@
                                     Jenis Kelamin
                                 </p>
                                 <p class="mt-1 text-sm font-semibold text-[#3D2418]">
-                                    Laki-laki
-                                </p>
-                            </div>
-                            <div class="py-3">
-                                <p class="text-[10px] text-gray-400">
-                                    Tanggal Lahir
-                                </p>
-                                <p class="mt-1 text-sm font-semibold text-[#3D2418]">
-                                    20 Mei 1995
-                                </p>
-                            </div>
-                            <div class="py-3">
-                                <p class="text-[10px] text-gray-400">
-                                    Alamat
-                                </p>
-                                <p class="mt-1 text-sm font-semibold text-[#3D2418]">
-                                    Jl. Ahmad Yani Timur
+                                    {{ $user->jenis_kelamin ?? 'Tidak Ingin Memberi tahukan' }}
                                 </p>
                             </div>
                         </div>

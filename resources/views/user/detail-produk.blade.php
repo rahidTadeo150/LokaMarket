@@ -290,133 +290,20 @@
 
         {{-- Produk Lainnya Card --}}
         <section class="max-w-7xl mx-auto px-5 lg:px-8 mt-12">
-            <div class="flex items-center justify-between mb-5">
-                <p class="text-xl font-bold text-[#3A2115]">
+                <p class="text-xl font-bold text-[#3A2115] mb-5">
                     Produk Lainnya dari Penjual
                 </p>
-                <a href="#"
-                    class="text-sm font-semibold text-orange-600">
-                    Lihat Semua
-                    <i class="fa-solid fa-arrow-right ml-1 text-xs"></i>
-                </a>
-            </div>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="group bg-white border border-orange-100 rounded-2xl overflow-hidden hover:-translate-y-1 hover:shadow-lg transition">
-                    <div class="relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1621939514649-280e2aaacb3b?auto=format&fit=crop&w=600&q=80"
-                            class="w-full aspect-[1.05] object-cover group-hover:scale-105 transition duration-500">
-                        <span class="absolute top-3 left-3 rounded-md bg-red-500 px-2 py-1 text-[10px] font-bold text-white">
-                            Terlaris
-                        </span>
-                    </div>
-                    <div class="p-4">
-                        <p class="font-semibold text-sm text-slate-800">
-                            Ayam Suwir Pedas
-                        </p>
-                        <p class="mt-2 font-bold text-orange-600 text-sm">
-                            Rp 18.000
-                            <span class="font-normal text-xs text-slate-400">
-                                / item
-                            </span>
-                        </p>
-                        <div class="flex items-center gap-1 mt-3">
-                            <i class="fa-solid fa-star text-orange-500 text-xs"></i>
-                            <span class="text-xs text-slate-500">
-                                4.9
-                            </span>
-                            <span class="text-xs text-slate-400">
-                                (86)
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="group bg-white border border-orange-100 rounded-2xl overflow-hidden hover:-translate-y-1 hover:shadow-lg transition">
-                    <div class="relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1621939514649-280e2aaacb3b?auto=format&fit=crop&w=600&q=80"
-                            class="w-full aspect-[1.05] object-cover group-hover:scale-105 transition duration-500">
-                        <span class="absolute top-3 left-3 rounded-md bg-red-500 px-2 py-1 text-[10px] font-bold text-white">
-                            Terlaris
-                        </span>
-                    </div>
-                    <div class="p-4">
-                        <p class="font-semibold text-sm text-slate-800">
-                            Ayam Suwir Pedas
-                        </p>
-                        <p class="mt-2 font-bold text-orange-600 text-sm">
-                            Rp 18.000
-                            <span class="font-normal text-xs text-slate-400">
-                                / item
-                            </span>
-                        </p>
-                        <div class="flex items-center gap-1 mt-3">
-                            <i class="fa-solid fa-star text-orange-500 text-xs"></i>
-                            <span class="text-xs text-slate-500">
-                                4.9
-                            </span>
-                            <span class="text-xs text-slate-400">
-                                (86)
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="group bg-white border border-orange-100 rounded-2xl overflow-hidden hover:-translate-y-1 hover:shadow-lg transition">
-                    <div class="relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1621939514649-280e2aaacb3b?auto=format&fit=crop&w=600&q=80"
-                            class="w-full aspect-[1.05] object-cover group-hover:scale-105 transition duration-500">
-                        <span class="absolute top-3 left-3 rounded-md bg-red-500 px-2 py-1 text-[10px] font-bold text-white">
-                            Terlaris
-                        </span>
-                    </div>
-                    <div class="p-4">
-                        <p class="font-semibold text-sm text-slate-800">
-                            Ayam Suwir Pedas
-                        </p>
-                        <p class="mt-2 font-bold text-orange-600 text-sm">
-                            Rp 18.000
-                            <span class="font-normal text-xs text-slate-400">
-                                / item
-                            </span>
-                        </p>
-                        <div class="flex items-center gap-1 mt-3">
-                            <i class="fa-solid fa-star text-orange-500 text-xs"></i>
-                            <span class="text-xs text-slate-500">
-                                4.9
-                            </span>
-                            <span class="text-xs text-slate-400">
-                                (86)
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="group bg-white border border-orange-100 rounded-2xl overflow-hidden hover:-translate-y-1 hover:shadow-lg transition">
-                    <div class="relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1621939514649-280e2aaacb3b?auto=format&fit=crop&w=600&q=80"
-                            class="w-full aspect-[1.05] object-cover group-hover:scale-105 transition duration-500">
-                        <span class="absolute top-3 left-3 rounded-md bg-red-500 px-2 py-1 text-[10px] font-bold text-white">
-                            Terlaris
-                        </span>
-                    </div>
-                    <div class="p-4">
-                        <p class="font-semibold text-sm text-slate-800">
-                            Ayam Suwir Pedas
-                        </p>
-                        <p class="mt-2 font-bold text-orange-600 text-sm">
-                            Rp 18.000
-                            <span class="font-normal text-xs text-slate-400">
-                                / item
-                            </span>
-                        </p>
-                        <div class="flex items-center gap-1 mt-3">
-                            <i class="fa-solid fa-star text-orange-500 text-xs"></i>
-                            <span class="text-xs text-slate-500">
-                                4.9
-                            </span>
-                            <span class="text-xs text-slate-400">
-                                (86)
-                            </span>
-                        </div>
-                    </div>
-                </div>
+                <x-product-card
+                    link="{{ route('cust.detailProduk') }}"
+                    thumbnailImage="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=700&q=80"
+                    nama="Ayam Geprek Pedas"
+                    diskon="12"
+                    kategori="Makanan"
+                    lokasi="Banyuwangi"
+                    rating="4.8"
+                    reviews="96"
+                    harga="18.000"/>
             </div>
         </section>
 

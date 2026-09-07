@@ -3,11 +3,11 @@
 @section('title', 'Edit Profil - LokaMarket')
 
 @section('content')
-    <main class="min-h-screen bg-[#FFF9F2] px-5 py-8 sm:px-8 lg:px-20">
-        <div class="mx-auto max-w-6xl">
-            <div class="mb-8">
-                <h1 class="text-2xl font-bold text-[#3D2418]">Profil Saya</h1>
-                <p class="mt-1 text-sm text-gray-500">Kelola informasi akun dan preferensi Anda.</p>
+    <main class="min-h-screen bg-[#FFF9F2] px-4 py-6 sm:px-6 sm:py-8 lg:px-12">
+        <div class="mx-auto max-w-5xl">
+            <div class="mb-6 sm:mb-8">
+                <h1 class="text-xl font-bold text-[#3D2418] sm:text-2xl">Perbarui Data Pribadi</h1>
+                <p class="mt-1 text-sm text-gray-500">Pastikan informasi akun anda selalu terbaru.</p>
             </div>
 
             @if (session('success'))
@@ -26,47 +26,19 @@
                 </div>
             @endif
 
-            <div class="grid grid-cols-1 gap-6 lg:grid-cols-[240px_minmax(0,1fr)]">
-                <aside class="rounded-2xl border border-orange-100 bg-white p-5 shadow-sm">
-                    <div class="flex flex-col items-center text-center">
-                        @if ($user->foto_profil)
-                            <img src="{{ asset('storage/' . $user->foto_profil) }}" alt="Foto profil {{ $user->username }}" class="h-20 w-20 rounded-full object-cover shadow-sm">
-                        @else
-                            <div class="flex h-20 w-20 items-center justify-center rounded-full bg-linear-to-br from-orange-500 to-amber-400 text-xl font-bold text-white shadow-sm">
-                                {{ strtoupper(substr($user->username, 0, 2)) }}
-                            </div>
-                        @endif
-                        <h2 class="mt-3 font-bold text-[#3D2418]">{{ $user->username }}</h2>
-                        <p class="mt-1 break-all text-xs text-gray-400">{{ $user->email }}</p>
-                    </div>
-                    <a href="{{ route('cust.myProfile') }}" class="mt-7 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-gray-600 transition hover:bg-orange-50 hover:text-orange-600">
-                        <i class="fa-solid fa-arrow-left"></i>
-                        Kembali ke Profil
-                    </a>
-                    <form action="{{ route('auth.logout') }}" method="POST" class="mt-2 border-t border-gray-100 pt-2">
-                        @csrf
-                        <button type="submit" class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-red-500 transition hover:bg-red-50">
-                            <i class="fa-solid fa-right-from-bracket"></i>
-                            Keluar
-                        </button>
-                    </form>
-                </aside>
+            <div class="w-full">
 
                 <form action="{{ route('cust.updateProfile') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                     @csrf
                     @method('PUT')
 
-                    <section class="rounded-2xl border border-orange-100 bg-white p-5 shadow-sm sm:p-7">
-                        <div class="flex flex-col gap-5 border-b border-gray-100 pb-6 sm:flex-row sm:items-center sm:justify-between">
-                            <div>
-                                <h2 class="text-lg font-bold text-[#3D2418]">Perbarui Data Pribadi</h2>
-                                <p class="mt-1 text-xs text-gray-400">Pastikan informasi akun Anda selalu terbaru.</p>
-                            </div>
-                            <div class="flex items-center gap-3">
+                    <section class="rounded-2xl border border-orange-100 bg-white p-4 shadow-sm sm:p-6 lg:p-7">
+                        <div class="flex flex-col gap-6 border-b border-gray-100 pb-6 sm:flex-row sm:items-center sm:justify-between">
+                            <div class="flex w-full flex-col items-center gap-3 sm:w-auto sm:shrink-0">
                                 @if ($user->foto_profil)
-                                    <img src="{{ asset('storage/' . $user->foto_profil) }}" alt="Foto profil" class="h-20 w-20 rounded-full object-cover">
+                                    <img src="{{ asset('storage/' . $user->foto_profil) }}" alt="Foto profil" class="h-28 w-28 rounded-full object-cover shadow-sm">
                                 @else
-                                    <div class="flex h-20 w-20 items-center justify-center rounded-full bg-linear-to-br from-orange-500 to-amber-400 text-xl font-bold text-white">
+                                    <div class="flex h-28 w-28 items-center justify-center rounded-full bg-linear-to-br from-orange-500 to-amber-400 text-2xl font-bold text-white shadow-sm">
                                         {{ strtoupper(substr($user->username, 0, 2)) }}
                                     </div>
                                 @endif
@@ -78,7 +50,7 @@
                             </div>
                         </div>
 
-                        <div class="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2">
+                        <div class="mt-6 grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5">
                             <div>
                                 <label for="username" class="mb-2 block text-xs font-bold text-[#5A4032]">Nama Lengkap</label>
                                 <input id="username" name="username" value="{{ old('username', $user->username) }}" required class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100">
@@ -106,14 +78,14 @@
                         </div>
                     </section>
 
-                    <section class="rounded-2xl border border-orange-100 bg-white p-5 shadow-sm sm:p-7">
+                    <section class="rounded-2xl border border-orange-100 bg-white p-4 shadow-sm sm:p-6 lg:p-7">
                         <h2 class="text-lg font-bold text-[#3D2418]">Lokasi</h2>
                         <p class="mt-1 text-xs text-gray-400">Alamat ini dapat digunakan untuk kebutuhan pesanan.</p>
                         <label for="alamat" class="sr-only">Alamat lengkap</label>
                         <textarea id="alamat" name="alamat" rows="4" placeholder="RT/RW, Dusun, Desa, Kecamatan, Kota, Kabupaten, Provinsi" class="mt-4 w-full resize-none rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100">{{ old('alamat', $user->alamat) }}</textarea>
                         <div class="mt-5 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-                            <a href="{{ route('cust.myProfile') }}" class="rounded-full border border-orange-500 px-8 py-3 text-center text-sm font-bold text-orange-600 transition hover:bg-orange-50">Batal</a>
-                            <button type="submit" class="rounded-full bg-[#C9470D] px-8 py-3 text-sm font-bold text-white transition hover:bg-[#A83A09]">Simpan Perubahan</button>
+                            <a href="{{ route('cust.myProfile') }}" class="w-full rounded-full border border-orange-500 px-8 py-3 text-center text-sm font-bold text-orange-600 transition hover:bg-orange-50 sm:w-auto">Batal</a>
+                            <button type="submit" class="w-full rounded-full bg-[#C9470D] px-8 py-3 text-sm font-bold text-white transition hover:bg-[#A83A09] sm:w-auto">Simpan Perubahan</button>
                         </div>
                     </section>
                 </form>

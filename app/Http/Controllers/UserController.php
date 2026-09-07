@@ -16,6 +16,11 @@ class UserController extends Controller
         return view('user.profil-user', compact('user'));
     }
 
+    public function invoicePage()
+    {
+        return view('user.invoice');
+    }
+
     public function editProfilePage()
     {
         return view('user.edit-profil', ['user' => Auth::user()]);

@@ -3,93 +3,295 @@
 @section('title', 'Edit Profil - LokaMarket')
 
 @section('content')
-    <main class="min-h-screen bg-[#FFF9F2] px-4 py-6 sm:px-6 sm:py-8 lg:px-12">
-        <div class="mx-auto max-w-5xl">
-            <div class="mb-6 sm:mb-8">
-                <h1 class="text-xl font-bold text-[#3D2418] sm:text-2xl">Perbarui Data Pribadi</h1>
-                <p class="mt-1 text-sm text-gray-500">Pastikan informasi akun anda selalu terbaru.</p>
+
+<main class="min-h-screen bg-[#FFF9F2] px-4 py-6 sm:px-6 sm:py-8 lg:px-10">
+    <div class="mx-auto max-w-6xl">
+
+        <div class="mb-6 sm:mb-8">
+            <p class="text-xl font-bold text-[#3D2418] sm:text-2xl">
+                Perbarui Data Pribadi
+            </p>
+            <p class="mt-1 text-sm text-gray-500">
+                Pastikan informasi akun Anda selalu terbaru.
+            </p>
+        </div>
+
+        @if (session('success'))
+            <div class="mb-6 flex items-center gap-3 rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+                <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-green-100">
+                    <i class="fa-solid fa-check text-xs"></i>
+                </div>
+
+                <span>{{ session('success') }}</span>
             </div>
+        @endif
 
-            @if (session('success'))
-                <div class="mb-6 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
-                    {{ session('success') }}
-                </div>
-            @endif
+        <form action="{{ route('cust.updateProfile') }}"
+            method="POST"
+            enctype="multipart/form-data"\>
+            @csrf
+            @method('PUT')
+            <div class="grid grid-cols-1 gap-6 lg:grid-cols-[280px_1fr]">
+                <aside class="h-fit lg:sticky lg:top-24">
+                    <section class="overflow-hidden rounded-3xl border border-orange-100 bg-white shadow-sm">
 
-            @if ($errors->any())
-                <div class="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-                    <ul class="list-disc space-y-1 pl-5">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+                        <div class="relative h-24 bg-linear-to-br from-orange-500 via-orange-500 to-amber-400">
+                            <div class="absolute -right-8 -top-8 h-28 w-28 rounded-full bg-white/10"></div>
+                            <div class="absolute -bottom-10 -left-6 h-24 w-24 rounded-full bg-white/10"></div>
+                        </div>
 
-            <div class="w-full">
+                        <div class="px-5 pb-6">
+                            <div class="-mt-14 flex justify-center">
+                                <div class="relative">
 
-                <form action="{{ route('cust.updateProfile') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
-                    @csrf
-                    @method('PUT')
+                                    <div class="absolute -inset-1 rounded-full bg-linear-to-br from-orange-400 to-amber-300"></div>
 
-                    <section class="rounded-2xl border border-orange-100 bg-white p-4 shadow-sm sm:p-6 lg:p-7">
-                        <div class="flex flex-col gap-6 border-b border-gray-100 pb-6 sm:flex-row sm:items-center sm:justify-between">
-                            <div class="flex w-full flex-col items-center gap-3 sm:w-auto sm:shrink-0">
-                                @if ($user->foto_profil)
-                                    <img src="{{ asset('storage/' . $user->foto_profil) }}" alt="Foto profil" class="h-28 w-28 rounded-full object-cover shadow-sm">
-                                @else
-                                    <div class="flex h-28 w-28 items-center justify-center rounded-full bg-linear-to-br from-orange-500 to-amber-400 text-2xl font-bold text-white shadow-sm">
-                                        {{ strtoupper(substr($user->username, 0, 2)) }}
+                                    <div class="relative h-28 w-28 overflow-hidden rounded-full border-4 border-white bg-orange-50 shadow-lg">
+                                        @if ($user->foto_profil)
+                                            <img id="profilePreview"
+                                                src="{{ asset('storage/' . $user->foto_profil) }}"
+                                                alt="Foto profil"
+                                                class="h-full w-full object-cover">
+                                        @else
+                                            <div id="profilePlaceholder"
+                                                class="flex h-full w-full items-center justify-center bg-linear-to-br from-orange-500 to-amber-400 text-3xl font-black text-white">
+                                                {{ strtoupper(substr($user->username, 0, 2)) }}
+                                            </div>
+                                            <img id="profilePreview"
+                                                src=""
+                                                alt="Preview foto profil"
+                                                class="hidden h-full w-full object-cover">
+                                        @endif
                                     </div>
-                                @endif
-                                <label class="cursor-pointer rounded-full border border-orange-500 px-4 py-2 text-xs font-bold text-orange-600 transition hover:bg-orange-50">
-                                    <i class="fa-solid fa-upload mr-1"></i>
-                                    Ganti Foto Profil
-                                    <input type="file" name="foto_profil" accept="image/jpeg,image/png,image/webp" class="sr-only">
-                                </label>
+                                    <label for="foto_profil"
+                                        class="absolute bottom-1 right-1 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border-4 border-white bg-orange-500 text-white shadow-md transition hover:scale-105 hover:bg-orange-600">
+                                        <i class="fa-solid fa-camera text-xs"></i>
+                                    </label>
+
+                                </div>
+                            </div>
+
+
+                            <div class="mt-4 text-center">
+                                <h2 class="text-lg font-black text-[#3D2418]">
+                                    {{ $user->username }}
+                                </h2>
+                                <p class="mt-1 truncate text-xs text-gray-400">
+                                    {{ $user->email }}
+                                </p>
+                            </div>
+
+                            <div class="mt-4 flex justify-center">
+                                <span class="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-6 py-1.5 text-[10px] font-bold text-green-600">
+                                    <span class="h-1.5 w-1.5 rounded-full bg-green-500"></span>
+                                    Akun Aktif
+                                </span>
+                            </div>
+
+                            <div class="my-5 border-t border-gray-100"></div>
+
+                            <div class="space-y-4">
+
+                                <div class="flex items-center gap-3">
+                                    <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-orange-50 text-orange-500">
+                                        <i class="fa-regular fa-calendar text-xs"></i>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <p class="text-[10px] text-gray-400">
+                                            Bergabung
+                                        </p>
+                                        <p class="text-xs font-bold text-[#3D2418]">
+                                            {{ $user->created_at->translatedFormat('F Y') }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-3">
+                                    <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-orange-50 text-orange-500">
+                                        <i class="fa-solid fa-shield-halved text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-[10px] text-gray-400">
+                                            Upgrade Toko
+                                        </p>
+                                        <p class="text-xs font-bold text-[#3D2418]">
+                                            Akun Terlindungi
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <label for="foto_profil"
+                                class="mt-6 flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-dashed border-orange-200 bg-orange-50/50 px-4 py-3 text-xs font-bold text-orange-600 transition hover:border-orange-400 hover:bg-orange-50">
+                                <i class="fa-solid fa-camera"></i>
+                                Ganti Foto Profil
+                            </label>
+
+                            <input id="foto_profil"
+                                type="file"
+                                name="foto_profil"
+                                accept="image/jpeg,image/png,image/webp"
+                                class="hidden">
+
+                            <p class="mt-2 text-center text-[9px] text-gray-400">
+                                JPG, PNG, WEBP · Maks. 2 MB
+                            </p>
+
+                        </div>
+
+                    </section>
+                </aside>
+
+                <div class="space-y-6">
+                    <section class="rounded-3xl border border-orange-100 bg-white p-5 shadow-sm sm:p-7">
+
+                        <div class="mb-6 flex items-center gap-3">
+                            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-50 text-orange-600">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-base font-bold text-[#3D2418] sm:text-lg">
+                                    Informasi Diri
+                                </h2>
+                                <p class="text-xs text-gray-400">
+                                    Perbarui informasi pribadi Anda.
+                                </p>
                             </div>
                         </div>
 
-                        <div class="mt-6 grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5">
+                        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+
                             <div>
-                                <label for="username" class="mb-2 block text-xs font-bold text-[#5A4032]">Nama Lengkap</label>
-                                <input id="username" name="username" value="{{ old('username', $user->username) }}" required class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100">
+                                <label for="username"
+                                    class="mb-2 block text-xs font-bold text-[#5A4032]">
+                                    Nama Lengkap
+                                </label>
+                                <div class="relative">
+                                    <i class="fa-regular fa-user absolute left-4 top-1/2 -translate-y-1/2 text-xs text-gray-400"></i>
+                                    <input id="username"
+                                        name="username"
+                                        value="{{ old('username', $user->username) }}"
+                                        required
+                                        class="w-full rounded-xl border border-slate-300 py-3 pl-10 pr-4 text-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100">
+                                </div>
                             </div>
+
                             <div>
-                                <label for="email" class="mb-2 block text-xs font-bold text-[#5A4032]">Email</label>
-                                <input id="email" name="email" type="email" value="{{ old('email', $user->email) }}" required class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100">
+                                <label for="email"
+                                    class="mb-2 block text-xs font-bold text-[#5A4032]">
+                                    Email
+                                </label>
+                                <div class="relative">
+                                    <i class="fa-regular fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-xs text-gray-400"></i>
+                                    <input id="email"
+                                        name="email"
+                                        type="email"
+                                        value="{{ old('email', $user->email) }}"
+                                        required
+                                        class="w-full rounded-xl border border-slate-300 py-3 pl-10 pr-4 text-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100">
+                                </div>
                             </div>
+
                             <div>
-                                <label for="no_telp" class="mb-2 block text-xs font-bold text-[#5A4032]">No. Telepon</label>
-                                <input id="no_telp" name="no_telp" value="{{ old('no_telp', $user->no_telp) }}" required class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100">
+                                <label for="no_telp"
+                                    class="mb-2 block text-xs font-bold text-[#5A4032]">
+                                    No. Telepon
+                                </label>
+                                <div class="relative">
+                                    <i class="fa-solid fa-phone absolute left-4 top-1/2 -translate-y-1/2 text-xs text-gray-400"></i>
+                                    <input id="no_telp"
+                                        name="no_telp"
+                                        value="{{ old('no_telp', $user->no_telp) }}"
+                                        required
+                                        class="w-full rounded-xl border border-slate-300 py-3 pl-10 pr-4 text-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100">
+                                </div>
                             </div>
+
                             <div>
-                                <label for="tanggal_lahir" class="mb-2 block text-xs font-bold text-[#5A4032]">Tanggal Lahir</label>
-                                <input id="tanggal_lahir" name="tanggal_lahir" type="date" value="{{ old('tanggal_lahir', $user->tanggal_lahir?->format('Y-m-d')) }}" class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100">
+                                <label for="tanggal_lahir"
+                                    class="mb-2 block text-xs font-bold text-[#5A4032]">
+                                    Tanggal Lahir
+                                </label>
+                                <div class="relative">
+                                    <i class="fa-regular fa-calendar absolute left-4 top-1/2 -translate-y-1/2 text-xs text-gray-400"></i>
+                                    <input id="tanggal_lahir"
+                                        name="tanggal_lahir"
+                                        type="date"
+                                        value="{{ old('tanggal_lahir', $user->tanggal_lahir?->format('Y-m-d')) }}"
+                                        class="w-full rounded-xl border border-slate-300 py-3 pl-10 pr-4 text-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100">
+                                </div>
                             </div>
-                            <div>
-                                <label for="jenis_kelamin" class="mb-2 block text-xs font-bold text-[#5A4032]">Jenis Kelamin</label>
-                                <select id="jenis_kelamin" name="jenis_kelamin" required class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100">
+
+                            <div class="sm:col-span-2">
+                                <label for="jenis_kelamin"
+                                    class="mb-2 block text-xs font-bold text-[#5A4032]">
+                                    Jenis Kelamin
+                                </label>
+                                <select id="jenis_kelamin"
+                                    name="jenis_kelamin"
+                                    required
+                                    class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100">
                                     @foreach (['Laki-laki', 'Perempuan', 'Tidak ingin memberitahukan'] as $gender)
-                                        <option value="{{ $gender }}" @selected(old('jenis_kelamin', $user->jenis_kelamin) === $gender)>{{ $gender }}</option>
+                                        <option value="{{ $gender }}"
+                                            @selected(old('jenis_kelamin', $user->jenis_kelamin) === $gender)>
+                                            {{ $gender }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
+
                         </div>
+
                     </section>
 
-                    <section class="rounded-2xl border border-orange-100 bg-white p-4 shadow-sm sm:p-6 lg:p-7">
-                        <h2 class="text-lg font-bold text-[#3D2418]">Lokasi</h2>
-                        <p class="mt-1 text-xs text-gray-400">Alamat ini dapat digunakan untuk kebutuhan pesanan.</p>
-                        <label for="alamat" class="sr-only">Alamat lengkap</label>
-                        <textarea id="alamat" name="alamat" rows="4" placeholder="RT/RW, Dusun, Desa, Kecamatan, Kota, Kabupaten, Provinsi" class="mt-4 w-full resize-none rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100">{{ old('alamat', $user->alamat) }}</textarea>
-                        <div class="mt-5 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-                            <a href="{{ route('cust.myProfile') }}" class="w-full rounded-full border border-orange-500 px-8 py-3 text-center text-sm font-bold text-orange-600 transition hover:bg-orange-50 sm:w-auto">Batal</a>
-                            <button type="submit" class="w-full rounded-full bg-[#C9470D] px-8 py-3 text-sm font-bold text-white transition hover:bg-[#A83A09] sm:w-auto">Simpan Perubahan</button>
+                    <section class="rounded-3xl border border-orange-100 bg-white p-5 shadow-sm sm:p-7">
+                        <div class="mb-5 flex items-center gap-3">
+
+                            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-50 text-orange-600">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-base font-bold text-[#3D2418] sm:text-lg">
+                                    Alamat Pengiriman
+                                </h2>
+                                <p class="text-xs text-gray-400">
+                                    Digunakan untuk kebutuhan pesanan Anda.
+                                </p>
+                            </div>
+
                         </div>
+
+                        <label for="alamat"
+                            class="mb-2 block text-xs font-bold text-[#5A4032]">
+                            Alamat Lengkap
+                        </label>
+                        <textarea id="alamat"
+                            name="alamat"
+                            rows="5"
+                            placeholder="RT/RW, Dusun, Desa, Kecamatan, Kota, Kabupaten, Provinsi"
+                            class="w-full resize-none rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100"> 
+                            {{ old('alamat', $user->alamat) }}
+                        </textarea>
+
+                        <div class="mt-6 flex flex-col-reverse gap-3 border-t border-gray-100 pt-5 sm:flex-row sm:justify-end">
+                            <a href="{{ route('cust.myProfile') }}"
+                            class="w-full rounded-full border border-orange-500 px-8 py-3 text-center text-sm font-bold text-orange-600 transition hover:bg-orange-50 sm:w-auto">
+                                Batal
+                            </a>
+                            <button type="submit"
+                                    class="w-full rounded-full bg-[#C9470D] px-8 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-[#A83A09] hover:shadow-md sm:w-auto">
+                                <i class="fa-solid fa-check mr-1"></i>
+                                Simpan Perubahan
+                            </button>
+                        </div>
+
                     </section>
-                </form>
+                </div>
             </div>
-        </div>
-    </main>
+
+        </form>
+
+    </div>
+</main>
 @endsection

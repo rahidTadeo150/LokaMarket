@@ -7,29 +7,26 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 	<title>Keranjang Belanja - LokaMarket</title>
 </head>
-<body class="min-h-screen bg-[#fffaf5] text-[#3f2a20]">
+<body class="min-h-screen bg-[#fffaf5] font-poppins text-[#3f2a20]">
 	<header class="border-b border-[#f0dfd1] bg-white">
-		<div class="mx-auto flex h-[70px] max-w-7xl items-center justify-between px-5 sm:px-8">
-			<a href="{{ route('cust.landingPage') }}" class="flex items-center gap-2.5" aria-label="Kembali ke LokaMarket">
-				<span class="flex h-9 w-9 items-center justify-center rounded-full border border-[#ff8a3d] text-[#f05b12]"><i class="fa-solid fa-basket-shopping text-sm"></i></span>
-				<span class="leading-none"><strong class="block text-[17px] font-extrabold tracking-tight text-[#33221b]">LokaMarket</strong><small class="mt-1 block text-[7px] font-bold tracking-wide text-[#ec5a12]">PUSAT UMKM LOKAL</small></span>
-			</a>
-			<a href="{{ route('cust.caraKerja') }}" class="text-[11px] font-medium text-[#6e5b51] transition hover:text-[#d94d0b]">Butuh bantuan?</a>
+		<div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:h-[70px] sm:px-8">
+			<a href="{{ route('cust.landingPage') }}" aria-label="Kembali ke LokaMarket"><img src="{{ asset('storage/logo-lokamarket.png') }}" alt="LokaMarket" class="h-10 w-auto object-contain sm:h-11"></a>
+			<a href="{{ route('cust.caraKerja') }}" class="text-[10px] font-medium text-[#6e5b51] transition hover:text-[#d94d0b] sm:text-[11px]">Butuh bantuan?</a>
 		</div>
 	</header>
 
-	<main class="mx-auto max-w-7xl px-4 py-8 sm:px-8 sm:py-10">
-		<nav aria-label="Progress checkout" class="mx-auto mb-7 flex max-w-[540px] items-center text-[10px] font-semibold text-[#9c897d] sm:text-xs">
-			<div class="flex items-center gap-2 text-[#3f2a20]"><span class="flex h-6 w-6 items-center justify-center rounded-full bg-[#f36a12] text-white">1</span><span>Keranjang</span></div>
+	<main class="mx-auto max-w-6xl px-4 py-7 sm:px-8 sm:py-10">
+		<nav aria-label="Progress checkout" class="mx-auto mb-7 flex max-w-[540px] items-center text-[9px] font-semibold sm:text-[10px]">
+			<div class="flex items-center gap-2 whitespace-nowrap text-[#3f2a20]"><span class="flex h-6 w-6 items-center justify-center rounded-full bg-[#f36a12] text-white">1</span><span>Keranjang</span></div>
+			<span class="mx-3 h-px flex-1 bg-[#f3b27f] sm:mx-5"></span>
+			<a href="{{ route('cust.checkout') }}" class="flex items-center gap-2 whitespace-nowrap text-[#9c897d]"><span class="flex h-6 w-6 items-center justify-center rounded-full border border-[#f0daca] bg-white">2</span><span>Checkout</span></a>
 			<span class="mx-3 h-px flex-1 bg-[#ead8ca] sm:mx-5"></span>
-			<div class="flex items-center gap-2"><span class="flex h-6 w-6 items-center justify-center rounded-full border border-[#f0daca] bg-white">2</span><span>Checkout</span></div>
-			<span class="mx-3 h-px flex-1 bg-[#ead8ca] sm:mx-5"></span>
-			<div class="flex items-center gap-2"><span class="flex h-6 w-6 items-center justify-center rounded-full border border-[#f0daca] bg-white">3</span><span>Pembayaran</span></div>
+			<div class="flex items-center gap-2 whitespace-nowrap text-[#9c897d]"><span class="flex h-6 w-6 items-center justify-center rounded-full border border-[#f0daca] bg-white">3</span><span>Pembayaran</span></div>
 		</nav>
 
-		<div class="mx-auto max-w-[500px]">
+		<div class="mx-auto max-w-[470px]">
 			<div class="mb-4 flex items-end justify-between">
-				<h1 class="text-2xl font-extrabold tracking-tight text-[#3d281e] sm:text-3xl">Keranjang Belanja</h1>
+				<div><h1 class="text-2xl font-extrabold tracking-tight text-[#3d281e] sm:text-3xl">Keranjang Belanja</h1><p class="mt-1 text-[10px] text-[#806e64] sm:text-[11px]">Periksa produk pilihanmu sebelum lanjut ke checkout.</p></div>
 				<span id="productCount" class="pb-1 text-[10px] text-[#917c70]">3 produk</span>
 			</div>
 

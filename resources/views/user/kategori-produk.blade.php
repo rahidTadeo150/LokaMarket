@@ -37,7 +37,7 @@
                             <div class="flex w-max animate-kategori-slide items-center gap-2">
                                 {{-- Loop Pertama --}}
                                 @foreach ($kategoriList as $kategori)
-                                    <a href="{{ route('cust.pilihanProduk', ['category' => $kategori['nama']]) }}"
+                                    <a href="{{ route('cust.pilihanProduk', ['category' => $kategori->slug]) }}"
                                         class="shrink-0 rounded-full bg-orange-50 px-4 py-2 text-xs font-semibold text-[#C1440E] transition hover:bg-orange-100">
                                         <i class="fa-solid {{ $kategori['icon'] }} mr-1.5"></i>
                                         {{ $kategori['nama'] }}
@@ -45,7 +45,7 @@
                                 @endforeach
                                 {{-- Loop Kedua --}}
                                 @foreach ($kategoriList as $kategori)
-                                    <a href="{{ route('cust.pilihanProduk', ['category' => $kategori['nama']]) }}"
+                                    <a href="{{ route('cust.pilihanProduk', ['category' => $kategori->slug]) }}"
                                         class="shrink-0 rounded-full bg-orange-50 px-4 py-2 text-xs font-semibold text-[#C1440E] transition hover:bg-orange-100">
                                         <i class="fa-solid {{ $kategori['icon'] }} mr-1.5"></i>
                                         {{ $kategori['nama'] }}

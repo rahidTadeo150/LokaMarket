@@ -24,14 +24,14 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::get('/my-profile', [UserController::class, 'myProfilePage'])->name('cust.myProfile');
     Route::get('/edit-profil', [UserController::class, 'editProfilePage'])->name('cust.editProfile');
     Route::put('/edit-profil', [UserController::class, 'updateProfile'])->name('cust.updateProfile');
-    Route::get('/detail-produk', [ProductController::class, 'detailProdukPage'])->name('cust.detailProduk');
+    Route::get('/detail-produk/{produk}', [ProductController::class, 'detailProdukPage'])->name('cust.detailProduk');
     Route::get('/detail-toko', [ProductController::class, 'detailTokoPage'])->name('cust.detailToko');
 });
 
 Route::get('/', [UserController::class, 'landingPage'])->name('cust.landingPage');
 Route::get('/cara-kerja', [UserController::class, 'caraKerjaPage'])->name('cust.caraKerja');
 Route::get('/tentang-kami', [UserController::class, 'tentangKamiPage'])->name('cust.tentangKami');
-Route::get('/pilihan-produk', [ProductController::class, 'pilihanProduk'])->name('cust.pilihanProduk');
+Route::get('/pilihan-produk/{kategori?}/{sort?}', [ProductController::class, 'pilihanProduk'])->name('cust.pilihanProduk');
 Route::get('/kategori-produk', [ProductController::class, 'kategoriPage'])->name('cust.kategori');
 
 Route::get('/dashboard-seller', [sellerController::class, 'dashboardSeller'])->name('seller.dashboard');

@@ -43,7 +43,11 @@ class ProductController extends Controller
     
     public function detailProdukPage(Request $request)
     {
-      return view('user.detail-produk');
+          $produk = produk::with('kategori', 'toko')->where('slug', $request->produk)->firstOrFail();
+
+    return view('user.detail-produk', [
+        'produk' => $produk,
+    ]);
     }
 
     public function detailTokoPage(Request $request)

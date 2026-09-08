@@ -21,8 +21,9 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10">
                 <div>
                     <div class="relative overflow-hidden rounded-2xl bg-white border border-orange-100">
+
                         <img id="mainProductImage"
-                            src="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=900&q=80"
+                            src="{{ asset('storage/' . $produk->gambar) }}"
                             alt="Tahu Walik"
                             class="w-full aspect-square object-cover">
                         <button type="button"
@@ -30,23 +31,21 @@
                             <i class="fa-regular fa-heart text-lg"></i>
                         </button>
 
-                        {{-- PREVIOUS --}}
                         <button type="button"
                                 onclick="previousImage()"
                                 class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-orange-500 hover:bg-orange-500 hover:text-white transition">
                             <i class="fa-solid fa-chevron-left text-sm"></i>
                         </button>
-
-                        {{-- NEXT --}}
-                        <button
-                            type="button"
-                            onclick="nextImage()"
-                            class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-orange-500 hover:bg-orange-500 hover:text-white transition">
+                        <button type="button"
+                                onclick="nextImage()"
+                                class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-orange-500 hover:bg-orange-500 hover:text-white transition">
                             <i class="fa-solid fa-chevron-right text-sm"></i>
                         </button>
+
                     </div>
 
                     <div class="grid grid-cols-4 gap-3 mt-3">
+
                         <button onclick="changeImage(0)"
                             class="product-thumbnail border-orange-500 ring-1 ring-orange-500 overflow-hidden rounded-xl border-2">
                             <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=400&q=80"
@@ -67,14 +66,17 @@
                             <img src="https://images.unsplash.com/photo-1621939514649-280e2aaacb3b?auto=format&fit=crop&w=400&q=80"
                                 class="w-full aspect-square object-cover">
                         </button>
+
                     </div>
+                    
                 </div>
                 <div>
-                    <span class="inline-flex items-center rounded-full bg-orange-50 border border-orange-100 px-3 py-1.5 text-xs font-semibold text-orange-600">
-                        Makanan & Minuman
+                    
+                    <span class="inline-flex items-center rounded-full bg-orange-50 border border-orange-400 px-3 py-1.5 text-xs font-semibold text-orange-600">
+                       {{ $produk->kategori->nama }}
                     </span>
                     <P class="mt-3 text-3xl lg:text-4xl font-bold text-[#3A2115]">
-                        Tahu Walik
+                        {{ $produk->nama }}
                     </P>
                     <div class="flex flex-wrap items-center gap-3 mt-3">
                         <div class="flex items-center gap-0.5 text-orange-500">
@@ -95,11 +97,12 @@
                             Terjual 250+
                         </span>
                     </div>
+
                     <div class="flex items-baseline gap-2 mt-5">
                         <span class="text-3xl lg:text-4xl font-bold text-orange-600">
-                            Rp 12.000
+                            Rp {{ number_format($produk->harga, 0, ',', '.') }}
                         </span>
-                        <span class="text-sm text-slate-500">
+                        <span class="text-sm text-black">
                             / Item
                         </span>
                     </div>
@@ -110,20 +113,17 @@
                                     <i class="fa-solid fa-store text-lg"></i>
                                 </div>
                                 <div>
-                                    <p class="text-xs text-slate-400">
-                                        Dijual oleh
-                                    </p>
                                     <div class="flex items-center gap-1">
                                         <p class="font-bold text-slate-800">
-                                            Dapur Bu Siti
+                                            {{ $produk->toko->nama_toko }}
                                         </p>
                                     </div>
-                                    <p class="text-xs text-slate-500 mt-0.5">
-                                        Kota Malang, Jawa Timur
+                                    <p class="text-xs text-slate-600 mt-0.5">
+                                        {{ $produk->toko->alamat }}
                                     </p>
                                 </div>
                             </div>
-                            <a href="{{ route('cust.detailToko') }}" class="shrink-0 inline-flex items-center justify-center rounded-full border border-orange-500 px-4 py-2 text-xs font-semibold text-orange-600 hover:bg-orange-500 hover:text-white transition">
+                            <a href="{{ route('cust.detailToko', ['toko' => $produk->toko->slug]) }}" class="shrink-0 inline-flex items-center justify-center rounded-full border border-orange-500 px-4 py-2 text-xs font-semibold text-orange-600 hover:bg-orange-500 hover:text-white transition">
                                 Lihat Toko
                             </a>
                         </div>
@@ -174,7 +174,7 @@
                                     Pengiriman
                                 </p>
                                 <p class="text-xs text-slate-500 mt-1">
-                                    2–3 hari kerja
+                                    2-3 hari kerja
                                 </p>
                             </div>
                         </div>
@@ -215,21 +215,16 @@
                         </button>
                     </div>
 
-                    {{-- Tabs Deskripsi --}}
                     <div class="pt-6">
                         <p class="text-xl font-bold text-[#3A2115]">
                             Deskripsi Produk
                         </p>
                         <p class="mt-4 text-sm leading-7 text-slate-600">
-                            Tahu Walik adalah camilan khas Banyuwangi
-                            yang renyah di luar dan kopong di dalam.
-                            Cocok sebagai teman makan atau camilan
-                            keluarga, maupun oleh-oleh khas daerah.
+                            {{ $produk->deskripsi }}
                         </p>
                     </div>
                 </div>
 
-                {{-- Detail Toko Card --}}
                 <aside>
                     <div class="rounded-2xl border border-orange-100 bg-white p-5">
                         <p class="text-lg font-bold text-[#3A2115]">
@@ -242,11 +237,11 @@
                             <div>
                                 <div class="flex items-center gap-2">
                                     <p class="font-bold text-slate-800">
-                                        Dapur Bu Siti
+                                        {{ $produk->toko->nama_toko }}
                                     </p>
                                 </div>
                                 <p class="text-xs text-slate-500 mt-1">
-                                    Kota Malang, Jawa Timur
+                                    {{ $produk->toko->alamat }}
                                 </p>
                                 <p class="text-xs text-slate-400 mt-1">
                                     Member sejak Jan 2023

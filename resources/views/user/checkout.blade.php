@@ -33,7 +33,7 @@
     </div>
 
     <form
-        action="{{ route('cust.invoice') }}"
+        action="{{ route('cust.pembayaran') }}"
         method="GET"
         class="rounded-2xl border border-[#f0dfd1] bg-white px-8 py-6 shadow-[0_12px_35px_rgba(92,48,20,0.04)]"
     >

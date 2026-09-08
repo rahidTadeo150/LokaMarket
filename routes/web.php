@@ -24,6 +24,7 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::get('/my-profile', [UserController::class, 'myProfilePage'])->name('cust.myProfile');
     Route::view('/keranjang', 'user.keranjang')->name('cust.keranjang');
     Route::get('/checkout', [UserController::class, 'checkoutPage'])->name('cust.checkout');
+    Route::view('/pembayaran', 'user.pembayaran')->name('cust.pembayaran');
     Route::get('/invoice', [UserController::class, 'invoicePage'])->name('cust.invoice');
     Route::get('/edit-profil', [UserController::class, 'editProfilePage'])->name('cust.editProfile');
     Route::put('/edit-profil', [UserController::class, 'updateProfile'])->name('cust.updateProfile');

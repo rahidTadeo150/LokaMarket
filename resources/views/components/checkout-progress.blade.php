@@ -39,7 +39,7 @@
 
 
     {{-- Pembayaran --}}
-    <a href="{{ route('cust.invoice') }}"
+    <a href="{{ route('cust.pembayaran') }}"
        class="flex items-center gap-2 whitespace-nowrap
        {{ $step >= 3 ? 'text-[#3f2a20]' : 'text-[#9c897d]' }}">
 

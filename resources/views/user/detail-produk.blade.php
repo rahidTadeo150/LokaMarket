@@ -289,16 +289,23 @@
                     Produk Lainnya dari Penjual
                 </p>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {{-- <x-product-card
-                    link="{{ route('cust.detailProduk') }}"
-                    thumbnailImage="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=700&q=80"
-                    nama="Ayam Geprek Pedas"
-                    diskon="12"
-                    kategori="Makanan"
-                    lokasi="Banyuwangi"
-                    rating="4.8"
-                    reviews="96"
-                    harga="18.000"/> --}}
+
+                @forelse ($anotherProduk as $item)
+                <x-card-produk :produk="$item"/>
+                @empty
+                    <div class="col-span-full py-12 text-center">
+                        <i class="fa-regular fa-face-frown text-4xl text-orange-300"></i>
+
+                        <h3 class="mt-4 text-lg font-bold text-[#3B2115]">
+                            Produk belum tersedia
+                        </h3>
+
+                        <p class="mt-1 text-sm text-[#72594B]">
+                            Belum ada produk yang tersedia saat ini.
+                        </p>
+                    </div>
+                @endforelse
+
             </div>
         </section>
 

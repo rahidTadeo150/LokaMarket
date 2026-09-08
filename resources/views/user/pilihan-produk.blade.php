@@ -24,16 +24,17 @@
 
                     <div class="flex-1">
                         <div class="relative">
+
                             <input type="text"
                                     id="searchInput"
                                     placeholder="Cari produk pilihan..."
                                     autocomplete="off"
                                     class="w-full rounded-full border border-gray-300 bg-white px-6 py-3 pr-12 text-[#3B2115] placeholder-[#A58C7D] transition focus:border-[#FF6B00] focus:outline-none focus:ring-2 focus:ring-[#FFD1AD]">
-
                             <button type="button"
                                     class="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-[#FF6B00] text-white transition hover:bg-[#E85D00]">
                                 <i class="fa-solid fa-magnifying-glass text-sm"></i>
                             </button>
+
                         </div>
                     </div>
 
@@ -57,7 +58,6 @@
 
                     @forelse ($produk as $item)
                     <x-card-produk :produk="$item"/>
-
                     @empty
                         <div class="col-span-full py-12 text-center">
                             <i class="fa-regular fa-face-frown text-4xl text-orange-300"></i>

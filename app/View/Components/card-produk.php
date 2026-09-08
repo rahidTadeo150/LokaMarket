@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class cardProduk extends Component
+class card-produk extends Component
 {
     /**
      * Create a new component instance.

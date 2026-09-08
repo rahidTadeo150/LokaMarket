@@ -37,7 +37,7 @@
                             <div class="flex w-max animate-kategori-slide items-center gap-2">
                                 {{-- Loop Pertama --}}
                                 @foreach ($kategoriList as $kategori)
-                                    <a href="{{ route('cust.pilihanProduk', ['category' => $kategori['nama']]) }}"
+                                    <a href="{{ route('cust.pilihanProduk', ['category' => $kategori->slug]) }}"
                                         class="shrink-0 rounded-full bg-orange-50 px-4 py-2 text-xs font-semibold text-[#C1440E] transition hover:bg-orange-100">
                                         <i class="fa-solid {{ $kategori['icon'] }} mr-1.5"></i>
                                         {{ $kategori['nama'] }}
@@ -45,7 +45,7 @@
                                 @endforeach
                                 {{-- Loop Kedua --}}
                                 @foreach ($kategoriList as $kategori)
-                                    <a href="{{ route('cust.pilihanProduk', ['category' => $kategori['nama']]) }}"
+                                    <a href="{{ route('cust.pilihanProduk', ['category' => $kategori->slug]) }}"
                                         class="shrink-0 rounded-full bg-orange-50 px-4 py-2 text-xs font-semibold text-[#C1440E] transition hover:bg-orange-100">
                                         <i class="fa-solid {{ $kategori['icon'] }} mr-1.5"></i>
                                         {{ $kategori['nama'] }}
@@ -83,7 +83,7 @@
                 </div>
                 <div class="mt-10 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
                     @forelse ($kategoriList as $kategori)
-                        <a href="{{ route('cust.pilihanProduk', ['category' => $kategori->slug]) }}"
+                        <a href="{{ route('cust.pilihanProduk', ['kategori' => $kategori->slug]) }}"
                         class="group relative rounded-xl border border-[#F3E5D9] bg-white p-4 text-left shadow-sm transition duration-300 ease-in-out hover:-translate-y-1 hover:border-2 hover:border-orange-400 hover:shadow-lg sm:p-6">
                             <span class="absolute right-3 top-3 rounded-full bg-orange-600 px-2.5 py-1 text-[10px] font-semibold text-white">
                                 {{ $kategori->produks_count }} Produk

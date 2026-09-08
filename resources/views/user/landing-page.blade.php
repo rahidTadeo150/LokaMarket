@@ -128,116 +128,22 @@
                     </a>
                 </div>
                 <div class="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">
-    
-                    {{-- Product --}}
-                    <div class="group overflow-hidden h-fit rounded-xl border border-[#F3E5D9] bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md">
-                        <div class="aspect-4/3 overflow-hidden bg-[#FFF5EC]">
-                            <img
-                                src="https://i.pinimg.com/736x/36/f6/6a/36f66af2ae3813adb08d3ab284dac6cd.jpg"
-                                alt="Produk lokal"
-                                class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
-                            >
-                        </div>
-                        <div class="px-4 py-3 text-sm md:text-base">
-                                Nasi Box Rumahan
+                    @forelse ($produk as $item)
+                    <x-card-produk :produk="$item"/>
+
+                    @empty
+                        <div class="col-span-full py-12 text-center">
+                            <i class="fa-regular fa-face-frown text-4xl text-orange-300"></i>
+
+                            <h3 class="mt-4 text-lg font-bold text-[#3B2115]">
+                                Produk belum tersedia
+                            </h3>
+
+                            <p class="mt-1 text-sm text-[#72594B]">
+                                Belum ada produk yang tersedia saat ini.
                             </p>
-                            <p class="mt-1 text-[10px] md:text-xs font-light text-gray-400">
-                                Bu Ani • 0.8 km
-                            </p>
-    
-                            <div class="mt-2 flex items-center justify-between">
-                                <span class="text-sm font-bold text-orange-600">
-                                    Rp25.000
-                                </span>
-    
-                                <button
-                                    class="flex h-10 w-10 items-center justify-center rounded-full bg-orange-500 text-white transition hover:bg-orange-600">
-                                    +
-                                </button>
-                            </div>
                         </div>
-                    </div>
-                    <div class="group overflow-hidden h-fit rounded-xl border border-[#F3E5D9] bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md">
-                        <div class="aspect-4/3 overflow-hidden bg-[#FFF5EC]">
-                            <img
-                                src="https://i.pinimg.com/736x/36/f6/6a/36f66af2ae3813adb08d3ab284dac6cd.jpg"
-                                alt="Produk lokal"
-                                class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
-                            >
-                        </div>
-                        <div class="px-4 py-3 text-sm md:text-base">
-                                Nasi Box Rumahan
-                            </p>
-                            <p class="mt-1 text-[10px] md:text-xs font-light text-gray-400">
-                                Bu Ani • 0.8 km
-                            </p>
-    
-                            <div class="mt-2 flex items-center justify-between">
-                                <span class="text-sm font-bold text-orange-600">
-                                    Rp25.000
-                                </span>
-    
-                                <button
-                                    class="flex h-10 w-10 items-center justify-center rounded-full bg-orange-500 text-white transition hover:bg-orange-600">
-                                    +
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="group overflow-hidden h-fit rounded-xl border border-[#F3E5D9] bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md">
-                        <div class="aspect-4/3 overflow-hidden bg-[#FFF5EC]">
-                            <img
-                                src="https://i.pinimg.com/736x/36/f6/6a/36f66af2ae3813adb08d3ab284dac6cd.jpg"
-                                alt="Produk lokal"
-                                class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
-                            >
-                        </div>
-                        <div class="px-4 py-3 text-sm md:text-base">
-                                Nasi Box Rumahan
-                            </p>
-                            <p class="mt-1 text-[10px] md:text-xs font-light text-gray-400">
-                                Bu Ani • 0.8 km
-                            </p>
-    
-                            <div class="mt-2 flex items-center justify-between">
-                                <span class="text-sm font-bold text-orange-600">
-                                    Rp25.000
-                                </span>
-    
-                                <button
-                                    class="flex h-10 w-10 items-center justify-center rounded-full bg-orange-500 text-white transition hover:bg-orange-600">
-                                    +
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="group overflow-hidden h-fit rounded-xl border border-[#F3E5D9] bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md">
-                        <div class="aspect-4/3 overflow-hidden bg-[#FFF5EC]">
-                            <img
-                                src="https://i.pinimg.com/736x/36/f6/6a/36f66af2ae3813adb08d3ab284dac6cd.jpg"
-                                alt="Produk lokal"
-                                class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
-                            >
-                        </div>
-                        <div class="px-4 py-3 text-sm md:text-base">
-                                Nasi Box Rumahan
-                            </p>
-                            <p class="mt-1 text-[10px] md:text-xs font-light text-gray-400">
-                                Bu Ani • 0.8 km
-                            </p>
-    
-                            <div class="mt-2 flex items-center justify-between">
-                                <span class="text-sm font-bold text-orange-600">
-                                    Rp25.000
-                                </span>
-    
-                                <button
-                                    class="flex h-10 w-10 items-center justify-center rounded-full bg-orange-500 text-white transition hover:bg-orange-600">
-                                    +
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                    @endforelse
                 <div class="mt-6 text-center sm:hidden">
                     <a href="#" class="text-xs font-semibold text-orange-600">
                         Lihat Semua Produk →

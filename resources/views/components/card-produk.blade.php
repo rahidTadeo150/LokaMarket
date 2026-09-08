@@ -1,6 +1,6 @@
 @props(['produk'])
 
-<a href="{{ route('cust.detailProduk', $produk->slug) }}"
+<a href="{{ route('cust.detailProduk', ['produk' => $produk->slug]) }}"
    class="produk-card group block overflow-hidden rounded-2xl border border-orange-100 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
     <div class="relative overflow-hidden bg-[#FFF3E5]">
             @if ($produk->gambar)

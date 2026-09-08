@@ -19,7 +19,7 @@ Route::post('/register-customer', [AuthController::class, 'registerCustomer'])->
 Route::get('/register-penjual', [AuthController::class, 'showRegisterPenjualForm'])->name('seller.register');
 Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
-Route::middleware(['auth', 'role:customer'])->group(function () {
+Route::middleware(['auth', 'role:customer'])->group(function () {                                                                                       
 
     Route::get('/my-profile', [UserController::class, 'myProfilePage'])->name('cust.myProfile');
     Route::view('/keranjang', 'user.keranjang')->name('cust.keranjang');

@@ -1,3 +1,9 @@
+@extends('layouts.customer')
+
+@section('title', 'Checkout - LokaMarket')
+
+@section('content')
+
 @php
     $invoiceNumber = $invoiceNumber ?? 'INV-2026-10293';
     $totalPayment = $totalPayment ?? 38000;
@@ -5,27 +11,7 @@
     $bankName = $bankName ?? 'Bank BCA';
 @endphp
 
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <title>Pembayaran - LokaMarket</title>
-</head>
-<body class="min-h-screen bg-[#f4f4f3] text-[#3d2b22]">
-    <header class="border-b border-[#f0e4da] bg-white">
-        <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:h-[76px] sm:px-8">
-            <a href="{{ route('cust.landingPage') }}" class="inline-flex items-center">
-                <img src="{{ asset('storage/logo-lokamarket.png') }}" alt="LokaMarket" class="h-9 w-auto sm:h-10">
-            </a>
-            <a href="{{ route('cust.caraKerja') }}" class="text-[10px] font-medium text-[#765f53] transition hover:text-[#d94f0b] sm:text-xs">
-                Butuh bantuan?
-            </a>
-        </div>
-    </header>
+
 
     <main class="mx-auto max-w-6xl px-4 py-7 sm:px-8 sm:py-10">
         @include('components.checkout-progress', ['step' => 3])
@@ -114,5 +100,4 @@
             });
         });
     </script>
-</body>
-</html>
+@endsection

@@ -244,7 +244,7 @@
                                     {{ $produk->toko->alamat }}
                                 </p>
                                 <p class="text-xs text-slate-400 mt-1">
-                                    Member sejak Jan 2023
+                                    Member sejak {{ $produk->toko->created_at->translatedFormat('F Y') }}
                                 </p>
                             </div>
                         </div>
@@ -259,7 +259,7 @@
                             </div>
                             <div>
                                 <p class="font-bold text-slate-800">
-                                    250+
+                                    {{ $jumlahProduk }}
                                 </p>
                                 <p class="text-[10px] text-slate-400 mt-1">
                                     Produk Terjual

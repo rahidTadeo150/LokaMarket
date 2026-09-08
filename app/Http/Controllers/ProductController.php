@@ -44,9 +44,13 @@ class ProductController extends Controller
     public function detailProdukPage(Request $request)
     {
           $produk = produk::with('kategori', 'toko')->where('slug', $request->produk)->firstOrFail();
+          $toko = $produk->toko;
+
+          $jumlahProduk = $toko->produk()->count();
 
     return view('user.detail-produk', [
         'produk' => $produk,
+        'jumlahProduk' => $jumlahProduk
     ]);
     }
 

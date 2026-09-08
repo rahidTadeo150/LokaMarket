@@ -20,7 +20,7 @@ class toko extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function produks()
+    public function produk()
     {
         return $this->hasMany(Produk::class);
     }

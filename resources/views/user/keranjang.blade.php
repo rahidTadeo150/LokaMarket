@@ -13,7 +13,7 @@
 
 
         {{-- Isi utama keranjang --}}
-        <div class="mx-auto max-w-[540px]">
+        <div class="w-full">
 
             <div class="mb-4 flex items-end justify-between">
 

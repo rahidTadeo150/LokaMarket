@@ -64,7 +64,7 @@
 					<dl class="mt-2 space-y-1 text-[9px] text-[#78655b]"><div class="flex justify-between"><dt>Subtotal (3 produk)</dt><dd id="subtotal" class="font-bold text-[#4b3429]">Rp 65.000</dd></div><div class="flex justify-between"><dt>Ongkos Kirim</dt><dd class="font-bold text-[#4b3429]">Estimasi di checkout</dd></div><div class="flex justify-between"><dt>Diskon Voucher</dt><dd class="font-bold text-[#4b3429]">-Rp 0</dd></div></dl>
 					<div class="mt-3 flex items-center gap-2 rounded-lg bg-[#fff8f1] px-3 py-2"><i class="fa-solid fa-ticket text-[10px] text-[#da5a17]"></i><input id="voucher" type="text" placeholder="Masukkan kode voucher" class="min-w-0 flex-1 bg-transparent text-[9px] outline-none placeholder:text-[#a99487]"><button type="button" id="applyVoucher" class="text-[9px] font-bold text-[#d34c10]">Pakai</button></div>
 					<div class="mt-3 flex items-center justify-between border-t border-[#f3e8e0] pt-3"><span class="text-[11px] font-extrabold">Total</span><strong id="total" class="text-sm font-extrabold text-[#d94d0b]">Rp 65.000</strong></div>
-					<button type="button" id="checkoutButton" class="mt-4 flex h-9 w-full items-center justify-center rounded-full bg-[#e9520d] text-[10px] font-bold text-white shadow-sm transition hover:bg-[#cf4609]">Lanjut ke Checkout</button>
+					<a href="{{ route('cust.checkout') }}" id="checkoutButton" class="mt-4 flex h-9 w-full items-center justify-center rounded-full bg-[#e9520d] text-[10px] font-bold text-white shadow-sm transition hover:bg-[#cf4609]">Lanjut ke Checkout</a>
 					<div class="mt-2 text-center text-[9px] text-[#a38e82]">atau</div><a href="{{ route('cust.pilihanProduk') }}" class="mt-1 block text-center text-[9px] font-bold text-[#d94d0b]">Lanjutkan Belanja</a>
 				</div>
 			</section>
@@ -89,7 +89,6 @@
 		document.querySelectorAll('.remove-item').forEach(button => button.addEventListener('click', () => { button.closest('.cart-item').remove(); updateSummary(); }));
 		document.querySelector('#removeSelected').addEventListener('click', () => { document.querySelectorAll('.item-check:checked').forEach(check => check.closest('.cart-item').remove()); updateSummary(); });
 		document.querySelector('#applyVoucher').addEventListener('click', event => { const input = document.querySelector('#voucher'); event.target.textContent = input.value.trim() ? 'Terpasang' : 'Pakai'; });
-		document.querySelector('#checkoutButton').addEventListener('click', () => alert('Fitur checkout segera hadir.'));
 	</script>
 </body>
 </html>

@@ -21,6 +21,20 @@ class UserController extends Controller
         return view('user.invoice');
     }
 
+    public function checkoutPage()
+    {
+        $produk = produk::with('toko')
+            ->where('is_active', true)
+            ->latest()
+            ->take(3)
+            ->get();
+
+        return view('user.checkout', [
+            'user' => Auth::user(),
+            'produk' => $produk,
+        ]);
+    }
+
     public function editProfilePage()
     {
         return view('user.edit-profil', ['user' => Auth::user()]);

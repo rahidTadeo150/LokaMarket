@@ -13,6 +13,7 @@ class UserSeeder extends Seeder
         $users = [
             [
                 'username' => 'Andi Setiawan',
+                'nama' => 'Andi Setiawan',
                 'email' => 'andi@lokamarket.test',
                 'no_telp' => '081234567890',
                 'password' => Hash::make('password'),
@@ -21,6 +22,7 @@ class UserSeeder extends Seeder
 
             [
                 'username' => 'Siti Aminah',
+                'nama' => 'Siti Aminah',
                 'email' => 'siti@lokamarket.test',
                 'no_telp' => '081234567891',
                 'password' => Hash::make('password'),
@@ -29,6 +31,7 @@ class UserSeeder extends Seeder
 
             [
                 'username' => 'Budi Santoso',
+                'nama' => 'Budi Santoso',
                 'email' => 'budi@lokamarket.test',
                 'no_telp' => '081234567892',
                 'password' => Hash::make('password'),
@@ -37,6 +40,7 @@ class UserSeeder extends Seeder
 
             [
                 'username' => 'Rina Wulandari',
+                'nama' => 'Rina Wulandari',
                 'email' => 'rina@lokamarket.test',
                 'no_telp' => '081234567893',
                 'password' => Hash::make('password'),
@@ -45,6 +49,7 @@ class UserSeeder extends Seeder
 
             [
                 'username' => 'Agus Pratama',
+                'nama' => 'Agus Pratama',
                 'email' => 'agus@lokamarket.test',
                 'no_telp' => '081234567894',
                 'password' => Hash::make('password'),
@@ -53,6 +58,7 @@ class UserSeeder extends Seeder
 
             [
                 'username' => 'Dewi Lestari',
+                'nama' => 'Dewi Lestari',
                 'email' => 'dewi@lokamarket.test',
                 'no_telp' => '081234567895',
                 'password' => Hash::make('password'),
@@ -67,6 +73,7 @@ class UserSeeder extends Seeder
                 ],
                 [
                     'username' => $user['username'],
+                    'nama' => $user['nama'],
                     'email' => $user['email'],
                     'no_telp' => $user['no_telp'],
                     'password' => $user['password'],

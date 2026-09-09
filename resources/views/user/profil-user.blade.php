@@ -44,20 +44,38 @@
             <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
 
                 {{-- PROFILE CARD --}}
-                <div class="rounded-xl border border-orange-100 bg-white p-5 shadow-sm">
+                <div class="rounded-xl md:rounded-4xl border border-orange-100 bg-white p-10 shadow-sm">
                     <div class="flex flex-col items-center text-center">
-                        <div class="flex h-20 w-20 items-center justify-center rounded-full bg-orange-500 text-lg font-bold text-white shadow-sm">
-                            {{ strtoupper(substr($user->username, 0, 1)) }}
+
+                        <div class="relative">
+
+                            <div class="absolute -inset-1 rounded-full bg-linear-to-br from-orange-400 to-amber-300"></div>
+
+                            <div class="relative h-28 w-28 overflow-hidden rounded-full border-4 border-white bg-orange-50 shadow-lg">
+                                @if ($user->foto_profil)
+                                <img id="profilePreview"
+                                    src="{{ asset('storage/' . $user->foto_profil) }}"
+                                    alt="Foto profil"
+                                    class="h-full w-full object-cover">
+                                @else
+                                <div id="profilePlaceholder"
+                                    class="flex h-full w-full items-center justify-center bg-linear-to-br from-orange-500 to-amber-400 text-3xl font-black text-white">
+                                    {{ strtoupper(substr($user->username, 0, 2)) }}
+                                </div>
+                                @endif
+                            </div>
+
                         </div>
+
                         <h2 class="mt-3 font-bold text-[#3D2418]">
                             {{ $user->username }}
                         </h2>
                         <p class="mt-1 text-xs font-light text-gray-400">
                             Member sejak {{ $user->created_at->translatedFormat('d F Y') }}
                         </p>
+
                     </div>
 
-                    {{-- Menu --}}
                     <div class="mt-6 space-y-1">
 
                         <a href="#"

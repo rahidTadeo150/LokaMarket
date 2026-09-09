@@ -16,17 +16,8 @@
             </p>
         </div>
 
-        @if (session('success'))
-            <div class="mb-6 flex items-center gap-3 rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
-                <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-green-100">
-                    <i class="fa-solid fa-check text-xs"></i>
-                </div>
-
-                <span>{{ session('success') }}</span>
-            </div>
-        @endif
-
         <form action="{{ route('cust.updateProfile') }}"
+            id="form-edit-profil"
             method="POST"
             enctype="multipart/form-data"\>
             @csrf
@@ -92,13 +83,13 @@
 
                             <div class="space-y-4">
 
-                                <div class="flex items-center gap-3">
+                                <div class="flex items-center gap-x-3">
                                     <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-orange-50 text-orange-500">
-                                        <i class="fa-regular fa-calendar text-xs"></i>
+                                        <i class="fa-regular fa-calendar"></i>
                                     </div>
-                                    <div class="min-w-0">
+                                    <div class="min-w-0 flex flex-col justify-center gap-y-0.5">
                                         <p class="text-[10px] text-gray-400">
-                                            Bergabung
+                                            Telah Bergabung
                                         </p>
                                         <p class="text-xs font-bold text-[#3D2418]">
                                             {{ $user->created_at->translatedFormat('F Y') }}
@@ -106,16 +97,16 @@
                                     </div>
                                 </div>
 
-                                <div class="flex items-center gap-3">
+                                <div class="flex items-center gap-x-3">
                                     <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-orange-50 text-orange-500">
-                                        <i class="fa-solid fa-shield-halved text-xs"></i>
+                                        <i class="fa-regular fa-calendar"></i>
                                     </div>
-                                    <div>
+                                    <div class="min-w-0 flex flex-col justify-center gap-y-0.5">
                                         <p class="text-[10px] text-gray-400">
                                             Upgrade Toko
                                         </p>
-                                        <p class="text-xs font-bold text-[#3D2418]">
-                                            Akun Terlindungi
+                                        <p class="text-xs font-bold text-red-500">
+                                            Belum Upgrade
                                         </p>
                                     </div>
                                 </div>
@@ -134,7 +125,8 @@
                                 accept="image/jpeg,image/png,image/webp"
                                 class="hidden">
 
-                            <p class="mt-2 text-center text-[9px] text-gray-400">
+                            <p id="foto-profil-error" class="mt-2 text-center text-xs text-red-500 hidden">asdasdasdasdad</p>
+                            <p class="mt-2 text-center text-xs text-gray-400">
                                 JPG, PNG, WEBP · Maks. 2 MB
                             </p>
 
@@ -165,7 +157,7 @@
                             <div>
                                 <label for="username"
                                     class="mb-2 block text-xs font-bold text-[#5A4032]">
-                                    Nama Lengkap
+                                    Username
                                 </label>
                                 <div class="relative">
                                     <i class="fa-regular fa-user absolute left-4 top-1/2 -translate-y-1/2 text-xs text-gray-400"></i>
@@ -175,6 +167,9 @@
                                         required
                                         class="w-full rounded-xl border border-slate-300 py-3 pl-10 pr-4 text-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100">
                                 </div>
+
+                                <p id="username-error" class="mt-1 hidden text-xs text-red-500"></p>
+                                
                             </div>
 
                             <div>
@@ -188,24 +183,41 @@
                                         name="email"
                                         type="email"
                                         value="{{ old('email', $user->email) }}"
-                                        required
-                                        class="w-full rounded-xl border border-slate-300 py-3 pl-10 pr-4 text-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100">
+                                        disabled
+                                        class="w-full rounded-xl bg-slate-100 border border-slate-300 py-3 pl-10 pr-4 text-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100">
                                 </div>
+
+                                <p id="email-error" class="mt-1 hidden text-xs text-red-500"></p>
+
                             </div>
 
                             <div>
+                                @php
+                                $displayPhone = old('no_telp', $user->no_telp); 
+
+                                if (str_starts_with($displayPhone, '+62')) { 
+                                    $displayPhone = substr($displayPhone, 3); 
+                                }
+                                @endphp
                                 <label for="no_telp"
                                     class="mb-2 block text-xs font-bold text-[#5A4032]">
                                     No. Telepon
                                 </label>
-                                <div class="relative">
+                                <div class="relative flex items-center">
                                     <i class="fa-solid fa-phone absolute left-4 top-1/2 -translate-y-1/2 text-xs text-gray-400"></i>
+                                    <span class="absolute left-10 z-10 border-r border-slate-400 pr-3 text-sm font-semibold text-gray-600">
+                                        +62
+                                    </span>
                                     <input id="no_telp"
                                         name="no_telp"
-                                        value="{{ old('no_telp', $user->no_telp) }}"
+                                        value="{{ $displayPhone }}"
                                         required
-                                        class="w-full rounded-xl border border-slate-300 py-3 pl-10 pr-4 text-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100">
+                                        inputmode="numeric"
+                                        class="w-full rounded-xl border border-slate-300 py-3 pl-22 pr-4 text-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100">
                                 </div>
+
+                                <p id="no-telp-error" class="mt-1 hidden text-xs text-red-500"></p>
+
                             </div>
 
                             <div>
@@ -243,43 +255,13 @@
 
                         </div>
 
-                    </section>
-
-                    <section class="rounded-3xl border border-orange-100 bg-white p-5 shadow-sm sm:p-7">
-                        <div class="mb-5 flex items-center gap-3">
-
-                            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-50 text-orange-600">
-                                <i class="fa-solid fa-location-dot"></i>
-                            </div>
-                            <div>
-                                <h2 class="text-base font-bold text-[#3D2418] sm:text-lg">
-                                    Alamat Pengiriman
-                                </h2>
-                                <p class="text-xs text-gray-400">
-                                    Digunakan untuk kebutuhan pesanan Anda.
-                                </p>
-                            </div>
-
-                        </div>
-
-                        <label for="alamat"
-                            class="mb-2 block text-xs font-bold text-[#5A4032]">
-                            Alamat Lengkap
-                        </label>
-                        <textarea id="alamat"
-                            name="alamat"
-                            rows="5"
-                            placeholder="RT/RW, Dusun, Desa, Kecamatan, Kota, Kabupaten, Provinsi"
-                            class="w-full resize-none rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100"> 
-                            {{ old('alamat', $user->alamat) }}
-                        </textarea>
-
                         <div class="mt-6 flex flex-col-reverse gap-3 border-t border-gray-100 pt-5 sm:flex-row sm:justify-end">
                             <a href="{{ route('cust.myProfile') }}"
                             class="w-full rounded-full border border-orange-500 px-8 py-3 text-center text-sm font-bold text-orange-600 transition hover:bg-orange-50 sm:w-auto">
                                 Batal
                             </a>
                             <button type="submit"
+                                    id="submitBtn"
                                     class="w-full rounded-full bg-[#C9470D] px-8 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-[#A83A09] hover:shadow-md sm:w-auto">
                                 <i class="fa-solid fa-check mr-1"></i>
                                 Simpan Perubahan
@@ -287,6 +269,7 @@
                         </div>
 
                     </section>
+
                 </div>
             </div>
 

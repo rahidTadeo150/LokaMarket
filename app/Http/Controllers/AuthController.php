@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\pending_registration;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Mail\VerifyRegistrationMail;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -91,7 +96,7 @@ class AuthController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required|min:8',
+            'password' => 'required',
         ]);
 
         $credentials = [
@@ -123,19 +128,127 @@ class AuthController extends Controller
             'password' => 'required|min:8',
             'konfirmasi_password' => 'required|same:password',
         ]);
-        User::create([
-            'username' => $request->username,
-            'email' => $request->email,
-            'no_telp' => $request->no_telp,
-            'password' => Hash::make($request->password),
-            'role' => 'customer',
-        ]);
-        return redirect()->route('cust.login') ->with(
-            'success', 
-            'Registrasi berhasil. Silakan login menggunakan akun Anda.'
+
+        $noTelp = preg_replace('/\D/', '', $request->no_telp);
+
+        $noTelp = '+62' . $noTelp;
+
+        $token = Str::random(64);
+
+        $pending = pending_registration::updateOrCreate(
+            ['email' => $request->email],
+            [
+                'username' => $request->username,
+                'no_telp' => $noTelp,
+                'password' => Hash::make($request->password),
+                'token' => $token,
+                'expires_at' => now()->addMinutes(30),
+            ]
         );
+
+        session([
+            'verification_email' => $pending->email,
+        ]);
+
+        $verificationUrl = route('verification.verify', [
+            'token' => $pending->token,
+        ]);
+
+        Mail::to($pending->email)->send(
+            new VerifyRegistrationMail(
+                $pending,
+                $verificationUrl
+            )
+        );
+
+        return redirect()->route('verification.notice');
     }
 
+    public function verificationNotice()
+    {
+        $email = session('verification_email');
+
+        if (!$email) {
+            return redirect()->route('cust.register')
+                ->with(
+                    'error', 
+                    'Silakan melakukan pendaftaran terlebih dahulu.'
+                );
+        }
+
+        return view('auth.verify-email', [
+            'email' => $email,
+        ]);
+    }
+
+    public function verifyRegistration($token)
+    {
+        $pending = pending_registration::where('token', $token)
+            ->where('expires_at', '>', now())
+            ->first();
+
+        if (!$pending) {
+            return redirect()->route('cust.login')
+                ->with('error', 'Link verifikasi tidak valid atau sudah kedaluwarsa.');
+        }
+
+        User::create([
+            'username' => $pending->username,
+            'email' => $pending->email,
+            'no_telp' => $pending->no_telp,
+            'password' => $pending->password,
+            'role' => 'customer',
+            'email_verified_at' => now(),
+        ]);
+
+        $pending->delete();
+
+        return redirect()->route('cust.login')
+            ->with('success', 'Email berhasil diverifikasi. Akun Anda telah dibuat.');
+    }
+
+    public function resendVerification(Request $request)
+    {
+        $email = session('verification_email');
+
+        if (!$email) {
+            return redirect()
+                ->route('cust.register')
+                ->with('error', 'Sesi verifikasi tidak ditemukan.');
+        }
+
+        $pending = pending_registration::where('email', $email)->first();
+
+        if (!$pending) {
+            return redirect()
+                ->route('cust.register')
+                ->with('error', 'Data pendaftaran tidak ditemukan.');
+        }
+
+        $token = Str::random(64);
+
+        $pending->update([
+            'token' => $token,
+            'expires_at' => now()->addMinutes(30),
+        ]);
+
+        $verificationUrl = route('verification.verify', [
+            'token' => $token,
+        ]);
+
+        Mail::to($pending->email)->send(
+            new VerifyRegistrationMail(
+                $pending,
+                $verificationUrl
+            )
+        );
+
+        return back()->with(
+            'success',
+            'Link verifikasi baru telah dikirim ke email Anda.'
+        );
+    }
+    
     public function logout(Request $request)
     {
         Auth::logout();

@@ -16,6 +16,31 @@
                 <div class="mt-6 h-0.5 w-full rounded-full bg-orange-500"></div>
             </div>
 
+            @if (session('success'))
+            <div id="success-alert"
+                class="mb-6 flex items-center gap-3 rounded-xl border border-green-200 bg-green-50 px-4 py-3">
+
+                <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-green-100 text-green-600">
+                    <i class="fa-solid fa-check text-sm"></i>
+                </div>
+                <div class="min-w-0 flex-1">
+                    <p class="text-sm font-bold text-green-700">
+                        Berhasil
+                    </p>
+                    <p class="mt-0.5 text-xs text-green-600">
+                        {{ session('success') }}
+                    </p>
+                </div>
+
+                <button type="button"
+                        onclick="document.getElementById('success-alert').remove()"
+                        class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-green-500 transition hover:bg-green-100 hover:text-green-700">
+                    <i class="fa-solid fa-xmark text-xs"></i>
+                </button>
+                
+            </div>
+            @endif
+            
             <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
 
                 {{-- PROFILE CARD --}}

@@ -21,6 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (v.length < 5) {
                     return 'username minimal 5 karakter!';
                 }
+
+                if (v.length > 20) {
+                    return 'username maksimal 20 karakter!';
+                }
                 return '';
             }
         },
@@ -38,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     return 'Nomor telepon tidak boleh kosong!';
                 }
 
-                if (v.length < 10 || v.length > 15) {
+                if (v.length < 9 || v.length > 14) {
                     return 'Nomor telepon harus 10-15 digit!';
                 }
 

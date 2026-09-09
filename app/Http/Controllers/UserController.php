@@ -56,6 +56,7 @@ class UserController extends Controller
         
         $request->validate([
             'username' => 'required|string|max:255|unique:users,username,' . Auth::id(),
+            'nama' => 'required|string|max:255,',
             'no_telp' => 'required|string|max:15|min:10',
             'jenis_kelamin' => 'nullable|in:Laki-laki,Perempuan,Tidak ingin memberitahukan',
             'tanggal_lahir' => 'nullable|date',
@@ -68,6 +69,7 @@ class UserController extends Controller
 
         $user->update([
             'username' => $request->username,
+            'nama' => $request->nama,
             'no_telp' => $noTelp,
             'jenis_kelamin' => $request->jenis_kelamin ?? null,
             'tanggal_lahir' => $request->tanggal_lahir ?? null,

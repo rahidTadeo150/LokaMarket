@@ -59,6 +59,7 @@
 
                     {{-- Menu --}}
                     <div class="mt-6 space-y-1">
+
                         <a href="#"
                             class="flex items-center gap-3 rounded-lg bg-orange-50 px-3 py-2.5 text-sm font-semibold text-orange-600">
                             <i class="fa-solid fa-user"></i>
@@ -66,6 +67,7 @@
                                 Pesanan Saya    
                             </span>
                         </a>
+
                         <a href="#"
                             class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-gray-600 transition hover:bg-orange-50 hover:text-orange-600">
                             <i class="fa-solid fa-receipt"></i>
@@ -73,6 +75,7 @@
                                 Riwayat Pesanan
                             </span>
                         </a>
+
                         <a href="#"
                             class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-gray-600 transition hover:bg-orange-50 hover:text-orange-600">
                             <i class="fa-solid fa-heart"></i>
@@ -80,13 +83,68 @@
                                 Wishlist
                             </span>
                         </a>
-                        <a href="#"
-                            class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-gray-600 transition hover:bg-orange-50 hover:text-orange-600">
-                            <i class="fa-solid fa-location-dot"></i>
-                            <span>
-                                Alamat
-                            </span>
-                        </a>
+
+                        <form id="resetPasswordForm"
+                            action="{{ route('password.email') }}"
+                            method="POST">
+                            @csrf
+
+                            <input type="hidden"
+                                name="email"
+                                value="{{ auth()->user()->email }}">
+
+                            <button type="button"
+                                    id="openResetPasswordModal"
+                                    class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm text-gray-600 transition hover:bg-orange-50 hover:text-orange-600">
+                                <i class="fa-solid fa-lock"></i>
+                                <span>Ganti Password</span>
+                            </button>
+                        </form>
+
+                        <div id="resetPasswordModal"
+                            class="fixed inset-0 z-9999 hidden items-center justify-center bg-black/30 px-5 backdrop-blur-sm">
+                            <div id="resetPasswordModalContent"
+                                class="w-full max-w-sm scale-95 rounded-2xl border border-orange-100 bg-white p-6 opacity-0 shadow-2xl transition-all duration-200">
+
+                                <div class="mb-5 flex justify-center">
+                                    <div class="flex h-14 w-14 items-center justify-center rounded-full bg-orange-100 text-orange-500">
+                                        <i class="fa-solid fa-lock text-xl"></i>
+                                    </div>
+                                </div>
+
+                                <div class="text-center">
+                                    <h3 class="text-lg font-bold text-[#3D2418]">
+                                        Ganti Password?
+                                    </h3>
+                                    <p class="mt-2 text-xs leading-6 text-gray-500">
+                                        Kami akan mengirimkan link reset password
+                                        ke email akun Anda.
+                                    </p>
+                                    <p class="mt-2 py-2 break-all text-sm bg-orange-50 rounded-lg font-semibold text-orange-500">
+                                        {{ auth()->user()->email }}
+                                    </p>
+
+                                </div>
+
+                                <div class="mt-6 flex gap-3">
+                                    
+                                    <button type="button"
+                                            id="closeResetPasswordModal"
+                                            class="flex-1 rounded-full border border-gray-200 px-4 py-2.5 text-sm font-semibold text-gray-600 transition hover:bg-gray-50">
+                                        Batal
+                                    </button>
+                                    <button type="button"
+                                            id="confirmResetPassword"
+                                            class="flex-1 rounded-full bg-orange-500 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-600">
+                                        <i class="fa-solid fa-paper-plane mr-1"></i>
+                                        Kirim
+                                    </button>
+
+                                </div>
+
+                            </div>
+                        </div>
+
                         <div class="my-3 border-t border-gray-100"></div>
                         <form action="#" method="POST">
                             @csrf
@@ -121,10 +179,18 @@
                         <div class="grid grid-cols-1 gap-x-8 sm:grid-cols-2">
                             <div class="border-b border-gray-100 py-3">
                                 <p class="text-[10px] text-gray-400">
-                                    Nama Lengkap
+                                    Username
                                 </p>
                                 <p class="mt-1 text-sm font-semibold text-[#3D2418]">
                                     {{ $user->username }}
+                                </p>
+                            </div>
+                            <div class="border-b border-gray-100 py-3">
+                                <p class="text-[10px] text-gray-400">
+                                    Nama lengkap
+                                </p>
+                                <p class="mt-1 text-sm font-semibold text-[#3D2418]">
+                                    {{ $user->nama }}
                                 </p>
                             </div>
                             <div class="border-b border-gray-100 py-3">
@@ -240,4 +306,64 @@
             </div>
         </div>
     </section>
+    <div
+    id="resetPasswordModal"
+    class="fixed inset-0 z-[9999] hidden items-center justify-center bg-black/30 px-5 backdrop-blur-sm"
+>
+    <div
+        id="resetPasswordModalContent"
+        class="w-full max-w-sm scale-95 rounded-2xl border border-orange-100 bg-white p-6 opacity-0 shadow-2xl transition-all duration-200"
+    >
+
+        {{-- ICON --}}
+        <div class="mb-5 flex justify-center">
+            <div
+                class="flex h-14 w-14 items-center justify-center rounded-full bg-orange-100 text-orange-500"
+            >
+                <i class="fa-solid fa-lock text-xl"></i>
+            </div>
+        </div>
+
+        {{-- TITLE --}}
+        <div class="text-center">
+
+            <h3 class="text-lg font-bold text-[#3D2418]">
+                Ganti Password?
+            </h3>
+
+            <p class="mt-2 text-sm leading-6 text-gray-500">
+                Kami akan mengirimkan link reset password
+                ke email akun Anda.
+            </p>
+
+            <p class="mt-2 break-all text-xs font-semibold text-orange-500">
+                {{ auth()->user()->email }}
+            </p>
+
+        </div>
+
+        {{-- BUTTON --}}
+        <div class="mt-6 flex gap-3">
+
+            <button
+                type="button"
+                onclick="closeResetPasswordModal()"
+                class="flex-1 rounded-full border border-gray-200 px-4 py-2.5 text-sm font-semibold text-gray-600 transition hover:bg-gray-50"
+            >
+                Batal
+            </button>
+
+            <button
+                type="button"
+                onclick="confirmResetPassword()"
+                class="flex-1 rounded-full bg-orange-500 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-600"
+            >
+                <i class="fa-solid fa-paper-plane mr-1"></i>
+                Iya, Kirim
+            </button>
+
+        </div>
+
+    </div>
+</div>
 @endsection

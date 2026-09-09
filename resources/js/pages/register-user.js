@@ -5,12 +5,15 @@ document.addEventListener('DOMContentLoaded', () => {
     submitBtn.disabled = true;
     
     const inputForm = {
+
         username: {
             input: document.getElementById('username'),
             borderField: document.getElementById('username'),
             error: document.getElementById('username-error'),
             validate: (v) => {
-                v = v.replace(/[^a-zA-Z\s]/g, '');
+
+                v = v.replace(/[^a-zA-Z0-9_]/g, '');
+                document.getElementById('username').value = v;
 
                 document.getElementById('username').value = v;
 
@@ -28,11 +31,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 return '';
             }
         },
+
         no_telp: {
             input: document.getElementById('no_telp'),
             borderField: document.getElementById('no_telp'),
             error: document.getElementById('no-telp-error'),
             validate: (v) => {
+
                 v = v.replace(/[^\d]/g, '');
                 v = v.replace(/^0+/, '');
 
@@ -52,11 +57,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 return '';
             }
         },
+
+        nama: {
+            input: document.getElementById('nama'),
+            borderField: document.getElementById('nama'),
+            error: document.getElementById('nama-error'),
+            validate: (v) => {
+
+                if (!v) {
+                    return 'Nama lengkap tidak boleh kosong!';
+                }
+
+                if (!/^[a-zA-Z\s]+$/.test(v)) {
+                    return 'Nama hanya boleh berisi huruf!';
+                }
+                
+                return '';
+            }
+        },
+
         email: {
             input: document.getElementById('email'),
             borderField: document.getElementById('email'),
             error: document.getElementById('email-error'),
             validate: (v) => {
+
                 if (!v) {
                     return 'Email tidak boleh kosong!';
                 }
@@ -71,11 +96,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 return '';
             }
         },
+
         password: {
             input: document.getElementById('password'),
             borderField: document.getElementById('password'),
             error: document.getElementById('password-error'),
             validate: (v) => {
+
                 if (!v) {
                     return 'Kata sandi tidak boleh kosong!';
                 }
@@ -90,12 +117,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 return '';
             }
         },
+
         konfirmasi_password: {
             input: document.getElementById('konfirmasi-password'),
             borderField: document.getElementById('konfirmasi-password'),
             error: document.getElementById('konfirmasi-password-error'),
             validate: (v) => {
+
                 const password = document.getElementById('password').value;
+                
                 if (!v) {
                     return 'Konfirmasi kata sandi tidak boleh kosong!';
                 }

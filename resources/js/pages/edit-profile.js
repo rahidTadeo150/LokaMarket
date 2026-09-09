@@ -72,8 +72,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
             validate: (v) => {
 
-                v = v.replace(/[^a-zA-Z\s]/g, '');
-                document.getElementById('username').value = v;
+            v = v.replace(/[^a-zA-Z0-9_]/g, '');
+            document.getElementById('username').value = v;
 
                 if (!v) {
                     return 'Username tidak boleh kosong!';
@@ -88,6 +88,24 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
                 
 
+                return '';
+            }
+        },
+
+        nama: {
+            input: document.getElementById('nama'),
+            borderField: document.getElementById('nama'),
+            error: document.getElementById('nama-error'),
+            validate: (v) => {
+
+                if (!v) {
+                    return 'Nama lengkap tidak boleh kosong!';
+                }
+
+                if (!/^[a-zA-Z\s]+$/.test(v)) {
+                    return 'Nama hanya boleh berisi huruf!';
+                }
+                
                 return '';
             }
         },

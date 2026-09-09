@@ -9,6 +9,7 @@ class pending_registration extends Model
     protected $table = "pending_registration";
     protected $fillable = [
         'username',
+        'nama',
         'email',
         'no_telp',
         'password',

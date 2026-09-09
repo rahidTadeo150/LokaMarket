@@ -32,7 +32,7 @@
             </div>
         @endif
 
-        <form action="{{ route('verification.send') }}" method="POST" class="mt-6">
+        <form action="{{ route('verification.send') }}" method="POST" class="my-6">
             @csrf
             <button
                 type="submit"
@@ -41,7 +41,7 @@
             </button>
         </form>
 
-        <a href="{{ route('cust.register') }}" class="mt-3">
+        <a href="{{ route('cust.register') }}">
             @csrf
             <button
                 type="submit"

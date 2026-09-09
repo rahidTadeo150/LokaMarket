@@ -165,6 +165,7 @@
                                         name="username"
                                         value="{{ old('username', $user->username) }}"
                                         required
+                                        autocomplete="off"
                                         class="w-full rounded-xl border border-slate-300 py-3 pl-10 pr-4 text-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100">
                                 </div>
 
@@ -173,21 +174,22 @@
                             </div>
 
                             <div>
-                                <label for="email"
+                                <label for="nama"
                                     class="mb-2 block text-xs font-bold text-[#5A4032]">
-                                    Email
+                                    Nama Lengkap
                                 </label>
                                 <div class="relative">
-                                    <i class="fa-regular fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-xs text-gray-400"></i>
-                                    <input id="email"
-                                        name="email"
-                                        type="email"
-                                        value="{{ old('email', $user->email) }}"
-                                        disabled
-                                        class="w-full rounded-xl bg-slate-100 border border-slate-300 py-3 pl-10 pr-4 text-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100">
+                                    <i class="fa-solid fa-address-card absolute left-4 top-1/2 -translate-y-1/2 text-xs text-gray-400"></i>
+                                    <input id="nama"
+                                        name="nama"
+                                        type="nama"
+                                        value="{{ old('nama', $user->nama) }}"
+                                        autocomplete="off"
+                                        required
+                                        class="w-full rounded-xl border border-slate-300 py-3 pl-10 pr-4 text-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100">
                                 </div>
 
-                                <p id="email-error" class="mt-1 hidden text-xs text-red-500"></p>
+                                <p id="nama-error" class="mt-1 hidden text-xs text-red-500"></p>
 
                             </div>
 
@@ -213,6 +215,7 @@
                                         value="{{ $displayPhone }}"
                                         required
                                         inputmode="numeric"
+                                        autocomplete="off"
                                         class="w-full rounded-xl border border-slate-300 py-3 pl-22 pr-4 text-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100">
                                 </div>
 
@@ -233,6 +236,25 @@
                                         value="{{ old('tanggal_lahir', $user->tanggal_lahir?->format('Y-m-d')) }}"
                                         class="w-full rounded-xl border border-slate-300 py-3 pl-10 pr-4 text-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100">
                                 </div>
+                            </div>
+
+                            <div class="sm:col-span-2">
+                                <label for="email"
+                                    class="mb-2 block text-xs font-bold text-[#5A4032]">
+                                    Email
+                                </label>
+                                <div class="relative">
+                                    <i class="fa-regular fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-xs text-gray-400"></i>
+                                    <input id="email"
+                                        name="email"
+                                        type="email"
+                                        value="{{ old('email', $user->email) }}"
+                                        disabled
+                                        class="w-full rounded-xl bg-slate-100 border border-slate-300 py-3 pl-10 pr-4 text-sm outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100">
+                                </div>
+
+                                <p id="email-error" class="mt-1 hidden text-xs text-red-500"></p>
+
                             </div>
 
                             <div class="sm:col-span-2">

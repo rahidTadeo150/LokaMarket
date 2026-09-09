@@ -8,9 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Mail\VerifyRegistrationMail;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\ResetPasswordMail;
 use Illuminate\Support\Str;
 
 class AuthController extends Controller
@@ -41,15 +41,32 @@ class AuthController extends Controller
             'email' => 'required|email',
         ]);
 
-        $status = Password::sendResetLink($request->only('email'));
+        $user = User::where('email', $request->email)->first();
 
-        if ($status === Password::RESET_LINK_SENT) {
-            return back()->with('success', 'Link reset password sudah dikirim ke email Anda.');
+        if (!$user) {
+            return back()->withErrors([
+                'email' => 'Email tersebut tidak ditemukan.'
+            ]);
         }
 
-        return back()->withInput($request->only('email'))->withErrors([
-            'email' => __($status),
+        $token = Password::broker()->createToken($user);
+
+        $resetUrl = route('password.reset', [
+            'token' => $token,
+            'email' => $user->email,
         ]);
+
+        Mail::to($user->email)->send(
+            new ResetPasswordMail(
+                $user,
+                $resetUrl
+            )
+        );
+
+        return back()->with(
+            'success',
+            'Link reset password telah dikirim ke email Anda.'
+        );
     }
 
     public function showResetPasswordForm(Request $request, string $token)
@@ -69,26 +86,38 @@ class AuthController extends Controller
         ]);
 
         $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function (User $user, string $password): void {
-                $user->forceFill([
-                    'password' => Hash::make($password),
-                    'remember_token' => null,
-                ])->save();
+            $request->only(
+                'email',
+                'password',
+                'password_confirmation',
+                'token'
+            ),
+            
+            function ($user, $password) {
 
-                Auth::logout();
+                $user->update([
+                    'password' => Hash::make($password),
+                ]);
+
             }
         );
 
         if ($status === Password::PASSWORD_RESET) {
-            return redirect()->route('cust.login')->with(
-                'success',
-                'Password berhasil diubah. Silakan login kembali.'
-            );
+
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            
+            return redirect()
+                ->route('cust.login')
+                ->with(
+                    'success',
+                    'Password berhasil diubah. Silakan login dengan password baru.'
+                );
         }
 
-        return back()->withInput($request->only('email'))->withErrors([
-            'email' => __($status),
+        return back()->withErrors([
+            'email' => 'Link reset password tidak valid atau sudah kedaluwarsa.'
         ]);
     }
 
@@ -123,11 +152,14 @@ class AuthController extends Controller
     {
         $request->validate([
             'username' => 'required|string|max:255',
+            'nama' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email',
             'no_telp' => 'required|string|max:15|min:10',
             'password' => 'required|min:8',
             'konfirmasi_password' => 'required|same:password',
         ]);
+
+        $nama = Str::title(strtolower(trim($request->nama)));
 
         $noTelp = preg_replace('/\D/', '', $request->no_telp);
 
@@ -139,6 +171,7 @@ class AuthController extends Controller
             ['email' => $request->email],
             [
                 'username' => $request->username,
+                'nama' => $nama,
                 'no_telp' => $noTelp,
                 'password' => Hash::make($request->password),
                 'token' => $token,
@@ -194,6 +227,7 @@ class AuthController extends Controller
 
         User::create([
             'username' => $pending->username,
+            'nama' => $pending->nama,
             'email' => $pending->email,
             'no_telp' => $pending->no_telp,
             'password' => $pending->password,

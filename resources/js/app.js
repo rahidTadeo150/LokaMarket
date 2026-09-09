@@ -1,6 +1,7 @@
 import './bootstrap';
-import './componet/navbar-user';
-import './componet/alert';
+import './component/navbar-user';
+import './component/alert';
+import './component/alert-logout';
 import './pages/login-user';
 import './pages/register-user';
 import './pages/produk';

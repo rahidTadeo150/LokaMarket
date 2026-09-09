@@ -115,6 +115,7 @@
                         Tentang Kami
                     </a>
                 </div>
+
                 @auth
                 <div class="flex items-center gap-2 sm:gap-3">
                     {{-- Keranjang --}}
@@ -151,37 +152,49 @@
                         {{-- Dropdown Profile --}}
                         <div id="profileMenu"
                             class="absolute right-0 top-16 hidden w-52 rounded-2xl border border-gray-100 bg-white p-2 shadow-xl">
+
                             <a href="{{ route('cust.myProfile') }}"
-                            class="flex items-center gap-3 rounded-xl px-3 py-2.5
-                                    text-sm text-gray-600 transition hover:bg-orange-50 hover:text-orange-600">
+                            class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-gray-600 transition hover:bg-orange-50 hover:text-orange-600">
 
                                 <i class="fa-solid fa-user w-5 text-center"></i>
 
                                 <span>Profil Saya</span>
                             </a>
+
                             <a href=""
-                            class="flex items-center gap-3 rounded-xl px-3 py-2.5
-                                    text-sm text-gray-600 transition hover:bg-orange-50 hover:text-orange-600">
+                            class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-gray-600 transition hover:bg-orange-50 hover:text-orange-600">
 
                                 <i class="fa-solid fa-box w-5 text-center"></i>
 
                                 <span>Pesanan Saya</span>
                             </a>
-                            <div class="my-1 border-t border-gray-100"></div>
-                            <form action="{{ route('auth.logout') }}" method="POST">
-                                @csrf
-                                <button type="submit"
-                                        class="flex w-full items-center gap-3 rounded-xl px-3 py-2.5
-                                            text-sm text-red-500 transition hover:bg-red-50">
 
-                                    <i class="fa-solid fa-right-from-bracket w-5 text-center"></i>
-                                    <span>Keluar</span>
+                            <div class="my-1 border-t border-gray-100"></div>
+
+                            <form id="logoutForm"
+                                class="px-1"
+                                action="{{ route('auth.logout') }}"
+                                method="POST">
+                                @csrf
+
+                                <button type="button"
+                                        id="openLogoutModal"
+                                        class="flex w-full items-center gap-3 px-3 py-2.5 rounded-xl text-left text-sm text-gray-600 transition hover:bg-red-50 hover:text-red-600">
+                                    <i class="fa-solid fa-right-from-bracket"></i>
+                                    <span>
+                                        Keluar
+                                    </span>
                                 </button>
+
                             </form>
+
+                            <x-alert-logout/>
+                            
                         </div>
                     </div>
                 </div>
                 @endauth
+
                 @guest
                 {{-- Tombol Daftar --}}
                 <a href="{{ route('cust.login') }}"
@@ -189,6 +202,7 @@
                     Daftar Customer
                 </a>
                 @endguest
+
             </div>
         </div>
     </div>

@@ -26,8 +26,7 @@
                 <input type="hidden" name="token" value="{{ $token }}">
 
                 <div>
-                    <label for="email" class="mb-2 block text-xs font-bold text-[#5A4032]">Email</label>
-                    <input id="email" name="email" type="email" value="{{ old('email', $email) }}" required autocomplete="email"
+                    <input id="email" name="email" type="hidden" value="{{ old('email', $email) }}" required autocomplete="email"
                            class="w-full rounded-full border border-slate-300 px-4 py-3 text-sm text-[#3B2115] outline-none focus:border-orange-500 focus:ring-2 focus:ring-[#FFD1AD]">
                 </div>
 

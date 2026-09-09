@@ -74,20 +74,12 @@
                     </div>
                 </div>
                 <div class="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 pt-0.5 text-[10px]">
-                    <label class="flex items-center gap-2 text-[#72594B]"><input type="checkbox" name="remember" class="h-3.5 w-3.5 accent-[#FF7900]">Ingat saya</label>
                     <a href="{{ route('password.request') }}" class="font-bold text-[#C1440E] hover:text-[#9E350B]">Lupa kata sandi?</a>
                 </div>
-                <button type="submit" class="h-10 w-full rounded-full bg-[#E95309] text-xs font-bold text-white shadow-sm transition hover:bg-[#C1440E] hover:shadow-md">Masuk</button>
+                <button type="submit" class="h-10 w-full rounded-full bg-[#E95309] text-xs font-semibold text-white shadow-sm transition hover:bg-[#C1440E] hover:shadow-md">
+                    Masuk
+                </button>
             </form>
-            <div class="my-5 flex items-center gap-3 text-xs text-[#A58C7D]">
-                <span class="h-px flex-1 bg-[#F1DCC8]"></span>
-                atau masuk dengan email
-                <span class="h-px flex-1 bg-[#F1DCC8]"></span>
-            </div>
-            <button type="button" 
-                    class="mt-3 py-3 md:py-5 flex w-full items-center justify-center gap-3 rounded-full border border-[#D34E0E] text-sm font-bold text-[#3B2115] transition hover:bg-[#FFF9F4] hover:-translate-y-0.5 sm:h-9">
-                <i class="fa-brands fa-google text-xl text-[#D9490B]"></i>Google
-            </button>
             <p class="mt-8 text-center text-[10px] text-[#72594B] sm:mt-16">
                 Belum punya akun?
                 <a href="{{ route('cust.register') }}" class="font-bold text-[#C1440E] hover:text-[#9E350B]">

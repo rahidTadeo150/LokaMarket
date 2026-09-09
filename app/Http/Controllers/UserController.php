@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\produk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -37,30 +37,64 @@ class UserController extends Controller
 
     public function editProfilePage()
     {
-        return view('user.edit-profil', ['user' => Auth::user()]);
+        $user = Auth::user(); 
+
+        return view('user.edit-profil', compact('user'));
     }
 
     public function updateProfile(Request $request)
     {
-        $user = $request->user();
+        $user = Auth::user();
 
-        $validated = $request->validate([
-            'username' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id)],
-            'no_telp' => ['required', 'string', 'max:20', Rule::unique('users', 'no_telp')->ignore($user->id)],
-            'jenis_kelamin' => ['required', Rule::in(['Laki-laki', 'Perempuan', 'Tidak ingin memberitahukan'])],
-            'tanggal_lahir' => ['nullable', 'date'],
-            'alamat' => ['nullable', 'string', 'max:1000'],
-            'foto_profil' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+        if (!$user) { 
+            return redirect()->route('cust.login')
+                ->with(
+                    'error', 
+                    'Silakan login terlebih dahulu.'
+                ); 
+        }
+        
+        $request->validate([
+            'username' => 'required|string|max:255|unique:users,username,' . Auth::id(),
+            'nama' => 'required|string|max:255,',
+            'no_telp' => 'required|string|max:15|min:10',
+            'jenis_kelamin' => 'nullable|in:Laki-laki,Perempuan,Tidak ingin memberitahukan',
+            'tanggal_lahir' => 'nullable|date',
+            'foto_profil' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ]);
+        
+        $noTelp = preg_replace('/\D/', '', $request->no_telp);
+
+        $noTelp = '+62' . $noTelp;
+
+        $user->update([
+            'username' => $request->username,
+            'nama' => $request->nama,
+            'no_telp' => $noTelp,
+            'jenis_kelamin' => $request->jenis_kelamin ?? null,
+            'tanggal_lahir' => $request->tanggal_lahir ?? null,
         ]);
 
         if ($request->hasFile('foto_profil')) {
-            $validated['foto_profil'] = $request->file('foto_profil')->store('profil', 'public');
+
+            if ($user->foto_profil && Storage::disk('public')->exists($user->foto_profil)) {
+                Storage::disk('public')->delete($user->foto_profil);
+            }
+
+            $path = $request->file('foto_profil')
+                ->store('profile', 'public');
+
+            $user->foto_profil = $path;
         }
 
-        $user->update($validated);
+        $user->save();
 
-        return redirect()->route('cust.myProfile')->with('success', 'Profil berhasil diperbarui.');
+
+        return redirect()->route('cust.myProfile')
+            ->with(
+                'success',
+                'Profil berhasil diperbarui.'
+            );
     }
     
     public function landingPage() {

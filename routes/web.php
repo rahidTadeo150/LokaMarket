@@ -43,5 +43,7 @@ Route::get('/tentang-kami', [UserController::class, 'tentangKamiPage'])->name('c
 Route::get('/pilihan-produk/{kategori?}/{sort?}', [ProductController::class, 'pilihanProduk'])->name('cust.pilihanProduk');
 Route::get('/kategori-produk', [ProductController::class, 'kategoriPage'])->name('cust.kategori');
 
+
+
 Route::get('/dashboard-seller', [sellerController::class, 'dashboardSeller'])->name('seller.dashboard');
 

@@ -1,4 +1,3 @@
-{{-- Navbar Toko --}}
 <nav class="sticky top-0 z-50 border-b border-orange-100 bg-white">
     <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 lg:px-8">
          <a href="{{ route('seller.dashboard') }}">

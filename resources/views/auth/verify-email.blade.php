@@ -32,13 +32,29 @@
             </div>
         @endif
 
-        <form action="{{ route('verification.send') }}" method="POST" class="my-6">
+        <form action="{{ route('verification.send') }}"
+            method="POST"
+            class="my-6"
+            id="resendVerificationForm"
+        >
             @csrf
-            <button
-                type="submit"
-                class="w-full rounded-xl bg-orange-500 px-5 py-3 font-bold text-white transition hover:bg-orange-600">
-                Kirim Ulang Email
+
+            <button type="submit"
+                    id="resendButton"
+                    class="w-full rounded-xl bg-orange-500 px-5 py-3 font-bold text-white transition hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-70"
+            >
+                <span id="resendButtonContent" class="flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>Kirim Ulang Email</span>
+                </span>
+
+                <span id="resendLoading" class="hidden items-center justify-center gap-2">
+                    <i class="fa-solid fa-circle-notch fa-spin"></i>
+                    <span>Mengirim...</span>
+                </span>
+
             </button>
+            
         </form>
 
         <a href="{{ route('cust.register') }}">

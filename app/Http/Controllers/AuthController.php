@@ -157,6 +157,8 @@ class AuthController extends Controller
             'no_telp' => 'required|string|max:15|min:10',
             'password' => 'required|min:8',
             'konfirmasi_password' => 'required|same:password',
+        ], [
+            'email.unique' => 'Email ini sudah digunakan. Silakan gunakan email lain'
         ]);
 
         $nama = Str::title(strtolower(trim($request->nama)));

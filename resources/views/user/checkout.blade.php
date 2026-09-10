@@ -511,7 +511,6 @@
                                     class="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#FF6B00] px-5 py-3.5 text-sm font-bold text-white shadow-sm transition hover:bg-[#E85D00] active:scale-[0.98]">
 
                                     <i class="fa-solid fa-lock text-xs"></i>
-
                                     Buat Pesanan
 
                                 </button>

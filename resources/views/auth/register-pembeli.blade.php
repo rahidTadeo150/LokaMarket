@@ -34,11 +34,14 @@
                         <p class="text-xs text-[#72594B] mt-1">Isi data dirimu untuk mulai bergabung.</p>
                     </div>
                     @if (session('success'))
-                    <x-alert-success-relative></x-alert-success-relative>
+                    <x-alert-success-relative/>
                     @endif
                     @if (session('error'))
-                    <x-alert-error-relative></x-alert-error-relative>
+                    <x-alert-error-relative/>
                     @endif
+                    @error('email')
+                    <x-alert-error-relative :message="$errors->first('email')"/>
+                    @enderror
                     <form id="registerForm" action="{{ route('cust.registerNewCustomer') }}" method="POST" class="space-y-4" novalidate">
                         @csrf
                         <input type="hidden" name="role" value="pembeli">

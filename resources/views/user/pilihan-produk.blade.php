@@ -4,20 +4,61 @@
 
 @section('content')
     <main class="min-h-screen bg-[#FFF9F4]">
-        <section class="overflow-hidden bg-linear-to-br from-[#FFF3E2] to-[#FBAD51] px-4 py-12 sm:px-6 sm:py-16 md:py-20">
-            <div class="mx-auto max-w-7xl">
+        <section class="relative isolate overflow-hidden bg-gradient-to-br from-[#FFF3E2] to-[#FBAD51] px-4 py-8 sm:px-6 sm:py-10">
+           
+            <div class="absolute -right-10 -top-10 -z-10 h-32 w-32 rounded-full bg-orange-300/30 blur-2xl"></div>
+            <div class="absolute -bottom-8 -left-8 -z-10 h-24 w-24 rounded-full bg-white/30 blur-xl"></div>
 
-                <div class="text-center">
-                    <h1 class="text-3xl font-bold text-[#3B2115] sm:text-4xl md:text-5xl">
-                        Produk UMKM Untuk Anda
+            <div class="absolute right-8 top-5 -z-10 h-20 w-20 opacity-30"
+                style="background-image: radial-gradient(#D97706 1px, transparent 1px); background-size: 10px 10px;">
+            </div>
+
+            <div class="mx-auto w-full max-w-7xl">
+
+                <div class="flex justify-center">
+                    <div class="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-white/70 px-3 py-1.5 shadow-sm backdrop-blur-sm">
+
+                        <i class="fa-solid fa-store text-xs text-orange-600"></i>
+                        <span class="text-xs font-semibold text-orange-700">
+                            Produk UMKM Pilihan
+                        </span>
+                        
+                    </div>
+                </div>
+
+                <div class="mt-3 text-center">
+
+                    <h1 class="text-2xl font-bold tracking-tight text-[#3B2115] sm:text-3xl md:text-4xl">
+                        Produk UMKM
+                        <span class="text-orange-600">Untuk Anda</span>
                     </h1>
-                    <p class="mt-4 text-base text-[#72594B] sm:text-lg">
-                        Produk terbaik UMKM untuk kebutuhan anda
+                    <p class="mx-auto mt-2 max-w-xl text-sm text-[#72594B] sm:text-base">
+                        Temukan berbagai produk terbaik dari UMKM lokal
+                        untuk memenuhi kebutuhan Anda.
                     </p>
+
+                </div>
+
+                <div class="mt-4 flex flex-wrap justify-center gap-2">
+
+                    <span class="inline-flex items-center gap-1.5 rounded-full bg-white/60 px-3 py-1.5 text-xs font-medium text-[#72594B]">
+                        <i class="fa-solid fa-circle-check text-orange-500"></i>
+                        Berkualitas
+                    </span>
+                    <span class="inline-flex items-center gap-1.5 rounded-full bg-white/60 px-3 py-1.5 text-xs font-medium text-[#72594B]">
+                        <i class="fa-solid fa-heart text-orange-500"></i>
+                        Dukung UMKM
+                    </span>
+                    <span class="inline-flex items-center gap-1.5 rounded-full bg-white/60 px-3 py-1.5 text-xs font-medium text-[#72594B]">
+                        <i class="fa-solid fa-box-open text-orange-500"></i>
+                        Banyak Pilihan
+                    </span>
+
                 </div>
 
             </div>
         </section>
+
         <section class="bg-[#FFF9F4] px-4 py-12 sm:px-6 md:py-16">
             <div class="mx-auto max-w-7xl">
                 <div class="mb-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -44,55 +85,62 @@
                     </button>
 
                 </div>
-                <div class="grid grid-cols-1 gap-6 md:grid-cols-[240px_minmax(0,1fr)]">
+
+                <div class="grid items-start grid-cols-1 gap-6 md:grid-cols-[280px_minmax(0,1fr)]">
+
                     <aside id="filterSidebar" class="hidden md:block">
+
                         <div class="sticky top-24 rounded-xl border border-[#F1DCC8] bg-[#FFF7F0] p-4 shadow-sm">
                             <x-product-filter
                                 :kategori="$kategori"
                                 :selectedKategori="request('kategori')"
                                 :sort="request('sort', 'default')"/>
                         </div>
+
                     </aside>
 
                     <div class="grid grid-cols-2 gap-3 sm:gap-5 xl:grid-cols-4">
 
-                    @forelse ($produk as $item)
-                    <x-card-produk :produk="$item"/>
-                    @empty
-                        <div class="col-span-full py-12 text-center">
-                            <i class="fa-regular fa-face-frown text-4xl text-orange-300"></i>
+                        @forelse ($produk as $item)
+                        <x-card-produk :produk="$item"/>
+                        @empty
+                            <div class="col-span-full py-12 text-center">
+                                <i class="fa-regular fa-face-frown text-4xl text-orange-300"></i>
 
-                            <h3 class="mt-4 text-lg font-bold text-[#3B2115]">
-                                Produk belum tersedia
+                                <h3 class="mt-4 text-lg font-bold text-[#3B2115]">
+                                    Produk belum tersedia
+                                </h3>
+
+                                <p class="mt-1 text-sm text-[#72594B]">
+                                    Belum ada produk yang tersedia saat ini.
+                                </p>
+                            </div>
+                        @endforelse
+
+                        <div id="searchEmpty"
+                            class="col-span-full hidden py-16 text-center">
+
+                            <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#FFF1E5]">
+                                <i class="fa-solid fa-magnifying-glass text-2xl text-[#FF6B00]"></i>
+                            </div>
+                            <h3 class="mt-5 text-lg font-bold text-[#3B2115]">
+                                Produk tidak ditemukan
                             </h3>
-
-                            <p class="mt-1 text-sm text-[#72594B]">
-                                Belum ada produk yang tersedia saat ini.
+                            <p class="mt-2 text-sm text-[#72594B]">
+                                Tidak ada produk yang sesuai dengan pencarian
+                                "<span id="searchKeyword" class="font-semibold text-[#C1440E]"></span>"
                             </p>
-                        </div>
-                    @endforelse
-                    
-                    <div id="searchEmpty"
-                        class="col-span-full hidden py-16 text-center">
+                            <button type="button"
+                                    id="clearSearch"
+                                    class="mt-5 rounded-full bg-[#FF6B00] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#E85D00]">
+                                <i class="fa-solid fa-rotate-left mr-2"></i>
+                                Hapus Pencarian
+                            </button>
 
-                        <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#FFF1E5]">
-                            <i class="fa-solid fa-magnifying-glass text-2xl text-[#FF6B00]"></i>
                         </div>
-                        <h3 class="mt-5 text-lg font-bold text-[#3B2115]">
-                            Produk tidak ditemukan
-                        </h3>
-                        <p class="mt-2 text-sm text-[#72594B]">
-                            Tidak ada produk yang sesuai dengan pencarian
-                            "<span id="searchKeyword" class="font-semibold text-[#C1440E]"></span>"
-                        </p>
-                        <button type="button"
-                                id="clearSearch"
-                                class="mt-5 rounded-full bg-[#FF6B00] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#E85D00]">
-                            <i class="fa-solid fa-rotate-left mr-2"></i>
-                            Hapus Pencarian
-                        </button>
 
                     </div>
+                    
                 </div>
                 
                 <div id="filterBackdrop" class="fixed inset-0 z-40 hidden bg-[#3B2115]/40" 
@@ -102,7 +150,9 @@
                     <div class="sticky top-0 border-b border-[#F1DCC8] bg-[#FFF9F4] px-4 py-4">
                         <div class="flex items-center justify-between">
 
-                            <h3 class="text-lg font-bold text-[#3B2115]">Filter Produk</h3>
+                            <p class="text-lg font-bold text-[#3B2115]">
+                                Filter Produk
+                            </p>
                             <button onclick="toggleFilter()" class="text-[#72594B] hover:text-[#C1440E]">
                                 <i class="fa-solid fa-xmark text-xl"></i>
                             </button>

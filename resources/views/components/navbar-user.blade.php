@@ -118,8 +118,8 @@
 
                 @auth
                 <div class="flex items-center gap-2 sm:gap-3">
-                    {{-- Keranjang --}}
-                    <a href=""
+
+                    <a href="{{ route('cust.keranjang') }}"
                         class="relative flex h-10 w-10 items-center justify-center rounded-full
                             text-gray-600 transition-all duration-200
                             hover:bg-orange-50 hover:text-orange-600">
@@ -130,7 +130,7 @@
                             0
                         </span>
                     </a>
-                    {{-- Profile --}}
+
                     <div class="relative">
                         <button type="button"
                                 onclick="toggleProfileMenu()"

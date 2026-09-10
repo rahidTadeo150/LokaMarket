@@ -9,16 +9,35 @@ use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
+    public function landingPage() {
+        $produk = produk::with('kategori')->inRandomOrder()->take(4);
 
+        return view('user.landing-page', [
+            'produk' => $produk->get(),
+        ]);
+    }
+
+    public function caraKerjaPage() {
+        return view('user.cara-kerja');
+    }
+
+    public function tentangKamiPage() {
+        return view('user.tentang-kami');
+    }
+    
     public function myProfilePage() {
         $user = Auth::user(); 
         
         return view('user.profil-user', compact('user'));
     }
 
-    public function invoicePage()
+    public function keranjangPage()
     {
-        return view('user.invoice');
+        $produk = produk::with('kategori')->inRandomOrder()->take(4);
+
+        return view('user.keranjang', [
+            'produk' => $produk->get(),
+        ]);
     }
 
     public function checkoutPage()
@@ -33,6 +52,11 @@ class UserController extends Controller
             'user' => Auth::user(),
             'produk' => $produk,
         ]);
+    }
+
+    public function invoicePage()
+    {
+        return view('user.invoice');
     }
 
     public function editProfilePage()
@@ -96,21 +120,4 @@ class UserController extends Controller
                 'Profil berhasil diperbarui.'
             );
     }
-    
-    public function landingPage() {
-        $produk = produk::with('kategori')->inRandomOrder()->take(4);
-
-        return view('user.landing-page', [
-            'produk' => $produk->get(),
-        ]);
-    }
-
-    public function caraKerjaPage() {
-        return view('user.cara-kerja');
-    }
-
-    public function tentangKamiPage() {
-        return view('user.tentang-kami');
-    }
-
 }

@@ -27,7 +27,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 Route::middleware(['auth', 'role:customer'])->group(function () {                                                                                       
 
     Route::get('/my-profile', [UserController::class, 'myProfilePage'])->name('cust.myProfile');
-    Route::view('/keranjang', 'user.keranjang')->name('cust.keranjang');
+    Route::get('/keranjang', [UserController::class, 'keranjangPage'])->name('cust.keranjang');
     Route::get('/checkout', [UserController::class, 'checkoutPage'])->name('cust.checkout');
     Route::view('/pembayaran', 'user.pembayaran')->name('cust.pembayaran');
     Route::get('/invoice', [UserController::class, 'invoicePage'])->name('cust.invoice');

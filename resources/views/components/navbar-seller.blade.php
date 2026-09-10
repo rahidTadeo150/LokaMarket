@@ -1,9 +1,9 @@
 <nav class="sticky top-0 z-50 border-b border-orange-100 bg-white">
     <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 lg:px-8">
-         <a href="{{ route('seller.dashboard') }}">
+        <a href="{{ route('seller.dashboard') }}">
             <img src="{{ asset('storage/logo-lokamarket.png') }}"
-                 alt="LokaMarket"
-                 class="w-36">
+                alt="LokaMarket"
+                class="w-36">
         </a>
         <div class="hidden items-center gap-1 md:flex">
             <a href="{{ route('seller.dashboard') }}"
@@ -19,8 +19,10 @@
                     4
                 </span>
             </a>
-            <a href="#"
-                class="flex items-center gap-2 rounded-lg px-4 py-2 text-xs font-semibold text-[#72594B] transition hover:bg-[#FFF9F4] hover:text-[#E85D04]">
+            <a href="{{ route('seller.produk') }}"
+                class="flex items-center gap-2 rounded-lg px-4 py-2 text-xs font-semibold transition hover:bg-[#FFF9F4] hover:text-[#E85D04]
+                {{ request()->routeIs('seller.produk') ? 'bg-[#FFF3E5] font-bold text-[#E85D04]' : 'text-[#72594B]' }}">
+
                 <i class="fa-solid fa-box text-[11px]"></i>
                 Produk
             </a>
@@ -62,8 +64,8 @@
 
             {{-- Mobile Menu --}}
             <button type="button"
-                    onclick="document.getElementById('mobileMenu').classList.toggle('hidden')"
-                    class="flex h-9 w-9 items-center justify-center rounded-lg text-[#3B2115] transition hover:bg-[#FFF3E5] md:hidden">
+                onclick="document.getElementById('mobileMenu').classList.toggle('hidden')"
+                class="flex h-9 w-9 items-center justify-center rounded-lg text-[#3B2115] transition hover:bg-[#FFF3E5] md:hidden">
                 <i class="fa-solid fa-bars text-sm"></i>
             </button>
         </div>
@@ -87,7 +89,7 @@
                     4
                 </span>
             </a>
-            <a href="#"
+            <a href="{{ route('seller.produk') }}"
                 class="flex items-center gap-3 rounded-lg px-4 py-3 text-xs font-semibold text-[#72594B] hover:bg-[#FFF9F4]">
                 <i class="fa-solid fa-box w-4"></i>
                 Produk

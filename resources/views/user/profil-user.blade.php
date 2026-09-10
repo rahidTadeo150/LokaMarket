@@ -82,7 +82,15 @@
                             class="flex items-center gap-3 rounded-lg bg-orange-50 px-3 py-2.5 text-sm font-semibold text-orange-600">
                             <i class="fa-solid fa-user"></i>
                             <span>
-                                Pesanan Saya    
+                                Profil Saya    
+                            </span>
+                        </a>
+
+                        <a href="#"
+                            class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-gray-600 transition hover:bg-orange-50 hover:text-orange-600">
+                            <i class="fa-solid fa-wrench"></i>
+                            <span>
+                                Upgrade ke akun toko
                             </span>
                         </a>
 
@@ -93,7 +101,7 @@
                                 Riwayat Pesanan
                             </span>
                         </a>
-
+                        
                         <a href="#"
                             class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-gray-600 transition hover:bg-orange-50 hover:text-orange-600">
                             <i class="fa-solid fa-heart"></i>

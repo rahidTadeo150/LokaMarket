@@ -157,7 +157,6 @@
                             class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-gray-600 transition hover:bg-orange-50 hover:text-orange-600">
 
                                 <i class="fa-solid fa-user w-5 text-center"></i>
-
                                 <span>Profil Saya</span>
                             </a>
 
@@ -165,9 +164,16 @@
                             class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-gray-600 transition hover:bg-orange-50 hover:text-orange-600">
 
                                 <i class="fa-solid fa-box w-5 text-center"></i>
-
                                 <span>Pesanan Saya</span>
                             </a>
+
+                            <a href="{{ route('cust.benefitUpgradeAccount') }}"
+                            class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-gray-600 transition hover:bg-orange-50 hover:text-orange-600">
+
+                                <i class="fa-solid fa-store w-5 text-center"></i>
+                                <span>Buka Toko</span>
+                            </a>
+                            
 
                             <div class="my-1 border-t border-gray-100"></div>
 

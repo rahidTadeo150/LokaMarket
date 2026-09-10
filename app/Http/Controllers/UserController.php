@@ -120,4 +120,9 @@ class UserController extends Controller
                 'Profil berhasil diperbarui.'
             );
     }
+
+    public function benefitUpgradeAccount(Request $request)
+    {
+        return view('user.benefit-upgrade-account');
+    }
 }

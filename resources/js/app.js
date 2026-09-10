@@ -8,3 +8,4 @@ import './pages/produk';
 import './pages/edit-profile';
 import './pages/my-profile';
 import './pages/verify-email';
+import './pages/benefit-upgrade-account';

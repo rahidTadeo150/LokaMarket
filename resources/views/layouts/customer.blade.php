@@ -10,10 +10,22 @@
         @yield('title')
     </title>
 </head>
-<body>
-    <x-navbar-user></x-navbar-user>
+<body class="bg-white text-gray-800 antialiased">
+
+    
+
+            {{-- Menu Navigasi --}}
+            <x-navbar-user></x-navbar-user>
+
+        </div>
+    </header>
+
+    {{-- Konten Halaman --}}
     @yield('content')
+
+    {{-- Footer --}}
     <x-footer></x-footer>
+
 </body>
 </html>
 

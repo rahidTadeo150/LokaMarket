@@ -4,345 +4,551 @@
 
 @section('content')
 
-    <main class="mx-auto max-w-7xl px-4 py-7 sm:px-8 sm:py-10">
+<div class="min-h-screen bg-[#FFF9F4]">
+    <section class="relative overflow-hidden">
 
-       {{-- Progress Keranjang → Checkout → Pembayaran --}}
-       @include('components.checkout-progress', ['step' => 1])
+        <div class="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-orange-200/30 blur-3xl"></div>
+        <div class="pointer-events-none absolute -left-24 top-32 h-52 w-52 rounded-full bg-orange-100/40 blur-3xl"></div>
 
-        {{-- Isi utama keranjang --}}
-        <div class="w-full mt-6">
+        <div class="relative mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
 
-            <div class="mb-4 flex items-end justify-between">
-                <div>
-                    <h1 class="text-2xl font-extrabold tracking-tight text-[#3d281e] sm:text-3xl">
-                        Keranjang Belanja
-                    </h1>
+            <a href="{{ url('/') }}"
+               class="group mb-5 inline-flex items-center gap-2 text-sm font-medium
+                      text-[#72594B] transition hover:text-orange-500">
+                <i class="fa-solid fa-arrow-left text-xs transition-transform duration-300 group-hover:-translate-x-1"></i>
+                Lanjut Belanja
+            </a>
+
+            <div class="relative overflow-hidden rounded-2xl md:rounded-3xl bg-linear-to-br from-orange-500 via-orange-500 to-[#D9490B] px-5 py-6 text-white shadow-lg shadow-orange-200/50">
+
+            <div class="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-white/10"></div>
+            <div class="absolute -bottom-12 -left-8 h-28 w-28 rounded-full bg-orange-300/20"></div>
+
+            <div class="absolute right-16 top-8 h-20 w-20 rounded-full bg-white/10 blur-2xl"></div>
+
+            <div class="relative flex items-center justify-between gap-4">
+
+                <div class="flex items-center gap-4">
+
+                    <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/15 shadow-inner ring-1 ring-white/20 backdrop-blur-sm">
+                        <i class="fa-solid fa-cart-shopping text-xl text-white"></i>
+                    </div>
+
+                    <div>
+                        
+                        <h2 class="mt-0.5 text-xl font-bold tracking-tight sm:text-2xl">
+                            Keranjang Belanja
+                        </h2>
+
+                        <p class="mt-1 text-sm text-orange-100">
+                            Siap checkout produk pilihanmu?
+                        </p>
+
+                    </div>
+
                 </div>
-                <span id="productCount" class="pb-1 text-sm font-medium text-[#917c70]">
-                    3 produk
-                </span>
+
+                <div class="hidden shrink-0 text-right sm:block">
+
+                    <p class="text-xs text-orange-100">
+                        Total item dalam keranjang
+                    </p>
+                    <p class="mt-0.5 text-2xl font-bold">
+                        4
+                    </p>
+
+                </div>
+
             </div>
 
-            {{-- Card keranjang --}}
-            <section class="rounded-2xl border border-[#f0dfd1] bg-white px-5 py-6 shadow-[0_12px_35px_rgba(92,48,20,0.04)] sm:px-8">
+        </div>
 
-                {{-- Pilih semua --}}
-                <div class="flex items-center justify-between border-b border-[#f3e8e0] pb-5 text-base">
-                    <label class="flex cursor-pointer items-center gap-3 font-bold text-[#493329]">
-                        <input
-                            id="selectAll"
-                            type="checkbox"
-                            checked
-                            class="cart-check accent-[#cb4b14] w-5 h-5 cursor-pointer"
-                        >
-                        Pilih Semua
-                    </label>
+    </section>
 
-                    <button
-                        id="removeSelected"
-                        type="button"
-                        class="text-sm font-medium text-[#9b8275] transition hover:text-[#d94d0b]"
-                    >
-                        Hapus Terpilih
-                        <i class="fa-regular fa-trash-can ml-1"></i>
-                    </button>
+    <section class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 gap-5 items-start lg:gap-6 lg:grid-cols-[minmax(0,1fr)_400px]">
+
+            <div class="overflow-hidden rounded-3xl border-2 border-orange-100 bg-white shadow-lg">
+
+                <div class="px-2 divide-y divide-orange-100">
+
+                    <div class="group p-4 sm:p-6">
+                        <div class="flex gap-3 sm:gap-5">
+
+                            <div class="relative h-24 w-24 shrink-0 overflow-hidden
+                                        rounded-2xl bg-orange-50 sm:h-32 sm:w-32">
+                                <img src="{{ asset('images/products/keripik-pisang.jpg') }}"
+                                    alt="Keripik Pisang Original"
+                                    class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
+                                <span class="absolute left-2 top-2 rounded-full bg-orange-500 px-2 py-1 text-[9px] font-bold text-white sm:text-[10px]">
+                                    Snack
+                                </span>
+                            </div>
+
+                            <div class="min-w-0 flex-1">
+                                <div class="flex flex-col gap-3 sm:flex-row sm:justify-between">
+                                    <div class="min-w-0">
+
+                                        <p class="truncate text-sm font-bold text-[#3B2115] sm:text-base">
+                                            Keripik Pisang Original
+                                        </p>
+
+                                        <div class="mt-2 flex flex-wrap items-center gap-2">
+
+                                            <span class="inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-3 py-1 text-xs font-semibold text-orange-700">
+                                                <i class="fa-solid fa-store text-[10px]"></i>
+                                                Dapur Bu Siti
+                                            </span>
+                                            <span class="inline-flex items-center gap-1.5 rounded-full bg-[#FFF9F4] px-3 py-1 text-xs font-medium text-[#72594B]">
+                                                <i class="fa-solid fa-utensils text-[10px]"></i>
+                                                Makanan
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                    
+                                    <button type="button"
+                                            class="flex h-9 w-9 items-center justify-center rounded-lg bg-orange-100 text-orange-500 transition hover:bg-red-50 hover:text-red-500 active:scale-95 sm:h-10 sm:w-10">
+                                        <i class="fa-regular fa-trash-can text-sm"></i>
+                                    </button>
+
+                                </div>
+
+                                <div class="mt-4 flex items-center justify-between sm:mt-5">
+
+                                    <div class="inline-flex items-center rounded-xl border border-orange-100 bg-orange-50/40">
+                                        <button type="button"
+                                                class="flex h-9 w-9 items-center justify-center text-orange-500 transition hover:bg-orange-100 active:scale-95">
+                                            <i class="fa-solid fa-minus text-[10px]"></i>
+                                        </button>
+
+                                        <span class="flex h-9 min-w-9 items-center justify-center text-sm font-bold text-[#3B2115]">
+                                            1
+                                        </span>
+
+                                        <button type="button"
+                                                class="flex h-9 w-9 items-center justify-center text-orange-500 transition hover:bg-orange-100 active:scale-95">
+                                            <i class="fa-solid fa-plus text-[10px]"></i>
+                                        </button>
+                                    </div>
+
+                                    <div class="shrink-0 sm:text-right">
+                                        <p class="text-sm font-bold text-orange-500 sm:text-lg">
+                                            Rp 25.000
+                                        </p>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
                 </div>
 
+                <div class="m-4 rounded-2xl border border-orange-100 bg-orange-50/70 p-4 sm:m-6">
+                    <div class="flex items-center gap-3">
 
-                {{-- Produk dan toko 1 --}}
-                <div class="cart-shop border-b border-[#f3e8e0] py-6" data-shop="Warung Bu Sri">
-                    <div class="mb-4 flex items-center gap-3 text-base font-bold text-[#493329]">
-                        <input type="checkbox" checked class="cart-check shop-check accent-[#cb4b14] w-5 h-5 cursor-pointer">
-                        <i class="fa-solid fa-store text-[#846f63]"></i>
-                        <span>Warung Bu Sri</span>
-                        <i class="fa-solid fa-circle-check text-sm text-[#558d58]"></i>
-                    </div>
+                        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-orange-500 shadow-sm">
+                            <i class="fa-solid fa-shield-heart"></i>
+                        </div>
 
-                    <div class="cart-item flex items-center gap-4 py-4" data-price="12000">
-                        <input type="checkbox" checked class="cart-check item-check accent-[#cb4b14] w-5 h-5 cursor-pointer">
-                        <div class="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[#ee6d1d]">
-                            <span class="text-5xl">🍱</span>
-                        </div>
-                        <div class="min-w-0 flex-1 space-y-1">
-                            <p class="truncate text-base font-bold text-[#4b3429]">Geprek Ori</p>
-                            <p class="text-sm text-[#9c877c]">Porsi Sedang</p>
-                            <p class="text-lg font-extrabold text-[#c9470e]">Rp 12.000</p>
-                        </div>
-                        <div class="quantity-control flex h-10 items-center overflow-hidden rounded-full border border-[#f0d6c4] text-base" data-quantity="1">
-                            <button type="button" class="quantity-minus w-10 h-full text-[#b97b5d] hover:bg-[#f0edf1] transition">-</button>
-                            <span class="quantity-value w-10 text-center font-bold">1</span>
-                            <button type="button" class="quantity-plus w-10 h-full text-[#c9470e] hover:bg-[#f0edf1] transition">+</button>
-                        </div>
-                        <button type="button" class="remove-item ml-4 text-[#a38e82] hover:text-[#d94d0b]" aria-label="Hapus Geprek Ori">
-                            <i class="fa-regular fa-trash-can text-xl"></i>
-                        </button>
-                    </div>
+                        <div class="min-w-0">
 
-                    <div class="cart-item flex items-center gap-4 py-4" data-price="8000">
-                        <input type="checkbox" checked class="cart-check item-check accent-[#cb4b14] w-5 h-5 cursor-pointer">
-                        <div class="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[#f5eee8]">
-                            <span class="text-5xl">🍲</span>
+                            <p class="text-xs font-bold text-[#3B2115] sm:text-sm">
+                                Belanja di LokaMarket lebih aman
+                            </p>
+                            <p class="mt-0.5 text-[10px] text-[#72594B] sm:text-xs">
+                                Produk dari UMKM terpercaya dengan kualitas terbaik.
+                            </p>
+
                         </div>
-                        <div class="min-w-0 flex-1 space-y-1">
-                            <p class="truncate text-base font-bold text-[#4b3429]">Es pisang hijau</p>
-                            <p class="text-sm text-[#9c877c]">250 gr</p>
-                            <p class="text-lg font-extrabold text-[#c9470e]">Rp 8.000</p>
-                        </div>
-                        <div class="quantity-control flex h-10 items-center overflow-hidden rounded-full border border-[#f0d6c4] text-base" data-quantity="1">
-                            <button type="button" class="quantity-minus w-10 h-full text-[#b97b5d] hover:bg-[#f0edf1] transition">-</button>
-                            <span class="quantity-value w-10 text-center font-bold">1</span>
-                            <button type="button" class="quantity-plus w-10 h-full text-[#c9470e] hover:bg-[#f0edf1] transition">+</button>
-                        </div>
-                        <button type="button" class="remove-item ml-4 text-[#a38e82] hover:text-[#d94d0b]" aria-label="Hapus Es pisang hijau">
-                            <i class="fa-regular fa-trash-can text-xl"></i>
-                        </button>
+
+                        <i class="fa-solid fa-shield-halved ml-auto hidden text-xl text-orange-400 sm:block"></i>
+
                     </div>
                 </div>
 
-                {{-- Produk dan toko 2 --}}
-                <div class="cart-shop border-b border-[#f3e8e0] py-6" data-shop="Kerajinan Lokal">
-                    <div class="mb-4 flex items-center gap-3 text-base font-bold text-[#493329]">
-                        <input type="checkbox" checked class="cart-check shop-check accent-[#cb4b14] w-5 h-5 cursor-pointer">
-                        <i class="fa-solid fa-store text-[#846f63]"></i>
-                        <span>Kerajinan Lokal</span>
-                        <i class="fa-solid fa-circle-check text-sm text-[#558d58]"></i>
+            </div>
+
+            <div class="lg:sticky lg:top-24">
+
+                <div class="overflow-hidden rounded-3xl border border-orange-100 bg-white shadow-lg">
+
+                    <div class="relative overflow-hidden bg-linear-to-br from-orange-400 to-orange-600 px-5 py-5 text-white sm:px-6">
+
+                        <div class="absolute -right-5 -top-10 h-28 w-28 rounded-full bg-white/10"></div>
+
+                        <div class="relative flex items-center gap-3">
+                            <p class="text-lg font-bold sm:text-xl">
+                                Ringkasan Belanja
+                            </p>
+                        </div>
+
                     </div>
 
-                    <div class="cart-item flex items-center gap-4 py-4" data-price="45000">
-                        <input type="checkbox" checked class="cart-check item-check accent-[#cb4b14] w-5 h-5 cursor-pointer">
-                        <div class="h-24 w-24 shrink-0 rounded-lg bg-[#4d804e]"></div>
-                        <div class="min-w-0 flex-1 space-y-1">
-                            <p class="truncate text-base font-bold text-[#4b3429]">Tas Anyaman Bambu</p>
-                            <p class="text-sm text-[#9c877c]">Warna Natural</p>
-                            <p class="text-lg font-extrabold text-[#c9470e]">Rp 45.000</p>
+
+                    <div class="p-5 sm:p-6">
+
+                        {{-- Subtotal --}}
+                        <div class="flex items-center justify-between text-sm">
+
+                            <span class="text-[#72594B]">
+                                Subtotal (3 barang)
+                            </span>
+
+                            <span class="font-semibold text-[#3B2115]">
+                                Rp 97.000
+                            </span>
+
                         </div>
-                        <div class="quantity-control flex h-10 items-center overflow-hidden rounded-full border border-[#f0d6c4] text-base" data-quantity="1">
-                            <button type="button" class="quantity-minus w-10 h-full text-[#b97b5d] hover:bg-[#f0edf1] transition">-</button>
-                            <span class="quantity-value w-10 text-center font-bold">1</span>
-                            <button type="button" class="quantity-plus w-10 h-full text-[#c9470e] hover:bg-[#f0edf1] transition">+</button>
-                        </div>
-                        <button type="button" class="remove-item ml-4 text-[#a38e82] hover:text-[#d94d0b]" aria-label="Hapus Tas Anyaman Bambu">
-                            <i class="fa-regular fa-trash-can text-xl"></i>
-                        </button>
-                    </div>
-                </div>
 
 
-                {{-- Ringkasan --}}
-                <div class="pt-8">
-                     <h2 class="text-base font-extrabold text-[#4b3429]">
-                       Ringkasan Belanja
-                     </h2>
+                        {{-- Shipping --}}
+                        <div class="mt-5 flex items-center justify-between text-sm">
 
-                    <dl class="mt-4 space-y-2 text-sm text-[#78655b]">
-                        <div class="flex justify-between">
-                            <dt>Subtotal (3 produk)</dt>
-                            <dd id="subtotal" class="font-bold text-[#4b3429]">
-                                Rp 65.000
-                            </dd>
-                        </div>
-                        <div class="flex justify-between">
-                            <dt>Ongkos Kirim</dt>
-                            <dd class="font-bold text-[#4b3429]">
-                                Estimasi di checkout
-                            </dd>
-                        </div>
-                        <div class="flex justify-between">
-                            <dt>Diskon Voucher</dt>
-                            <dd class="font-bold text-[#4b3429]">
-                                -Rp 0
-                            </dd>
-                        </div>
-                    </dl>
+                            <span class="text-[#72594B]">
+                                Ongkos Kirim
+                            </span>
 
-                    {{-- Voucher --}}
-                    <div class="mt-5 flex items-center gap-3 rounded-lg bg-[#fff8f1] px-4 py-3">
-                        <i class="fa-solid fa-ticket text-base text-[#da5a17]"></i>
-                        <input
-                            id="voucher"
-                            type="text"
-                            placeholder="Masukkan kode voucher"
-                            class="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-[#a99487]"
-                        >
+                            <span class="font-semibold text-[#3B2115]">
+                                Rp 15.000
+                            </span>
+
+                        </div>
+
+
+                        {{-- Shipping Info --}}
+                        <div class="mt-5 flex items-center gap-3 rounded-2xl bg-orange-50 p-4">
+
+                            <div class="flex h-10 w-10 shrink-0 items-center justify-center
+                                        rounded-xl bg-white text-orange-500 shadow-sm">
+
+                                <i class="fa-solid fa-truck"></i>
+
+                            </div>
+
+                            <div class="min-w-0 flex-1">
+
+                                <p class="text-xs font-bold text-orange-600">
+                                    Gratis ongkir
+                                </p>
+
+                                <p class="mt-0.5 text-[10px] text-[#72594B] sm:text-xs">
+                                    untuk pembelian minimum Rp 200.000
+                                </p>
+
+                            </div>
+
+                            <i class="fa-solid fa-chevron-right text-xs text-orange-400"></i>
+
+                        </div>
+
+
+                        {{-- Divider --}}
+                        <div class="my-6 border-t border-orange-100"></div>
+
+
+                        {{-- Total --}}
+                        <div class="flex items-center justify-between gap-3">
+
+                            <span class="text-sm font-bold text-[#3B2115]">
+                                Total Pembayaran
+                            </span>
+
+                            <span class="whitespace-nowrap text-xl font-extrabold
+                                         text-orange-500 sm:text-2xl">
+                                Rp 112.000
+                            </span>
+
+                        </div>
+
+
+                        {{-- Checkout --}}
                         <button
                             type="button"
-                            id="applyVoucher"
-                            class="text-sm font-bold text-[#d34c10] hover:text-[#b83f0a]"
-                        >
-                            Pakai
+                            class="mt-6 flex w-full items-center justify-center gap-2
+                                   rounded-xl bg-gradient-to-r from-orange-500 to-orange-600
+                                   px-5 py-3.5 text-sm font-bold text-white
+                                   shadow-lg shadow-orange-200 transition duration-300
+                                   hover:-translate-y-0.5 hover:shadow-xl
+                                   active:scale-[0.98]">
+
+                            <i class="fa-solid fa-lock text-xs"></i>
+
+                            Checkout Sekarang
+
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+
                         </button>
+
+
+                        {{-- Clear --}}
+                        <button
+                            type="button"
+                            class="mt-3 flex w-full items-center justify-center gap-2
+                                   rounded-xl border border-orange-200 bg-white
+                                   px-5 py-3 text-sm font-semibold text-orange-500
+                                   transition hover:bg-orange-50 active:scale-[0.98]">
+
+                            <i class="fa-regular fa-trash-can"></i>
+
+                            Kosongkan Keranjang
+
+                        </button>
+
+
+                        {{-- Voucher --}}
+                        <div class="mt-6 rounded-2xl border border-orange-100 p-4">
+
+                            <div class="flex items-center gap-3">
+
+                                <div class="flex h-10 w-10 shrink-0 items-center justify-center
+                                            rounded-xl bg-orange-50 text-orange-500">
+
+                                    <i class="fa-solid fa-ticket"></i>
+
+                                </div>
+
+                                <div class="min-w-0 flex-1">
+
+                                    <p class="text-sm font-bold text-[#3B2115]">
+                                        Punya kode voucher?
+                                    </p>
+
+                                    <p class="mt-1 text-[10px] leading-4 text-[#72594B] sm:text-xs">
+                                        Gunakan kode voucher untuk mendapatkan potongan harga.
+                                    </p>
+
+                                </div>
+
+                                <i class="fa-solid fa-chevron-right text-xs text-orange-400"></i>
+
+                            </div>
+
+                        </div>
+
+
+                        {{-- Trust --}}
+                        <div class="mt-6 grid grid-cols-3 gap-2 sm:gap-3">
+
+                            <div class="text-center">
+
+                                <div class="mx-auto flex h-9 w-9 items-center justify-center
+                                            rounded-full bg-orange-50 text-orange-500">
+
+                                    <i class="fa-solid fa-shield-halved text-xs"></i>
+
+                                </div>
+
+                                <p class="mt-2 text-[9px] font-bold text-[#3B2115] sm:text-[10px]">
+                                    Pembayaran Aman
+                                </p>
+
+                            </div>
+
+
+                            <div class="text-center">
+
+                                <div class="mx-auto flex h-9 w-9 items-center justify-center
+                                            rounded-full bg-orange-50 text-orange-500">
+
+                                    <i class="fa-solid fa-truck-fast text-xs"></i>
+
+                                </div>
+
+                                <p class="mt-2 text-[9px] font-bold text-[#3B2115] sm:text-[10px]">
+                                    Pengiriman Cepat
+                                </p>
+
+                            </div>
+
+
+                            <div class="text-center">
+
+                                <div class="mx-auto flex h-9 w-9 items-center justify-center
+                                            rounded-full bg-orange-50 text-orange-500">
+
+                                    <i class="fa-solid fa-heart text-xs"></i>
+
+                                </div>
+
+                                <p class="mt-2 text-[9px] font-bold text-[#3B2115] sm:text-[10px]">
+                                    Produk Lokal
+                                </p>
+
+                            </div>
+
+                        </div>
+
                     </div>
 
-                    {{-- Total --}}
-                    <div class="mt-5 flex items-center justify-between border-t border-[#f3e8e0] pt-5">
-                        <span class="text-base font-extrabold text-[#4b3429]">
-                            Total
-                        </span>
-                        <strong id="total" class="text-xl font-extrabold text-[#d94d0b]">
-                            Rp 65.000
-                        </strong>
-                    </div>
-
-                    {{-- Tombol checkout --}}
-                    <a
-                        href="{{ route('cust.checkout') }}"
-                        id="checkoutButton"
-                        class="mt-6 flex h-12 w-full items-center justify-center rounded-full bg-[#e9520d] text-base font-bold text-white shadow-sm transition hover:bg-[#cf4609]"
-                    >
-                        Lanjut ke Checkout
-                    </a>
-
-                    <div class="mt-4 text-center text-sm text-[#a38e82]">
-                        atau
-                    </div>
-
-                    <a
-                        href="{{ route('cust.pilihanProduk') }}"
-                        class="mt-2 block text-center text-sm font-bold text-[#d94d0b] hover:underline"
-                    >
-                        Lanjutkan Belanja
-                    </a>
                 </div>
-            </section>
+
+            </div>
+
         </div>
-    </main>
 
-    {{-- JavaScript --}}
-    <script>
-        const money = value =>
-            'Rp ' + value.toLocaleString('id-ID');
+    </section>
 
-        const allChecks = () => [
-            ...document.querySelectorAll('.item-check')
-        ];
 
-        const updateSummary = () => {
-            let subtotal = 0;
+    {{-- ==========================================
+        RECOMMENDATION
+    =========================================== --}}
+    <section class="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
 
-            allChecks().forEach(item => {
-                if (item.checked) {
-                    subtotal +=
-                        Number(item.closest('.cart-item').dataset.price) *
-                        Number(
-                            item.closest('.cart-item')
-                                .querySelector('.quantity-control')
-                                .dataset.quantity
-                        );
-                }
-            });
+        <div class="mb-5 flex items-end justify-between">
 
-            document.querySelector('#subtotal').textContent =
-                money(subtotal);
+            <div>
 
-            document.querySelector('#total').textContent =
-                money(subtotal);
+                <div class="flex items-center gap-2">
 
-            document.querySelector('#productCount').textContent =
-                allChecks().filter(item => item.checked).length +
-                ' produk';
+                    <span class="text-lg text-orange-500 sm:text-xl">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </span>
 
-            document.querySelector('#selectAll').checked =
-                allChecks().length > 0 &&
-                allChecks().every(item => item.checked);
-        };
+                    <h2 class="text-lg font-bold text-[#3B2115] sm:text-2xl">
+                        Rekomendasi untuk Anda
+                    </h2>
 
-        // Pilih semua
-        document.querySelector('#selectAll').addEventListener(
-            'change',
-            event => {
-                document
-                    .querySelectorAll('.cart-check')
-                    .forEach(
-                        check => check.checked = event.target.checked
-                    );
-                updateSummary();
-            }
-        );
+                </div>
 
-        // Pilih produk berdasarkan toko
-        document.querySelectorAll('.shop-check').forEach(shopCheck => {
-            shopCheck.addEventListener('change', event => {
-                event.target
-                    .closest('.cart-shop')
-                    .querySelectorAll('.item-check')
-                    .forEach(
-                        check => check.checked = event.target.checked
-                    );
-                updateSummary();
-            });
-        });
+                <p class="mt-1 text-xs text-[#72594B] sm:text-sm">
+                    Produk pilihan yang mungkin Anda suka
+                </p>
 
-        // Checkbox produk
-        document.querySelectorAll('.item-check').forEach(check => {
-            check.addEventListener(
-                'change',
-                updateSummary
-            );
-        });
+            </div>
 
-        // Quantity
-        document.querySelectorAll('.quantity-control').forEach(control => {
-            control.addEventListener('click', event => {
-                const step =
-                    event.target.closest('button');
+            <a href="#"
+               class="hidden items-center gap-2 text-sm font-semibold text-orange-500
+                      transition hover:text-orange-600 sm:flex">
 
-                if (!step) return;
+                Lihat Semua
 
-                let quantity =
-                    Number(control.dataset.quantity) +
-                    (
-                        step.classList.contains('quantity-plus')
-                            ? 1
-                            : -1
-                    );
+                <i class="fa-solid fa-arrow-right text-xs"></i>
 
-                quantity = Math.max(1, quantity);
-                control.dataset.quantity = quantity;
+            </a>
 
-                control.querySelector(
-                    '.quantity-value'
-                ).textContent = quantity;
+        </div>
 
-                updateSummary();
-            });
-        });
 
-        // Hapus satu produk
-        document.querySelectorAll('.remove-item').forEach(button => {
-            button.addEventListener('click', () => {
-                button.closest('.cart-item').remove();
-                updateSummary();
-            });
-        });
+        {{-- Products --}}
+        <div class="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-4
+                    lg:grid-cols-4">
 
-        // Hapus produk terpilih
-        document.querySelector('#removeSelected').addEventListener(
-            'click',
-            () => {
-                document
-                    .querySelectorAll('.item-check:checked')
-                    .forEach(check => {
-                        check.closest('.cart-item').remove();
-                    });
-                updateSummary();
-            }
-        );
+            @foreach ([
+                [
+                    'name' => 'Keripik Singkong',
+                    'image' => 'keripik-singkong.jpg',
+                    'price' => '18.000',
+                    'rating' => '4.8',
+                    'reviews' => '120'
+                ],
+                [
+                    'name' => 'Kopi Robusta Lokal',
+                    'image' => 'kopi.jpg',
+                    'price' => '28.000',
+                    'rating' => '4.9',
+                    'reviews' => '98'
+                ],
+                [
+                    'name' => 'Madu Murni',
+                    'image' => 'madu.jpg',
+                    'price' => '85.000',
+                    'rating' => '4.8',
+                    'reviews' => '76'
+                ],
+                [
+                    'name' => 'Batik Tulis Banyuwangi',
+                    'image' => 'batik.jpg',
+                    'price' => '98.000',
+                    'rating' => '4.9',
+                    'reviews' => '54'
+                ]
+            ] as $product)
 
-        // Voucher
-        document.querySelector('#applyVoucher').addEventListener(
-            'click',
-            event => {
-                const input =
-                    document.querySelector('#voucher');
+                <div class="group overflow-hidden rounded-2xl border border-orange-100
+                            bg-white p-2.5 shadow-sm transition duration-300
+                            hover:-translate-y-1 hover:shadow-lg sm:p-3">
 
-                event.target.textContent =
-                    input.value.trim()
-                        ? 'Terpasang'
-                        : 'Pakai';
-            }
-        );
+                    {{-- Image --}}
+                    <div class="relative aspect-square overflow-hidden rounded-xl
+                                bg-orange-50">
 
-        // Perhitungan awal
-        updateSummary();
-    </script>
+                        <img
+                            src="{{ asset('images/products/' . $product['image']) }}"
+                            alt="{{ $product['name'] }}"
+                            class="h-full w-full object-cover transition duration-500
+                                   group-hover:scale-105"
+                        >
+
+                        <span class="absolute left-2 top-2 rounded-full bg-white/95
+                                     px-2 py-1 text-[8px] font-bold text-orange-500
+                                     shadow-sm sm:text-[10px]">
+
+                            UMKM
+
+                        </span>
+
+                    </div>
+
+
+                    {{-- Info --}}
+                    <div class="pt-3">
+
+                        <h3 class="truncate text-xs font-bold text-[#3B2115] sm:text-sm">
+                            {{ $product['name'] }}
+                        </h3>
+
+
+                        {{-- Rating --}}
+                        <div class="mt-1 flex items-center gap-1">
+
+                            <i class="fa-solid fa-star text-[9px] text-amber-400"></i>
+
+                            <span class="text-[9px] font-semibold text-[#72594B] sm:text-[10px]">
+                                {{ $product['rating'] }}
+                            </span>
+
+                            <span class="text-[9px] text-gray-400 sm:text-[10px]">
+                                ({{ $product['reviews'] }})
+                            </span>
+
+                        </div>
+
+
+                        {{-- Price --}}
+                        <p class="mt-2 text-sm font-bold text-[#3B2115] sm:text-base">
+                            Rp {{ $product['price'] }}
+                        </p>
+
+
+                        {{-- Add Cart --}}
+                        <button
+                            type="button"
+                            class="mt-2 flex w-full items-center justify-center gap-1.5
+                                   rounded-lg bg-orange-500 px-2 py-2 text-[10px]
+                                   font-bold text-white transition hover:bg-orange-600
+                                   active:scale-[0.98] sm:text-xs">
+
+                            <i class="fa-solid fa-cart-plus"></i>
+
+                            <span>Keranjang</span>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            @endforeach
+
+        </div>
+
+    </section>
+
+</div>
+
 @endsection

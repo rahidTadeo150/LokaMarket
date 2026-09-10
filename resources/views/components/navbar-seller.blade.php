@@ -7,8 +7,8 @@
                  class="w-36">
         </a>
         <div class="hidden items-center gap-1 md:flex">
-            <a href="#"
-                class="flex items-center gap-2 rounded-lg bg-[#FFF3E5] px-4 py-2 text-xs font-bold text-[#E85D04]">
+            <a href="{{ route('seller.dashboard') }}"
+                class="flex items-center gap-2 rounded-lg px-4 py-2 text-xs font-semibold transition hover:bg-[#FFF9F4] hover:text-[#E85D04] {{ request()->routeIs('seller.dashboard') ? 'bg-[#FFF3E5] font-bold text-[#E85D04]' : 'text-[#72594B]' }}">
                 <i class="fa-solid fa-chart-line text-[11px]"></i>
                 Dashboard
             </a>
@@ -30,8 +30,8 @@
                 <i class="fa-solid fa-users text-[11px]"></i>
                 keLola Toko
             </a>
-            <a href="#"
-                class="flex items-center gap-2 rounded-lg px-4 py-2 text-xs font-semibold text-[#72594B] transition hover:bg-[#FFF9F4] hover:text-[#E85D04]">
+            <a href="{{ route('seller.laporan') }}"
+                class="flex items-center gap-2 rounded-lg px-4 py-2 text-xs font-semibold transition hover:bg-[#FFF9F4] hover:text-[#E85D04] {{ request()->routeIs('seller.laporan') ? 'bg-[#FFF3E5] font-bold text-[#E85D04]' : 'text-[#72594B]' }}">
                 <i class="fa-solid fa-chart-column text-[11px]"></i>
                 Laporan
             </a>

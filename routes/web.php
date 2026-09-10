@@ -47,4 +47,5 @@ Route::get('/kategori-produk', [ProductController::class, 'kategoriPage'])->name
 
 Route::get('/dashboard-seller', [sellerController::class, 'dashboardSeller'])->name('seller.dashboard');
 Route::view('/dashboard-seller/laporan', 'seller.dashboard-seller-laporan')->name('seller.laporan');
+Route::view('/dashboard-seller/kelola-toko', 'seller.dashboard-seller-kelolatoko')->name('seller.kelolaToko');
 

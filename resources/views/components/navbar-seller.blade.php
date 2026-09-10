@@ -25,10 +25,10 @@
                 <i class="fa-solid fa-box text-[11px]"></i>
                 Produk
             </a>
-            <a href="#"
-                class="flex items-center gap-2 rounded-lg px-4 py-2 text-xs font-semibold text-[#72594B] transition hover:bg-[#FFF9F4] hover:text-[#E85D04]">
+            <a href="{{ route('seller.kelolaToko') }}"
+                class="flex items-center gap-2 rounded-lg px-4 py-2 text-xs font-semibold transition hover:bg-[#FFF9F4] hover:text-[#E85D04] {{ request()->routeIs('seller.kelolaToko') ? 'bg-[#FFF3E5] font-bold text-[#E85D04]' : 'text-[#72594B]' }}">
                 <i class="fa-solid fa-users text-[11px]"></i>
-                keLola Toko
+                Kelola Toko
             </a>
             <a href="{{ route('seller.laporan') }}"
                 class="flex items-center gap-2 rounded-lg px-4 py-2 text-xs font-semibold transition hover:bg-[#FFF9F4] hover:text-[#E85D04] {{ request()->routeIs('seller.laporan') ? 'bg-[#FFF3E5] font-bold text-[#E85D04]' : 'text-[#72594B]' }}">
@@ -93,10 +93,10 @@
                 <i class="fa-solid fa-box w-4"></i>
                 Produk
             </a>
-            <a href="#"
-                class="flex items-center gap-3 rounded-lg px-4 py-3 text-xs font-semibold text-[#72594B] hover:bg-[#FFF9F4]">
-                <i class="fa-solid fa-users w-4"></i>
-                Pelanggan
+            <a href="{{ route('seller.kelolaToko') }}"
+                class="flex items-center gap-3 rounded-lg px-4 py-3 text-xs font-semibold transition hover:bg-[#FFF9F4] hover:text-[#E85D04] {{ request()->routeIs('seller.kelolaToko') ? 'bg-[#FFF3E5] font-bold text-[#E85D04]' : 'text-[#72594B]' }}">
+                <i class="fa-solid fa-store w-4"></i>
+                Kelola Toko
             </a>
             <a href="#"
                 class="flex items-center gap-3 rounded-lg px-4 py-3 text-xs font-semibold text-[#72594B] hover:bg-[#FFF9F4]">

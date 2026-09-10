@@ -30,7 +30,7 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::get('/edit-profil', [UserController::class, 'editProfilePage'])->name('cust.editProfile');
     Route::put('/edit-profil', [UserController::class, 'updateProfile'])->name('cust.updateProfile');
 
-    Route::put('/benefit-upgrade-account', [UserController::class, 'benefitUpgradeAccount'])->name('cust.benefitUpgradeAccount');
+    Route::get('/benefit-upgrade-account', [UserController::class, 'benefitUpgradeAccount'])->name('cust.benefitUpgradeAccount');
     
     Route::get('/keranjang', [UserController::class, 'keranjangPage'])->name('cust.keranjang');
     Route::get('/checkout', [UserController::class, 'checkoutPage'])->name('cust.checkout');

@@ -39,6 +39,9 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     
     Route::get('/detail-produk/{produk}', [ProductController::class, 'detailProdukPage'])->name('cust.detailProduk');
     Route::get('/detail-toko', [ProductController::class, 'detailTokoPage'])->name('cust.detailToko');
+
+    
+    Route::view('/wishlist', 'user.wishlist')->name('cust.wishlist');
 });
 
 Route::get('/', [UserController::class, 'landingPage'])->name('cust.landingPage');

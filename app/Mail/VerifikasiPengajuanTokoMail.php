@@ -2,39 +2,40 @@
 
 namespace App\Mail;
 
-use App\Models\pending_registration;
+use App\Models\pending_pengajuan_toko;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class VerifyRegistrationMail extends Mailable
+class VerifikasiPengajuanTokoMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public pending_registration $pending;
-    public string $verificationUrl;
+    public pending_pengajuan_toko $pending;
 
-    public function __construct(
-        pending_registration $pending,
-        string $verificationUrl
-    ) {
+    public function __construct(pending_pengajuan_toko $pending)
+    {
         $this->pending = $pending;
-        $this->verificationUrl = $verificationUrl;
     }
 
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Verifikasi Email LokaMarket',
+            subject: 'Verifikasi Pengajuan Toko - LokaMarket'
         );
     }
 
     public function content(): Content
     {
         return new Content(
-            view: 'email.verify-registration',
+            view: 'email.verify-pengajuan-toko'
         );
+    }
+
+    public function attachments(): array
+    {
+        return [];
     }
 }

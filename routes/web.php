@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\regions;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\sellerController;
+use App\Http\Controllers\tokoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -31,6 +33,12 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::put('/edit-profil', [UserController::class, 'updateProfile'])->name('cust.updateProfile');
 
     Route::get('/benefit-upgrade-account', [UserController::class, 'benefitUpgradeAccount'])->name('cust.benefitUpgradeAccount');
+    Route::get('/form-daftar-toko', [UserController::class, 'formDaftarToko'])->name('cust.formDaftarToko');
+    Route::post('/form-daftar-toko', [tokoController::class, 'registerToko'])->name('cust.formDaftarToko.register');
+    Route::get('/form-daftar-toko/verifikasi', [tokoController::class, 'VerificationNotice'])->name('cust.formDaftarToko.notice');
+    Route::get('/form-daftar-toko/verifikasi/{token}', [tokoController::class, 'verifikasiEmail'])->name('cust.formDaftarToko.verify');
+    // Route::get('/form-daftar-toko/verifikasi/{token}', [tokoController::class, 'verifikasiEmail'])->name('cust.verifikasiToko');
+    // Route::get('/form-daftar-toko/verifikasi-email', [tokoController::class, 'verificationNotice'])->name('cust.verifikasiSend');
     
     Route::get('/keranjang', [UserController::class, 'keranjangPage'])->name('cust.keranjang');
     Route::get('/checkout', [UserController::class, 'checkoutPage'])->name('cust.checkout');
@@ -63,3 +71,6 @@ Route::view('/dashboard-seller/kelola-toko', 'seller.kelolatoko-seller')
 
 Route::get('/produk-seller', [sellerController::class, 'produkSeller'])
     ->name('seller.produk');
+
+Route::get('/regions/kota/{provinsi_id}', [regions::class, 'getKota'])->name('regions.kota');
+Route::get('/regions/kecamatan/{kota_id}', [regions::class, 'getKecamatan'])->name('regions.kecamatan');

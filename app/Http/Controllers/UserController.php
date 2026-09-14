@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\produk;
+use App\Models\provinsi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -124,5 +125,12 @@ class UserController extends Controller
     public function benefitUpgradeAccount(Request $request)
     {
         return view('user.benefit-upgrade-account');
+    }
+
+    public function formDaftarToko(Request $request)
+    {
+        $provinsi = provinsi::orderBy('nama')->get();
+
+        return view('user.form-daftar-toko', compact('provinsi'));
     }
 }

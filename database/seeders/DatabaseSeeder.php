@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             KategoriSeeder::class,
             TokoSeeder::class,
             ProdukSeeder::class,
+            RegionSeeder::class,
         ]);
     }
 }

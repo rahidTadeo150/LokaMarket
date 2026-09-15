@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\adminController;
 use App\Http\Controllers\regions;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\sellerController;
@@ -58,19 +59,12 @@ Route::get('/tentang-kami', [UserController::class, 'tentangKamiPage'])->name('c
 Route::get('/pilihan-produk/{kategori?}/{sort?}', [ProductController::class, 'pilihanProduk'])->name('cust.pilihanProduk');
 Route::get('/kategori-produk', [ProductController::class, 'kategoriPage'])->name('cust.kategori');
 
+Route::get('/dashboard-admin', [adminController::class, 'dashboardAdmin'])->name('admin.dashboard');
 
-
-Route::get('/dashboard-seller', [sellerController::class, 'dashboardSeller'])
-    ->name('seller.dashboard');
-
-Route::view('/dashboard-seller/laporan', 'seller.laporan-seller')
-    ->name('seller.laporan');
-
-Route::view('/dashboard-seller/kelola-toko', 'seller.kelolatoko-seller')
-    ->name('seller.kelolaToko');
-
-Route::get('/produk-seller', [sellerController::class, 'produkSeller'])
-    ->name('seller.produk');
+Route::get('/dashboard-seller', [sellerController::class, 'dashboardSeller'])->name('seller.dashboard');
+Route::view('/dashboard-seller/laporan', 'seller.laporan-seller')->name('seller.laporan');
+Route::view('/dashboard-seller/kelola-toko', 'seller.kelolatoko-seller')->name('seller.kelolaToko');
+Route::get('/produk-seller', [sellerController::class, 'produkSeller'])->name('seller.produk');
 
 Route::get('/regions/kota/{provinsi_id}', [regions::class, 'getKota'])->name('regions.kota');
 Route::get('/regions/kecamatan/{kota_id}', [regions::class, 'getKecamatan'])->name('regions.kecamatan');

@@ -9,8 +9,9 @@ class sellerController extends Controller
     public function dashboardSeller() {
         return view('seller.dashboard-seller');
     }
+
     public function produkSeller()
-{
-    return view('seller.produk-seller');
-}
+    {
+        return view('seller.produk-seller');
+    }
 }

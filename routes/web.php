@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\adminController;
+use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\regions;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\sellerController;
@@ -32,7 +33,7 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::get('/my-profile', [UserController::class, 'myProfilePage'])->name('cust.myProfile');
     Route::get('/edit-profil', [UserController::class, 'editProfilePage'])->name('cust.editProfile');
     Route::put('/edit-profil', [UserController::class, 'updateProfile'])->name('cust.updateProfile');
-    
+
     Route::get('/wishlist', [UserController::class, 'wishlistProduk'])->name('cust.wishlist');
 
     Route::get('/benefit-upgrade-account', [UserController::class, 'benefitUpgradeAccount'])->name('cust.benefitUpgradeAccount');
@@ -44,6 +45,9 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::get('status-pengajuan', [tokoController::class, 'statusPengajuan'])->name('cust.statusPengajuan');
     
     Route::get('/keranjang', [UserController::class, 'keranjangPage'])->name('cust.keranjang');
+    Route::get('/keranjang', [keranjangController::class, 'index'])->name('cust.keranjang');
+    Route::post('/keranjang/add-to-cart', [KeranjangController::class, 'addToCart'])->name('cust.keranjang.add');
+
     Route::get('/checkout', [UserController::class, 'checkoutPage'])->name('cust.checkout');
     Route::view('/pembayaran', 'user.pembayaran')->name('cust.pembayaran');
     Route::get('/invoice', [UserController::class, 'invoicePage'])->name('cust.invoice');

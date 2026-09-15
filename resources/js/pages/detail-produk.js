@@ -25,79 +25,33 @@ document.addEventListener('DOMContentLoaded', function () {
     const orderQuantity = document.getElementById('orderQuantity');
     const orderTotal = document.getElementById('orderTotal');
     const orderSummary = document.getElementById('orderSummary');
-
-    const orderSubmitButton =
-        document.getElementById('orderSubmitButton');
-
-    const orderSubmitText =
-        document.getElementById('orderSubmitText');
-
-    const orderSubmitIcon =
-        document.getElementById('orderSubmitIcon');
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | DATA PRODUK
-    |--------------------------------------------------------------------------
-    */
+    const orderSubmitButton = document.getElementById('orderSubmitButton');
+    const orderSubmitText = document.getElementById('orderSubmitText');
+    const orderSubmitIcon = document.getElementById('orderSubmitIcon');
 
     const productId = orderSheet.dataset.productId;
-
-    const productPrice =
-        parseFloat(orderSheet.dataset.productPrice) || 0;
-
-    const productStock =
-        parseInt(orderSheet.dataset.productStock) || 0;
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | MODE PESANAN
-    |--------------------------------------------------------------------------
-    |
-    | cart = Tambah ke Keranjang
-    | buy  = Beli Sekarang
-    |
-    */
+    const productPrice = parseFloat(orderSheet.dataset.productPrice) || 0;
+    const productStock = parseInt(orderSheet.dataset.productStock) || 0;
 
     let orderMode = 'cart';
 
 
-    /*
-    |--------------------------------------------------------------------------
-    | OPEN ORDER SHEET
-    |--------------------------------------------------------------------------
-    */
-
     window.openOrderSheet = function (mode = 'cart') {
 
-        // Cek stok
         if (productStock <= 0) {
             showOrderToast('Maaf, produk ini sedang habis.');
             return;
         }
 
-
-        // Simpan mode
         orderMode = mode;
 
 
-        // Reset jumlah menjadi 1
         if (orderQuantity) {
             orderQuantity.value = 1;
         }
 
 
-        // Update total
         updateOrderTotal();
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Ubah tombol berdasarkan mode
-        |--------------------------------------------------------------------------
-        */
 
         if (mode === 'buy') {
 
@@ -106,30 +60,20 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             if (orderSubmitIcon) {
-                orderSubmitIcon.className =
-                    'fa-solid fa-bolt mr-2';
+                orderSubmitIcon.className = 'fa-solid fa-bolt mr-2';
             }
 
         } else {
 
             if (orderSubmitText) {
-                orderSubmitText.textContent =
-                    'Tambah ke Keranjang';
+                orderSubmitText.textContent = 'Tambah ke Keranjang';
             }
 
             if (orderSubmitIcon) {
-                orderSubmitIcon.className =
-                    'fa-solid fa-cart-shopping mr-2';
+                orderSubmitIcon.className = 'fa-solid fa-cart-shopping mr-2';
             }
 
         }
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Tampilkan Bottom Sheet
-        |--------------------------------------------------------------------------
-        */
 
         orderSheet.classList.remove('invisible');
 
@@ -140,166 +84,77 @@ document.addEventListener('DOMContentLoaded', function () {
 
         document.body.classList.add('overflow-hidden');
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | Jalankan animasi
-        |--------------------------------------------------------------------------
-        */
-
         requestAnimationFrame(function () {
 
             if (orderBackdrop) {
-
-                orderBackdrop.classList.remove(
-                    'opacity-0'
-                );
-
-                orderBackdrop.classList.add(
-                    'opacity-100'
-                );
+                orderBackdrop.classList.remove('opacity-0');
+                orderBackdrop.classList.add('opacity-100');
             }
 
-
             if (orderPanel) {
-
-                orderPanel.classList.remove(
-                    'translate-y-full'
-                );
-
-                orderPanel.classList.add(
-                    'translate-y-0'
-                );
+                orderPanel.classList.remove('translate-y-full');
+                orderPanel.classList.add('translate-y-0');
             }
 
         });
 
     };
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | CLOSE ORDER SHEET
-    |--------------------------------------------------------------------------
-    */
-
     window.closeOrderSheet = function () {
 
         if (orderBackdrop) {
-
-            orderBackdrop.classList.remove(
-                'opacity-100'
-            );
-
-            orderBackdrop.classList.add(
-                'opacity-0'
-            );
+            orderBackdrop.classList.remove('opacity-100');
+            orderBackdrop.classList.add('opacity-0');
         }
-
 
         if (orderPanel) {
-
-            orderPanel.classList.remove(
-                'translate-y-0'
-            );
-
-            orderPanel.classList.add(
-                'translate-y-full'
-            );
+            orderPanel.classList.remove('translate-y-0');
+            orderPanel.classList.add('translate-y-full');
         }
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | Tunggu animasi selesai
-        |--------------------------------------------------------------------------
-        */
-
         setTimeout(function () {
-
-            orderSheet.classList.add(
-                'invisible'
-            );
+            orderSheet.classList.add('invisible');
 
             orderSheet.setAttribute(
                 'aria-hidden',
                 'true'
             );
 
-            document.body.classList.remove(
-                'overflow-hidden'
-            );
-
+            document.body.classList.remove('overflow-hidden');
         }, 300);
 
     };
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | TAMBAH JUMLAH
-    |--------------------------------------------------------------------------
-    */
-
     window.orderIncreaseQuantity = function () {
-
         if (!orderQuantity) {
             return;
         }
 
-
-        let quantity =
-            parseInt(orderQuantity.value) || 1;
-
+        let quantity = parseInt(orderQuantity.value) || 1;
 
         if (quantity < productStock) {
-
             quantity++;
-
             orderQuantity.value = quantity;
-
             updateOrderTotal();
-
         }
 
     };
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | KURANGI JUMLAH
-    |--------------------------------------------------------------------------
-    */
-
     window.orderDecreaseQuantity = function () {
-
         if (!orderQuantity) {
             return;
         }
 
-
-        let quantity =
-            parseInt(orderQuantity.value) || 1;
-
+        let quantity = parseInt(orderQuantity.value) || 1;
 
         if (quantity > 1) {
-
             quantity--;
-
             orderQuantity.value = quantity;
-
             updateOrderTotal();
 
         }
 
     };
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | VALIDASI INPUT JUMLAH
-    |--------------------------------------------------------------------------
-    */
 
     window.validateOrderQuantity = function () {
 
@@ -307,245 +162,198 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
+        let quantity = parseInt(orderQuantity.value);
 
-        let quantity =
-            parseInt(orderQuantity.value);
-
-
-        /*
-        | Jika input kosong / bukan angka
-        */
         if (isNaN(quantity)) {
-
             quantity = 1;
-
         }
 
-
-        /*
-        | Minimal 1
-        */
         if (quantity < 1) {
-
             quantity = 1;
-
         }
 
-
-        /*
-        | Tidak boleh melebihi stok
-        */
         if (quantity > productStock) {
-
             quantity = productStock;
-
         }
-
 
         orderQuantity.value = quantity;
 
         updateOrderTotal();
-
     };
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | UPDATE TOTAL
-    |--------------------------------------------------------------------------
-    */
 
     function updateOrderTotal() {
-
         if (!orderQuantity) {
             return;
         }
 
+        const quantity = parseInt(orderQuantity.value) || 1;
 
-        const quantity =
-            parseInt(orderQuantity.value) || 1;
-
-
-        const total =
-            productPrice * quantity;
-
-
-        /*
-        | Format total harga
-        */
+        const total = productPrice * quantity;
 
         if (orderTotal) {
-
-            orderTotal.textContent =
-                'Rp ' + formatRupiah(total);
-
+            orderTotal.textContent = 'Rp ' + formatRupiah(total);
         }
-
-
-        /*
-        | Update jumlah item
-        */
 
         if (orderSummary) {
-
-            orderSummary.textContent =
-                quantity + ' item';
-
+            orderSummary.textContent = quantity + ' item';
         }
 
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | FORMAT RUPIAH
-    |--------------------------------------------------------------------------
-    */
-
     function formatRupiah(number) {
-
-        return new Intl.NumberFormat(
-            'id-ID'
-        ).format(number);
-
+        return new Intl.NumberFormat('id-ID').format(number);
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | SUBMIT ORDER
-    |--------------------------------------------------------------------------
-    */
-
     window.submitOrder = function () {
-
         if (!orderQuantity) {
             return;
         }
 
-
-        const quantity =
-            parseInt(orderQuantity.value) || 1;
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Validasi jumlah
-        |--------------------------------------------------------------------------
-        */
+        const quantity = parseInt(orderQuantity.value) || 1;
 
         if (quantity < 1) {
-
-            showOrderToast(
-                'Jumlah pesanan tidak valid.'
-            );
-
+            showOrderToast('Jumlah pesanan tidak valid.');
             return;
-
         }
-
 
         if (quantity > productStock) {
-
-            showOrderToast(
-                'Jumlah pesanan melebihi stok yang tersedia.'
-            );
-
+            showOrderToast('Jumlah pesanan melebihi stok yang tersedia.');
             return;
-
         }
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | TAMBAH KE KERANJANG
-        |--------------------------------------------------------------------------
-        */
-
-        if (orderMode === 'cart') {
-
-            console.log(
-                'Tambah ke keranjang:',
-                {
-                    produk_id: productId,
-                    quantity: quantity
-                }
-            );
-
-
-            closeOrderSheet();
-
-
-            showOrderToast(
-                'Produk berhasil ditambahkan ke keranjang.'
-            );
-
-
-            return;
-
-        }
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | BELI SEKARANG
-        |--------------------------------------------------------------------------
-        */
 
         if (orderMode === 'buy') {
-
-            console.log(
-                'Beli sekarang:',
-                {
-                    produk_id: productId,
-                    quantity: quantity
-                }
-            );
-
+            console.log({
+                produk_id: productId,
+                quantity: quantity
+            });
 
             closeOrderSheet();
 
+            showOrderToast('Pesanan siap untuk checkout.');
 
-            showOrderToast(
-                'Pesanan siap untuk checkout.'
+            return;
+        }
+
+        if (orderMode !== 'cart') {
+            return;
+        }
+
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+        if (!csrfToken) {
+            showOrderToast('CSRF token tidak ditemukan.');
+            return;
+        }
+
+        if (orderSubmitButton) {
+            orderSubmitButton.disabled = true;
+
+            orderSubmitButton.classList.add(
+                'opacity-70',
+                'cursor-not-allowed'
             );
 
         }
+
+        if (orderSubmitText) {
+            orderSubmitText.textContent = 'Menambahkan...';
+        }
+
+        fetch('/keranjang/add-to-cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            body: JSON.stringify({
+                produk_id: productId,
+                quantity: quantity
+            })
+
+        }).then(function (response) {
+
+            return response.json().then(function (data) {
+
+                if (!response.ok) {
+                    throw new Error(
+                        data.message ||
+                        'Gagal menambahkan produk.'
+                    );
+
+                }
+
+                return data;
+            });
+
+        }).then(function (data) {
+
+            if (!data.success) {
+                throw new Error(
+                    data.message ||
+                    'Gagal menambahkan produk.'
+                );
+
+            }
+
+            closeOrderSheet();
+
+            showOrderToast(data.message);
+
+            const cartBadges = document.querySelectorAll('[data-cart-count]');
+
+            cartBadges.forEach(function (badge) {
+                badge.textContent = data.cart_count;
+                badge.classList.remove('hidden');
+            });
+
+        }).catch(function (error) {
+            console.error('Tambah keranjang:', error);
+
+            showOrderToast( error.message || 'Terjadi kesalahan.');
+
+        }).finally(function () {
+
+            if (orderSubmitButton) {
+                orderSubmitButton.disabled = false;
+
+                orderSubmitButton.classList.remove(
+                    'opacity-70',
+                    'cursor-not-allowed'
+                );
+            }
+
+            if (orderSubmitText) {
+                if (orderMode === 'cart') {
+                    orderSubmitText.textContent = 'Tambah ke Keranjang';
+                } else {
+                    orderSubmitText.textContent = 'Beli Sekarang';
+                }
+            }
+
+        });
 
     };
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | TOAST
-    |--------------------------------------------------------------------------
-    */
-
-    function showOrderToast(message) {
-
-        /*
-        | Hapus toast sebelumnya
-        */
-
-        const oldToast =
-            document.getElementById('orderToast');
-
+    function showOrderToast(message, type = 'success') {
+        const oldToast = document.getElementById('orderToast');
 
         if (oldToast) {
             oldToast.remove();
         }
 
+        let iconClass = 'fa-solid fa-check';
+        let iconBackground = 'bg-green-500';
 
-        /*
-        | Buat toast
-        */
+        if (type === 'error') {
+            iconClass = 'fa-solid fa-xmark';
+            iconBackground = 'bg-red-500';
+        }
 
-        const toast =
-            document.createElement('div');
-
+        const toast = document.createElement('div');
 
         toast.id = 'orderToast';
-
 
         toast.className =
             'fixed bottom-5 left-1/2 z-[200] ' +
@@ -557,71 +365,35 @@ document.addEventListener('DOMContentLoaded', function () {
             'shadow-2xl ' +
             'transition-all duration-300';
 
-
         toast.innerHTML = `
-            <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-green-500">
-                <i class="fa-solid fa-check text-xs"></i>
+            <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${iconBackground}">
+                <i class="${iconClass} text-xs"></i>
             </div>
-
             <span>${message}</span>
         `;
 
-
         document.body.appendChild(toast);
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Hilangkan toast
-        |--------------------------------------------------------------------------
-        */
 
         setTimeout(function () {
 
-            toast.classList.add(
-                'opacity-0',
-                'translate-y-2'
-            );
-
+            toast.classList.add('opacity-0', 'translate-y-2');
 
             setTimeout(function () {
-
                 toast.remove();
-
             }, 300);
 
         }, 2500);
-
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | ESCAPE KEY
-    |--------------------------------------------------------------------------
-    */
-
-    document.addEventListener(
-        'keydown',
-        function (event) {
-
-            if (event.key !== 'Escape') {
-                return;
-            }
-
-
-            if (
-                !orderSheet.classList.contains(
-                    'invisible'
-                )
-            ) {
-
-                closeOrderSheet();
-
-            }
-
+    document.addEventListener('keydown', function (event) {
+        
+        if (event.key !== 'Escape') {
+            return;
         }
-    );
 
+        if (!orderSheet.classList.contains('invisible')) {
+            closeOrderSheet();
+        }
 
+    });
 });

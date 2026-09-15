@@ -31,17 +31,17 @@
             Menu Utama
         </p>
 
-        <a href="#"
-        class="mb-1 flex items-center gap-3 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 px-3 py-3 text-sm font-semibold text-white shadow-md shadow-orange-200">
+        <a href="{{ route('admin.dashboard') }}"
+        class="group mb-1 flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition {{ request()->routeIs('admin.dashboard') ? 'bg-gradient-to-r from-orange-500 to-orange-600 font-semibold text-white shadow-md shadow-orange-200' : 'text-[#72594B] hover:bg-orange-50 hover:text-orange-600' }}">
             <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-white/15">
                 <i class="fa-solid fa-chart-pie text-xs"></i>
             </span>
             <span>Dashboard</span>
         </a>
 
-        <a href="#"
-        class="group mb-1 flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-[#72594B] transition hover:bg-orange-50 hover:text-orange-600">
-            <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-50 text-orange-500 group-hover:bg-white">
+        <a href="{{ route('admin.pengguna') }}"
+        class="group mb-1 flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition {{ request()->routeIs('admin.pengguna') ? 'bg-gradient-to-r from-orange-500 to-orange-600 font-semibold text-white shadow-md shadow-orange-200' : 'text-[#72594B] hover:bg-orange-50 hover:text-orange-600' }}">
+            <span class="flex h-8 w-8 items-center justify-center rounded-lg {{ request()->routeIs('admin.pengguna') ? 'bg-white/15' : 'bg-orange-50 text-orange-500 group-hover:bg-white' }}">
                 <i class="fa-solid fa-users text-xs"></i>
             </span>
             <span>Pengguna</span>

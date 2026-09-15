@@ -16,8 +16,8 @@
         </div>
 
         <button id="closeSidebar"
-                type="button"
-                class="ml-auto flex h-9 w-9 items-center justify-center rounded-lg text-[#8D776A] hover:bg-orange-50 hover:text-orange-500 lg:hidden">
+            type="button"
+            class="ml-auto flex h-9 w-9 items-center justify-center rounded-lg text-[#8D776A] hover:bg-orange-50 hover:text-orange-500 lg:hidden">
             <i class="fa-solid fa-xmark"></i>
         </button>
 
@@ -31,45 +31,88 @@
             Menu Utama
         </p>
 
+
         <a href="{{ route('admin.dashboard') }}"
         class="group mb-1 flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition {{ request()->routeIs('admin.dashboard') ? 'bg-gradient-to-r from-orange-500 to-orange-600 font-semibold text-white shadow-md shadow-orange-200' : 'text-[#72594B] hover:bg-orange-50 hover:text-orange-600' }}">
             <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-white/15">
+
+
+        <a href="{{ route('admin.dashboard') }}"
+            class="mb-1 flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition
+    {{ request()->routeIs('admin.dashboard')
+        ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-md shadow-orange-200'
+        : 'text-[#72594B] hover:bg-orange-50 hover:text-orange-600' }}">
+
+            <span class="flex h-8 w-8 items-center justify-center rounded-lg
+        {{ request()->routeIs('admin.dashboard')
+            ? 'bg-white/15'
+            : 'bg-orange-50 text-orange-500' }}">
+
+
                 <i class="fa-solid fa-chart-pie text-xs"></i>
             </span>
+
             <span>Dashboard</span>
         </a>
+
 
         <a href="{{ route('admin.pengguna') }}"
         class="group mb-1 flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition {{ request()->routeIs('admin.pengguna') ? 'bg-gradient-to-r from-orange-500 to-orange-600 font-semibold text-white shadow-md shadow-orange-200' : 'text-[#72594B] hover:bg-orange-50 hover:text-orange-600' }}">
             <span class="flex h-8 w-8 items-center justify-center rounded-lg {{ request()->routeIs('admin.pengguna') ? 'bg-white/15' : 'bg-orange-50 text-orange-500 group-hover:bg-white' }}">
+
+        <a href="#"
+            class="group mb-1 flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-[#72594B] transition hover:bg-orange-50 hover:text-orange-600">
+            <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-50 text-orange-500 group-hover:bg-white">
+
                 <i class="fa-solid fa-users text-xs"></i>
             </span>
             <span>Pengguna</span>
         </a>
 
         <a href="#"
-        class="group mb-1 flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-[#72594B] transition hover:bg-orange-50 hover:text-orange-600">
+            class="group mb-1 flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-[#72594B] transition hover:bg-orange-50 hover:text-orange-600">
             <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-50 text-orange-500 group-hover:bg-white">
                 <i class="fa-solid fa-store text-xs"></i>
             </span>
             <span>Kelola Toko</span>
         </a>
 
-        <a href="#"
-        class="group mb-1 flex items-center justify-between rounded-xl px-3 py-3 text-sm font-medium text-[#72594B] transition hover:bg-orange-50 hover:text-orange-600">
+        <a href="{{ route('admin.withdraw') }}"
+            class="group mb-1 flex items-center justify-between rounded-xl px-3 py-3 text-sm font-medium transition
+    {{ request()->routeIs('admin.withdraw')
+        ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-md shadow-orange-200'
+        : 'text-[#72594B] hover:bg-orange-50 hover:text-orange-600' }}">
+
             <div class="flex items-center gap-3">
-                <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-50 text-orange-500 group-hover:bg-white">
+
+                <span class="flex h-8 w-8 items-center justify-center rounded-lg
+            {{ request()->routeIs('admin.withdraw')
+                ? 'bg-white/15'
+                : 'bg-orange-50 text-orange-500 group-hover:bg-white' }}">
+
                     <i class="fa-solid fa-file-circle-check text-xs"></i>
+
                 </span>
+
                 <span>Withdraw</span>
+
             </div>
-            <span class="flex h-5 min-w-5 items-center justify-center rounded-full bg-orange-100 px-1.5 text-[9px] font-bold text-orange-600">
+
+            <span class="flex h-5 min-w-5 items-center justify-center rounded-full
+        {{ request()->routeIs('admin.withdraw')
+            ? 'bg-white/20 text-white'
+            : 'bg-orange-100 text-orange-600' }}
+        px-1.5 text-[9px] font-bold">
+
                 12
+
             </span>
         </a>
 
+
+
         <a href="#"
-        class="group mb-1 flex items-center justify-between rounded-xl px-3 py-3 text-sm font-medium text-[#72594B] transition hover:bg-orange-50 hover:text-orange-600">
+            class="group mb-1 flex items-center justify-between rounded-xl px-3 py-3 text-sm font-medium text-[#72594B] transition hover:bg-orange-50 hover:text-orange-600">
             <div class="flex items-center gap-3">
                 <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-50 text-orange-500 group-hover:bg-white">
                     <i class="fa-solid fa-file-circle-check text-xs"></i>
@@ -88,7 +131,7 @@
         </p>
 
         <a href="#"
-        class="group mb-1 flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-[#72594B] transition hover:bg-orange-50 hover:text-orange-600">
+            class="group mb-1 flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-[#72594B] transition hover:bg-orange-50 hover:text-orange-600">
             <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-50 text-orange-500 group-hover:bg-white">
                 <i class="fa-solid fa-gear text-xs"></i>
             </span>
@@ -96,7 +139,7 @@
         </a>
 
         <a href="#"
-        class="group flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-[#72594B] transition hover:bg-orange-50 hover:text-orange-600">
+            class="group flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-[#72594B] transition hover:bg-orange-50 hover:text-orange-600">
             <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-50 text-orange-500 group-hover:bg-white">
                 <i class="fa-solid fa-circle-question text-xs"></i>
             </span>
@@ -123,7 +166,7 @@
             </div>
 
             <button type="button"
-                    class="flex h-8 w-8 items-center justify-center rounded-lg text-[#8D776A] hover:bg-white hover:text-orange-500">
+                class="flex h-8 w-8 items-center justify-center rounded-lg text-[#8D776A] hover:bg-white hover:text-orange-500">
                 <i class="fa-solid fa-ellipsis-vertical text-xs"></i>
             </button>
 

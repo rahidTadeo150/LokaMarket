@@ -86,11 +86,19 @@
                             </span>
                         </a>
 
-                        <a href="#"
+                        <a href="{{ route('cust.benefitUpgradeAccount') }}"
                             class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-gray-600 transition hover:bg-orange-50 hover:text-orange-600">
                             <i class="fa-solid fa-wrench"></i>
                             <span>
                                 Upgrade ke akun toko
+                            </span>
+                        </a>
+
+                        <a href="{{ route('cust.statusPengajuan') }}"
+                            class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-gray-600 transition hover:bg-orange-50 hover:text-orange-600">
+                            <i class="fa-solid fa-wrench"></i>
+                            <span>
+                                Status Pengajuan Toko
                             </span>
                         </a>
 

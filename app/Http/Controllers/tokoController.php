@@ -212,7 +212,7 @@ class tokoController extends Controller
             );
     }
 
-    public function status()
+    public function statusPengajuan()
     {
         $pengajuan = pengajuan_toko::with([
             'provinsi',
@@ -225,7 +225,7 @@ class tokoController extends Controller
             ->first();
 
         return view(
-            'customer.buka-toko.status-pengajuan',
+            'user.status-pengajuan-toko',
             compact('pengajuan')
         );
     }

@@ -37,8 +37,8 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::post('/form-daftar-toko', [tokoController::class, 'registerToko'])->name('cust.formDaftarToko.register');
     Route::get('/form-daftar-toko/verifikasi', [tokoController::class, 'VerificationNotice'])->name('cust.formDaftarToko.notice');
     Route::get('/form-daftar-toko/verifikasi/{token}', [tokoController::class, 'verifikasiEmail'])->name('cust.formDaftarToko.verify');
-    // Route::get('/form-daftar-toko/verifikasi/{token}', [tokoController::class, 'verifikasiEmail'])->name('cust.verifikasiToko');
-    // Route::get('/form-daftar-toko/verifikasi-email', [tokoController::class, 'verificationNotice'])->name('cust.verifikasiSend');
+
+    Route::get('status-pengajuan', [tokoController::class, 'statusPengajuan'])->name('cust.statusPengajuan');
     
     Route::get('/keranjang', [UserController::class, 'keranjangPage'])->name('cust.keranjang');
     Route::get('/checkout', [UserController::class, 'checkoutPage'])->name('cust.checkout');

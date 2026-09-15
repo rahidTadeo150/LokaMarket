@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->text('deskripsi')->nullable();
             $table->decimal('harga', 15, 2);
+            $table->decimal('rating', 2, 1)->default(0.0);
             $table->unsignedInteger('stok')->default(0);
             $table->string('gambar')->nullable();
             $table->foreignId('kategori_id')->constrained('kategori')->cascadeOnDelete();

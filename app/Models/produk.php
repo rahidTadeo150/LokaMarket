@@ -12,6 +12,7 @@ class produk extends Model
         'slug',
         'deskripsi',
         'harga',
+        'rating',
         'stok',
         'gambar',
         'kategori_id',

@@ -6,6 +6,7 @@ import './component/dropdown-alamat';
 import './pages/login-user';
 import './pages/register-user';
 import './pages/produk';
+import './pages/detail-produk';
 import './pages/edit-profile';
 import './pages/my-profile';
 import './pages/verify-email';

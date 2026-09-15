@@ -21,9 +21,6 @@ class detail_keranjang extends Model
         'quantity' => 'integer',
     ];
 
-    /**
-     * Keranjang
-     */
     public function keranjang()
     {
         return $this->belongsTo(

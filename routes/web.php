@@ -45,7 +45,6 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::get('status-pengajuan', [tokoController::class, 'statusPengajuan'])->name('cust.statusPengajuan');
     
     Route::get('/keranjang', [UserController::class, 'keranjangPage'])->name('cust.keranjang');
-    Route::get('/keranjang', [keranjangController::class, 'index'])->name('cust.keranjang');
     Route::post('/keranjang/add-to-cart', [KeranjangController::class, 'addToCart'])->name('cust.keranjang.add');
 
     Route::get('/checkout', [UserController::class, 'checkoutPage'])->name('cust.checkout');

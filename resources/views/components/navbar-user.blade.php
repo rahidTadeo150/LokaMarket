@@ -120,15 +120,14 @@
                 <div class="flex items-center gap-2 sm:gap-3">
 
                     <a href="{{ route('cust.keranjang') }}"
-                        class="relative flex h-10 w-10 items-center justify-center rounded-full
-                            text-gray-600 transition-all duration-200
-                            hover:bg-orange-50 hover:text-orange-600">
+                        class="relative flex h-10 w-10 items-center justify-center rounded-full text-gray-600 transition-all duration-200 hover:bg-orange-50 hover:text-orange-600">
+
                         <i class="fa-solid fa-cart-shopping text-lg"></i>
-                        <span class="absolute -right-0.5 -top-0.5 flex h-5 min-w-5
-                                    items-center justify-center rounded-full
-                                    bg-orange-500 px-1 text-[10px] font-bold text-white">
-                            0
+                        <span data-cart-count
+                            class="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-orange-500 px-1 text-[10px] font-bold text-white {{ ($cartCount ?? 0) <= 0 ? 'hidden' : '' }}">
+                            {{ $cartCount }}
                         </span>
+
                     </a>
 
                     <div class="relative">

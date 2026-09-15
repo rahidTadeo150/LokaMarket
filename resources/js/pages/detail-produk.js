@@ -305,8 +305,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             cartBadges.forEach(function (badge) {
                 badge.textContent = data.cart_count;
-                badge.classList.remove('hidden');
-            });
+                });
 
         }).catch(function (error) {
             console.error('Tambah keranjang:', error);

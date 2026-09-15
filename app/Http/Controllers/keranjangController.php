@@ -100,21 +100,4 @@ class KeranjangController extends Controller
             ], 422);
         }
     }
-
-    public function indexKeranjang()
-    {
-        $keranjang = keranjang::with(['detail.produk.toko', 'detail.produk.kategori',])
-            ->where(
-                'user_id',
-                Auth::id()
-            )->first();
-
-        $cartCount = $keranjang ? $keranjang->detail()->sum('quantity') : 0;
-
-        return view('user.keranjang',compact(
-                'keranjang',
-                'cartCount'
-                )
-        );
-    }
 }

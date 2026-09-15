@@ -13,13 +13,8 @@
 </head>
 <body class="bg-white text-gray-800 antialiased">
 
-    
-
-            {{-- Menu Navigasi --}}
-            <x-navbar-user></x-navbar-user>
-
-        </div>
-    </header>
+    {{-- Menu Navigasi --}}
+    <x-navbar-user></x-navbar-user>
 
     {{-- Konten Halaman --}}
     @yield('content')

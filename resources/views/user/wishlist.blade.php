@@ -12,14 +12,16 @@
 
             <div class="relative mx-auto max-w-7xl py-6">
 
-                <a href="{{ url('/') }}"
-                class="group mb-5 inline-flex items-center gap-2 text-sm font-medium text-[#72594B] transition duration-300 hover:text-orange-500">
-                    <span class="flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-orange-100 transition duration-300 group-hover:-translate-x-1 group-hover:bg-orange-50">
+                <button type="button"
+                        onclick="history.back()"
+                        class="group inline-flex mb-5 items-center gap-2 text-sm font-medium text-slate-600 hover:text-orange-600 transition">
+                    <span class="flex items-center justify-center w-9 h-9 rounded-full bg-white border border-orange-100 shadow-sm group-hover:bg-orange-50 group-hover:border-orange-200 transition">
                         <i class="fa-solid fa-arrow-left text-xs"></i>
                     </span>
-                    Lanjut Belanja
-                </a>
-
+                    <span>
+                        kembali
+                    </span>
+                </button>
 
                 <div class="relative overflow-hidden rounded-2xl bg-linear-to-br from-orange-500 via-orange-500 to-[#D9490B] px-5 py-6 text-white shadow-xl shadow-orange-200/50 sm:px-7 sm:py-7 md:rounded-3xl">
 

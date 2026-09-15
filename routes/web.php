@@ -32,6 +32,8 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::get('/my-profile', [UserController::class, 'myProfilePage'])->name('cust.myProfile');
     Route::get('/edit-profil', [UserController::class, 'editProfilePage'])->name('cust.editProfile');
     Route::put('/edit-profil', [UserController::class, 'updateProfile'])->name('cust.updateProfile');
+    
+    Route::get('/wishlist', [UserController::class, 'wishlistProduk'])->name('cust.wishlist');
 
     Route::get('/benefit-upgrade-account', [UserController::class, 'benefitUpgradeAccount'])->name('cust.benefitUpgradeAccount');
     Route::get('/form-daftar-toko', [UserController::class, 'formDaftarToko'])->name('cust.formDaftarToko');
@@ -49,8 +51,6 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::get('/detail-produk/{produk}', [ProductController::class, 'detailProdukPage'])->name('cust.detailProduk');
     Route::get('/detail-toko', [ProductController::class, 'detailTokoPage'])->name('cust.detailToko');
 
-    
-    Route::view('/wishlist', 'user.wishlist')->name('cust.wishlist');
 });
 
 Route::get('/', [UserController::class, 'landingPage'])->name('cust.landingPage');

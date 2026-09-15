@@ -133,4 +133,9 @@ class UserController extends Controller
 
         return view('user.form-daftar-toko', compact('provinsi'));
     }
+
+    public function wishlistProduk(Request $request)
+    {
+        return view('user.wishlist');
+    }
 }

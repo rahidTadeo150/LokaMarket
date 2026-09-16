@@ -123,7 +123,7 @@
                                             </div>
 
                                             <button type="button"
-                                                    onclick="removeCartItem({{ $detail->id }})"
+                                                    onclick="window.removeItem({{ $detail->id }})"
                                                     class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-orange-100 text-orange-500 transition hover:bg-red-50 hover:text-red-500 active:scale-95 sm:h-10 sm:w-10">
                                                 <i class="fa-regular fa-trash-can text-sm"></i>
                                             </button>
@@ -309,8 +309,7 @@
 
                             <button type="button"
                                     id="clearCartButton"
-                                    onclick="window.clearCart()"
-                                    class="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-orange-200 bg-white px-5 py-3 text-sm font-semibold text-orange-500 transition hover:bg-orange-50 active:scale">
+                                    class="cursor-pointer mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-orange-200 bg-white px-5 py-3 text-sm font-semibold text-orange-500 transition hover:bg-orange-50 active:scale">
                                 <i class="fa-regular fa-trash-can"></i>
                                 Kosongkan Keranjang
                             </button>

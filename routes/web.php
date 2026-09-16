@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\adminController;
-use App\Http\Controllers\KeranjangController;
+use App\Http\Controllers\keranjangController;
 use App\Http\Controllers\regions;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\sellerController;
@@ -45,8 +45,9 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::get('status-pengajuan', [tokoController::class, 'statusPengajuan'])->name('cust.statusPengajuan');
     
     Route::get('/keranjang', [UserController::class, 'keranjangPage'])->name('cust.keranjang');
-    Route::post('/keranjang/add-to-cart', [KeranjangController::class, 'addToCart'])->name('cust.keranjang.add');
-    Route::delete('/keranjang', [KeranjangController::class, 'clearCart'])->name('cust.keranjang.clear');
+    Route::post('/keranjang/add-to-cart', [keranjangController::class, 'addToCart'])->name('cust.keranjang.add');
+    Route::delete('/keranjang/clear-all', [keranjangController::class, 'clearCart'])->name('cust.keranjang.clearAll');
+    Route::delete('/keranjang/{id}', [keranjangController::class, 'removeItem'])->name('cust.keranjang.delete');
 
 
     Route::get('/checkout', [UserController::class, 'checkoutPage'])->name('cust.checkout');

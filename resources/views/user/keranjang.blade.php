@@ -301,7 +301,6 @@
 
                             <button type="button"
                                     class="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-linear-to-r from-orange-500 to-orange-600 px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-orange-200 transition duration-300 hover:-translate-y-0.5 hover:shadow-xl active:scale-[0.98]">
-
                                 Checkout Sekarang
                                 <i class="fa-solid fa-arrow-right text-xs"></i>
 
@@ -309,11 +308,11 @@
 
 
                             <button type="button"
+                                    id="clearCartButton"
+                                    onclick="window.clearCart()"
                                     class="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-orange-200 bg-white px-5 py-3 text-sm font-semibold text-orange-500 transition hover:bg-orange-50 active:scale">
-                                    
                                 <i class="fa-regular fa-trash-can"></i>
                                 Kosongkan Keranjang
-
                             </button>
 
                             <div class="mt-6 grid grid-cols-3 gap-2 sm:gap-3">
@@ -401,6 +400,45 @@
             </div>
 
         </section>
+
+        <div id="clearCartModal"
+            class="fixed inset-0 z-100 hidden items-center justify-center bg-black/40 px-4 backdrop-blur-sm">
+            <div id="clearCartContent"
+                class="w-full max-w-sm scale-95 rounded-3xl border border-orange-100 bg-white p-6 opacity-0 shadow-2xl transition-all duration-300">
+
+                <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-50 text-orange-500">
+                    <i class="fa-solid fa-trash-can text-xl"></i>
+                </div>
+
+                <div class="mt-5 text-center">
+
+                    <p class="text-lg font-bold text-[#3B2115]">
+                        Kosongkan Keranjang?
+                    </p>
+                    <p class="mt-2 text-xs leading-relaxed text-[#72594B] sm:text-sm">
+                        Semua produk yang ada di keranjang akan dihapus. Tindakan ini tidak dapat dibatalkan.
+                    </p>
+
+                </div>
+
+                <div class="mt-6 grid grid-cols-2 gap-3">
+
+                    <button type="button"
+                            id="cancelClearCart"
+                            class="rounded-xl border border-orange-200 bg-white px-4 py-3 text-sm font-semibold text-[#72594B] transition hover:bg-orange-50 active:scale-[0.98]">
+                        Batal
+                    </button>
+
+                    <button type="button"
+                            id="confirmClearCart"
+                            class="rounded-xl bg-orange-500 px-4 py-3 text-sm font-bold text-white shadow-lg shadow-orange-200 transition hover:bg-orange-600 active:scale-[0.98]">
+                        Kosongkan
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
 
     </main>
 

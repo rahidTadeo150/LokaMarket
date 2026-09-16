@@ -12,3 +12,4 @@ import './pages/my-profile';
 import './pages/verify-email';
 import './pages/benefit-upgrade-account';
 import './pages/form-daftar-toko';
+import './pages/keranjang';

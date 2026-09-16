@@ -46,6 +46,8 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     
     Route::get('/keranjang', [UserController::class, 'keranjangPage'])->name('cust.keranjang');
     Route::post('/keranjang/add-to-cart', [KeranjangController::class, 'addToCart'])->name('cust.keranjang.add');
+    Route::delete('/keranjang', [KeranjangController::class, 'clearCart'])->name('cust.keranjang.clear');
+
 
     Route::get('/checkout', [UserController::class, 'checkoutPage'])->name('cust.checkout');
     Route::view('/pembayaran', 'user.pembayaran')->name('cust.pembayaran');

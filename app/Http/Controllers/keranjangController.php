@@ -100,4 +100,18 @@ class KeranjangController extends Controller
             ], 422);
         }
     }
+
+    public function clearCart()
+    {
+        $keranjang = keranjang::where('user_id', Auth::id())->first();
+
+        if ($keranjang) {
+            $keranjang->detail()->delete();
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Keranjang Telah dikosongkan.',
+        ]);
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\keranjang;
 use App\Models\produk;
 use App\Models\provinsi;
 use Illuminate\Http\Request;
@@ -34,11 +35,32 @@ class UserController extends Controller
 
     public function keranjangPage()
     {
-        $produk = produk::with('kategori')->inRandomOrder()->take(4);
+       $keranjang = keranjang::with(['detail.produk.toko', 'detail.produk.kategori',])->where('user_id', Auth::id())->first();
 
-        return view('user.keranjang', [
-            'produk' => $produk->get(),
-        ]);
+        $subtotal = 0;
+        $totalItem = 0;
+
+        if ($keranjang) {
+            foreach ($keranjang->detail as $detail) {
+                $subtotal += $detail->produk->harga * $detail->quantity;
+                $totalItem += $detail->quantity;
+            }
+        }
+
+        $ongkir = $totalItem > 0 ? 15000 : 0;
+
+        $totalPembayaran = $subtotal + $ongkir;
+
+        $produk = Produk::with(['toko', 'kategori'])->where('is_active', true)->inRandomOrder()->take(4)->get();
+
+        return view('user.keranjang', compact(
+            'keranjang',
+            'subtotal',
+            'totalItem',
+            'ongkir',
+            'totalPembayaran',
+            'produk'
+        ));
     }
 
     public function checkoutPage()

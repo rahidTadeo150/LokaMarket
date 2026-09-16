@@ -71,79 +71,133 @@
 
                     <div class="px-2 divide-y divide-orange-100">
 
-                        <div class="group p-4 sm:p-6">
-                            <div class="flex gap-3 sm:gap-5">
+                        @forelse ($keranjang?->detail ?? [] as $detail)
 
-                                <div class="relative h-24 w-24 shrink-0 overflow-hidden
-                                            rounded-2xl bg-orange-50 sm:h-32 sm:w-32">
-                                    <img src="{{ asset('images/products/keripik-pisang.jpg') }}"
-                                        alt="Keripik Pisang Original"
-                                        class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
-                                    <span class="absolute left-2 top-2 rounded-full bg-orange-500 px-2 py-1 text-[9px] font-bold text-white sm:text-[10px]">
-                                        Snack
-                                    </span>
-                                </div>
+                            @php
+                                $item = $detail->produk;
+                                $subtotalItem = $item->harga * $detail->quantity;
+                            @endphp
 
-                                <div class="min-w-0 flex-1">
-                                    <div class="flex flex-col gap-3 sm:flex-row sm:justify-between">
-                                        <div class="min-w-0">
+                            <div class="group p-4 sm:p-6"
+                                data-cart-item="{{ $detail->id }}">
+                                <div class="flex gap-3 sm:gap-5">
 
-                                            <p class="truncate text-sm font-bold text-[#3B2115] sm:text-base">
-                                                Keripik Pisang Original
-                                            </p>
+                                    <div class="relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl bg-orange-50 sm:h-32 sm:w-32">
 
-                                            <div class="mt-2 flex flex-wrap items-center gap-2">
+                                        <img src="{{ $item->gambar ? asset('storage/' . $item->gambar) : asset('images/default-product.jpg') }}"
+                                            alt="{{ $item->nama }}"
+                                            class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
 
-                                                <span class="inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-3 py-1 text-xs font-semibold text-orange-700">
-                                                    <i class="fa-solid fa-store text-[10px]"></i>
-                                                    Dapur Bu Siti
+                                        @if ($item->kategori)
+                                            <span class="absolute left-2 top-2 rounded-full bg-orange-500 px-2 py-1 text-[9px] font-bold text-white sm:text-[10px]">
+                                                {{ $item->kategori->nama }}
+                                            </span>
+                                        @endif
+
+                                    </div>
+
+                                    <div class="min-w-0 flex-1">
+
+                                        <div class="flex flex-col gap-3 sm:flex-row sm:justify-between">
+
+                                            <div class="min-w-0">
+
+                                                <p class="truncate text-sm font-bold text-[#3B2115] sm:text-base">
+                                                    {{ $item->nama }}
+                                                </p>
+
+                                                <div class="mt-2 flex flex-wrap items-center gap-2">
+
+                                                    <span class="inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-3 py-1 text-xs font-semibold text-orange-700">
+                                                        <i class="fa-solid fa-store text-[10px]"></i>
+                                                        {{ $item->toko->nama_toko }}
+                                                    </span>
+
+                                                    <span class="inline-flex items-center gap-1.5 rounded-full bg-[#FFF9F4] px-3 py-1 text-xs font-medium text-[#72594B]">
+                                                        <i class="fa-solid fa-tag text-[10px]"></i>
+                                                        {{ $item->kategori->nama }}
+                                                    </span>
+
+                                                </div>
+
+                                            </div>
+
+                                            <button type="button"
+                                                    onclick="removeCartItem({{ $detail->id }})"
+                                                    class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-orange-100 text-orange-500 transition hover:bg-red-50 hover:text-red-500 active:scale-95 sm:h-10 sm:w-10">
+                                                <i class="fa-regular fa-trash-can text-sm"></i>
+                                            </button>
+
+                                        </div>
+
+                                        <div class="mt-4 flex items-center justify-between sm:mt-5">
+
+                                            <div class="inline-flex items-center rounded-xl border border-orange-100 bg-orange-50/40">
+
+                                                <button type="button"
+                                                        onclick="decreaseCart({{ $detail->id }})"
+                                                        class="flex h-9 w-9 items-center justify-center text-orange-500 transition hover:bg-orange-100 active:scale-95">
+                                                    <i class="fa-solid fa-minus text-[10px]"></i>
+                                                </button>
+
+                                                <span id="quantity-{{ $detail->id }}"
+                                                    class="flex h-9 min-w-9 items-center justify-center text-sm font-bold text-[#3B2115]">
+                                                    {{ $detail->quantity }}
                                                 </span>
-                                                <span class="inline-flex items-center gap-1.5 rounded-full bg-[#FFF9F4] px-3 py-1 text-xs font-medium text-[#72594B]">
-                                                    <i class="fa-solid fa-utensils text-[10px]"></i>
-                                                    Makanan
-                                                </span>
+
+                                                <button type="button"
+                                                        onclick="increaseCart({{ $detail->id }})"
+                                                        class="flex h-9 w-9 items-center justify-center text-orange-500 transition hover:bg-orange-100 active:scale-95">
+                                                    <i class="fa-solid fa-plus text-[10px]"></i>
+                                                </button>
+
+                                            </div>
+
+                                            <div class="shrink-0 text-right">
+
+                                                <p id="subtotal-{{ $detail->id }}"
+                                                class="text-sm font-bold text-orange-500 sm:text-lg">
+                                                    Rp {{ number_format($subtotalItem, 0, ',', '.') }}
+                                                </p>
+
+                                                <p class="mt-0.5 text-[10px] text-[#72594B]">
+                                                    Rp {{ number_format($item->harga, 0, ',', '.') }} / item
+                                                </p>
 
                                             </div>
 
                                         </div>
 
-                                        
-                                        <button type="button"
-                                                class="flex h-9 w-9 items-center justify-center rounded-lg bg-orange-100 text-orange-500 transition hover:bg-red-50 hover:text-red-500 active:scale-95 sm:h-10 sm:w-10">
-                                            <i class="fa-regular fa-trash-can text-sm"></i>
-                                        </button>
-
                                     </div>
 
-                                    <div class="mt-4 flex items-center justify-between sm:mt-5">
+                                </div>
+                            </div>
 
-                                        <div class="inline-flex items-center rounded-xl border border-orange-100 bg-orange-50/40">
-                                            <button type="button"
-                                                    class="flex h-9 w-9 items-center justify-center text-orange-500 transition hover:bg-orange-100 active:scale-95">
-                                                <i class="fa-solid fa-minus text-[10px]"></i>
-                                            </button>
+                        @empty
 
-                                            <span class="flex h-9 min-w-9 items-center justify-center text-sm font-bold text-[#3B2115]">
-                                                1
-                                            </span>
+                            <div class="flex flex-col items-center justify-center px-6 py-14 text-center sm:py-20">
 
-                                            <button type="button"
-                                                    class="flex h-9 w-9 items-center justify-center text-orange-500 transition hover:bg-orange-100 active:scale-95">
-                                                <i class="fa-solid fa-plus text-[10px]"></i>
-                                            </button>
-                                        </div>
-
-                                        <div class="shrink-0 sm:text-right">
-                                            <p class="text-sm font-bold text-orange-500 sm:text-lg">
-                                                Rp 25.000
-                                            </p>
-                                        </div>
-
-                                    </div>
+                                <div class="flex h-20 w-20 items-center justify-center rounded-full bg-orange-50 text-orange-500">
+                                    <i class="fa-solid fa-cart-shopping text-2xl"></i>
                                 </div>
 
+                                <p class="mt-5 text-lg font-bold text-[#3B2115] sm:text-xl">
+                                    Keranjang Masih Kosong
+                                </p>
+
+                                <p class="mt-2 max-w-md text-xs leading-relaxed text-[#72594B] sm:text-sm">
+                                    Belum ada produk di keranjangmu. Yuk temukan produk lokal favoritmu dan tambahkan ke keranjang.
+                                </p>
+
+                                <a href="{{ route('cust.pilihanProduk') }}"
+                                class="mt-6 inline-flex items-center gap-2 rounded-xl bg-orange-500 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-orange-200 transition hover:bg-orange-600 active:scale-95">
+                                    Mulai Belanja
+                                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                                </a>
+
                             </div>
-                        </div>
+
+                        @endforelse
 
                     </div>
 
@@ -194,10 +248,10 @@
                             <div class="flex items-center justify-between text-sm">
 
                                 <span class="text-[#72594B]">
-                                    Subtotal (3 barang)
+                                    Subtotal ({{ $totalItem }})
                                 </span>
                                 <span class="font-semibold text-[#3B2115]">
-                                    Rp 97.000
+                                    {{ $subtotal }}
                                 </span>
 
                             </div>
@@ -208,7 +262,7 @@
                                     Ongkos Kirim
                                 </span>
                                 <span class="font-semibold text-[#3B2115]">
-                                    Rp 15.000
+                                    {{ $ongkir }}
                                 </span>
 
                             </div>
@@ -239,9 +293,8 @@
                                 <span class="text-sm font-bold text-[#3B2115]">
                                     Total Pembayaran
                                 </span>
-                                <span class="whitespace-nowrap text-xl font-extrabold
-                                            text-orange-500 sm:text-2xl">
-                                    Rp 112.000
+                                <span class="whitespace-nowrap text-xl font-extrabold text-orange-500 sm:text-2xl">
+                                    {{ $totalPembayaran }}
                                 </span>
 
                             </div>

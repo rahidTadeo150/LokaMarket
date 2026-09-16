@@ -22,9 +22,6 @@ class keranjang extends Model
 
     public function detail()
     {
-        return $this->hasMany(
-            detail_keranjang::class,
-            'keranjang_id'
-        );
+        return $this->hasMany(detail_keranjang::class, 'keranjang_id');
     }
 }

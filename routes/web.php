@@ -49,7 +49,6 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::delete('/keranjang/clear-all', [keranjangController::class, 'clearCart'])->name('cust.keranjang.clearAll');
     Route::delete('/keranjang/{id}', [keranjangController::class, 'removeItem'])->name('cust.keranjang.delete');
 
-
     Route::get('/checkout', [UserController::class, 'checkoutPage'])->name('cust.checkout');
     Route::view('/pembayaran', 'user.pembayaran')->name('cust.pembayaran');
     Route::get('/invoice', [UserController::class, 'invoicePage'])->name('cust.invoice');

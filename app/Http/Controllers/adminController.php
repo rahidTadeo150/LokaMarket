@@ -14,4 +14,9 @@ class adminController extends Controller
     {
         return view('admin.admin-pengguna');
     }
+
+    public function kelolaTokoAdmin()
+    {
+        return view('admin.admin-kelolatoko');
+    }
 }

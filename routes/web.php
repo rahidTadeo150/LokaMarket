@@ -66,6 +66,7 @@ Route::get('/kategori-produk', [ProductController::class, 'kategoriPage'])->name
 
 Route::get('/dashboard-admin', [adminController::class, 'dashboardAdmin'])->name('admin.dashboard');
 Route::get('/dashboard-admin/pengguna', [adminController::class, 'penggunaAdmin'])->name('admin.pengguna');
+Route::get('/dashboard-admin/kelola-toko', [adminController::class, 'kelolaTokoAdmin'])->name('admin.kelolaToko');
 Route::view('/withdraw', 'admin.withdraw')->name('admin.withdraw');
 
 Route::get('/dashboard-seller', [sellerController::class, 'dashboardSeller'])->name('seller.dashboard');

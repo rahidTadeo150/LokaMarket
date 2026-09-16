@@ -33,7 +33,6 @@
 		<div class="flex flex-col gap-4 border-b border-orange-100 px-5 py-5 lg:flex-row lg:items-center lg:justify-between">
 			<div>
 				<h2 class="text-base font-bold text-[#3B2115]">Daftar Pengguna LokaMarket</h2>
-				<p class="mt-1 text-[11px] text-[#A58E81]">Menampilkan 7 dari 1.248 pengguna terdaftar</p>
 			</div>
 			<label class="relative block w-full lg:max-w-xs">
 				<span class="sr-only">Cari pengguna</span>
@@ -93,13 +92,6 @@
 
 		<div class="flex flex-col gap-3 border-t border-orange-100 px-5 py-4 text-[11px] text-[#A58E81] sm:flex-row sm:items-center sm:justify-between">
 			<span>Menampilkan 1 sampai 7 dari 1.248 pengguna</span>
-			<div class="flex items-center gap-1">
-				<button type="button" title="Halaman sebelumnya" class="flex h-8 w-8 items-center justify-center rounded-lg border border-orange-100 text-[#A58E81]"><i class="fa-solid fa-chevron-left text-[9px]"></i><span class="sr-only">Sebelumnya</span></button>
-				<button type="button" class="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-500 text-xs font-bold text-white">1</button>
-				<button type="button" class="flex h-8 w-8 items-center justify-center rounded-lg border border-orange-100 text-[#72594B]">2</button>
-				<button type="button" class="flex h-8 w-8 items-center justify-center rounded-lg border border-orange-100 text-[#72594B]">3</button>
-				<button type="button" title="Halaman berikutnya" class="flex h-8 w-8 items-center justify-center rounded-lg border border-orange-100 text-[#72594B]"><i class="fa-solid fa-chevron-right text-[9px]"></i><span class="sr-only">Berikutnya</span></button>
-			</div>
 		</div>
 	</section>
 @endsection

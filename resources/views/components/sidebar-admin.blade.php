@@ -62,9 +62,11 @@
 
                     <span>Pengguna</span>
                 </a>
-                <a href="#"
-                    class="group mb-1 flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-[#72594B] transition hover:bg-orange-50 hover:text-orange-600">
-                    <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-50 text-orange-500 group-hover:bg-white">
+                <a href="{{ route('admin.kelolaToko') }}"
+                    class="group mb-1 flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition
+    {{ request()->routeIs('admin.kelolaToko') ? 'bg-gradient-to-r from-orange-500 to-orange-600 font-semibold text-white shadow-md shadow-orange-200' : 'text-[#72594B] hover:bg-orange-50 hover:text-orange-600' }}">
+                    <span class="flex h-8 w-8 items-center justify-center rounded-lg
+        {{ request()->routeIs('admin.kelolaToko') ? 'bg-white/15' : 'bg-orange-50 text-orange-500 group-hover:bg-white' }}">
                         <i class="fa-solid fa-store text-xs"></i>
                     </span>
                     <span>Kelola Toko</span>

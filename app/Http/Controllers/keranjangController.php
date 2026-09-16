@@ -114,4 +114,18 @@ class KeranjangController extends Controller
             'message' => 'Keranjang Telah dikosongkan.',
         ]);
     }
+
+    public function removeItem($id)
+    {
+        $detail = detail_keranjang::whereHas('keranjang', function ($query) {
+                $query->where('user_id', Auth::id());
+            })->findOrFail($id);
+
+        $detail->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Produk berhasil dihapus dari keranjang.',
+        ]);
+    }
 }

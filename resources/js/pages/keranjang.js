@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
-    window.clearCart = function () {
+    window.openClearCartAlert = function () {
         clearCartModal.classList.remove('hidden');
         clearCartModal.classList.add('flex');
 
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     clearCartButton.addEventListener('click', function () {
-        window.clearCart();
+        window.openClearCartAlert();
     });
 
     cancelClearCart.addEventListener('click', function () {
@@ -44,67 +44,122 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-        confirmClearCart.addEventListener('click', function () {
-            const csrfTokenElement = document.querySelector('meta[name="csrf-token"]');
+    confirmClearCart.addEventListener('click', function () {
+        const csrfTokenElement = document.querySelector('meta[name="csrf-token"]');
 
-            if (!csrfTokenElement) {
-                console.error('CSRF token tidak ditemukan.');
+        if (!csrfTokenElement) {
+            console.error('CSRF token tidak ditemukan.');
+            return;
+        }
+
+        const csrfToken = csrfTokenElement.getAttribute('content');
+
+        confirmClearCart.disabled = true;
+
+        confirmClearCart.innerHTML = `
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            Menghapus...
+        `;
+
+        fetch('/keranjang/clear-all', {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+                'Accept': 'application/json'
+            }
+        }).then(function (response) {
+
+            return response.json();
+
+        }).then(function (data) {
+            if (!data.success) {
+                showOrderToast(data.message || 'Gagal mengosongkan keranjang.', 'error');
+
+                confirmClearCart.disabled = false;
+                confirmClearCart.innerHTML = 'Ya, Kosongkan';
+
                 return;
             }
 
-            const csrfToken = csrfTokenElement.getAttribute('content');
+            const cartBadges = document.querySelectorAll('[data-cart-count]');
 
-            confirmClearCart.disabled = true;
+            cartBadges.forEach(function (badge) {
+                badge.textContent = '0';
+                badge.classList.add('hidden');
+            });
 
-            confirmClearCart.innerHTML = `
-                <i class="fa-solid fa-spinner fa-spin"></i>
-                Menghapus...
-            `;
+            window.closeClearCartAlert();
 
-            fetch('/keranjang', {
-                method: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken,
-                    'Accept': 'application/json'
-                }
-            }).then(function (response) {
+            showOrderToast(data.message || 'Keranjang berhasil dikosongkan.', 'success');
 
-                return response.json();
+            setTimeout(function () {
+                window.location.reload();
+            }, 500);
+        }).catch(function (error) {
+            console.error('Error mengosongkan keranjang:', error);
 
-            }).then(function (data) {
+            showOrderToast('Terjadi kesalahan saat mengosongkan keranjang.', 'error');
+
+            confirmClearCart.disabled = false;
+            confirmClearCart.innerHTML = 'Ya, Kosongkan';
+        });
+
+    });
+
+    window.removeItem = function (detailId) {
+
+        const csrfTokenElement = document.querySelector('meta[name="csrf-token"]');
+
+        if (!csrfTokenElement) {
+            console.error('CSRF token tidak ditemukan.');
+            return;
+        }
+
+        const csrfToken = csrfTokenElement.getAttribute('content');
+
+        fetch(`/keranjang/${detailId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+                'Accept': 'application/json'
+            }
+
+        }).then(function (response) {
+
+            return response.json();
+
+        }).then(function (data) {
                 if (!data.success) {
-                    showOrderToast(data.message || 'Gagal mengosongkan keranjang.', 'error');
-
-                    confirmClearCart.disabled = false;
-                    confirmClearCart.innerHTML = 'Ya, Kosongkan';
-
+                    showOrderToast(data.message ||'Gagal menghapus produk.', 'error');
                     return;
                 }
 
                 const cartBadges = document.querySelectorAll('[data-cart-count]');
 
                 cartBadges.forEach(function (badge) {
-                    badge.textContent = '0';
-                    badge.classList.add('hidden');
+                    
+                    if (data.cart_count > 0) {
+                        badge.textContent = data.cart_count;
+                        badge.classList.remove('hidden');
+                    } else {
+                        badge.textContent = '0';
+                        badge.classList.add('hidden');
+                    }
+
                 });
 
-                window.closeClearCartAlert();
-
-                showOrderToast(data.message || 'Keranjang berhasil dikosongkan.', 'success');
+                showOrderToast(data.message || 'Produk berhasil dihapus dari keranjang.', 'success');
 
                 setTimeout(function () {
                     window.location.reload();
                 }, 500);
+
             }).catch(function (error) {
-                console.error('Error mengosongkan keranjang:', error);
-
-                showOrderToast('Terjadi kesalahan saat mengosongkan keranjang.', 'error');
-
-                confirmClearCart.disabled = false;
-                confirmClearCart.innerHTML = 'Ya, Kosongkan';
+                console.error('Error menghapus produk:', error);
+                showOrderToast('Terjadi kesalahan saat menghapus produk.', 'error');
             });
 
-        });
+    };
 
     window.showOrderToast = function (message, type = 'success') {
         const oldToast = document.getElementById('orderToast');

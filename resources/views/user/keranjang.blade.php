@@ -251,7 +251,7 @@
                                     Subtotal ({{ $totalItem }})
                                 </span>
                                 <span class="font-semibold text-[#3B2115]">
-                                    {{ $subtotal }}
+                                    Rp{{ number_format($subtotal, 0, ',', '.') }}
                                 </span>
 
                             </div>
@@ -262,7 +262,7 @@
                                     Ongkos Kirim
                                 </span>
                                 <span class="font-semibold text-[#3B2115]">
-                                    {{ $ongkir }}
+                                    Rp{{ number_format($ongkir, 0, ',', '.') }}
                                 </span>
 
                             </div>
@@ -294,7 +294,7 @@
                                     Total Pembayaran
                                 </span>
                                 <span class="whitespace-nowrap text-xl font-extrabold text-orange-500 sm:text-2xl">
-                                    {{ $totalPembayaran }}
+                                    Rp{{ number_format($totalPembayaran, 0, ',', '.') }}
                                 </span>
 
                             </div>

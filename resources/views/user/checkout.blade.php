@@ -66,10 +66,8 @@
 
                 <div class="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_380px]">
 
-                    {{-- LEFT --}}
                     <div class="space-y-6">
 
-                        {{-- ALAMAT PENGIRIMAN --}}
                         <div class="overflow-hidden rounded-3xl border border-[#F1DCC8] bg-white shadow-sm">
 
                             <div class="border-b border-[#F1DCC8] px-5 py-4 sm:px-6">
@@ -136,8 +134,6 @@
                             </div>
                         </div>
 
-
-                        {{-- PRODUK --}}
                         <div class="overflow-hidden rounded-3xl border border-[#F1DCC8] bg-white shadow-sm">
 
                             <div class="border-b border-[#F1DCC8] px-5 py-4 sm:px-6">
@@ -160,110 +156,151 @@
                                 </div>
                             </div>
 
-
                             <div class="divide-y divide-[#F1DCC8]">
 
-                                {{-- PRODUK 1 --}}
-                                <div class="flex gap-4 p-5 sm:p-6">
+                                <div class="space-y-4">
 
-                                    <div class="h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-[#FFF1E5] sm:h-24 sm:w-24">
-                                        <img
-                                            src="{{ asset('images/default-product.jpg') }}"
-                                            alt="Produk"
-                                            class="h-full w-full object-cover">
-                                    </div>
+                                    @forelse ($keranjang?->detail ?? [] as $detail)
 
-                                    <div class="min-w-0 flex-1">
+                                        @php
+                                            $produk = $detail->produk;
+                                            $subtotalItem = $produk->harga * $detail->quantity;
 
-                                        <div class="flex items-start justify-between gap-3">
+                                            $gambarProduk = $produk->gambar
+                                                ? asset('storage/' . $produk->gambar)
+                                                : asset('images/default-product.jpg');
+                                        @endphp
 
-                                            <div>
-                                                <p class="text-sm font-semibold text-[#3B2115]">
-                                                    Ayam Geprek Sambal Matah
-                                                </p>
+                                        <div class="group overflow-hidden rounded-3xl border border-orange-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-orange-100/50">
 
-                                                <p class="mt-1 text-xs text-[#A58C7D]">
-                                                    Dapur Bu Siti
-                                                </p>
+                                            <div class="flex gap-4 p-4 sm:gap-5 sm:p-5">
+
+                                                <div class="relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl bg-[#FFF1E5] sm:h-28 sm:w-28">
+
+                                                    <img src="{{ $gambarProduk }}"
+                                                        alt="{{ $produk->nama }}"
+                                                        class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
+
+                                                    <div class="absolute bottom-2 left-2 flex items-center gap-1 rounded-lg bg-[#3B2115]/90 px-2 py-1 text-[10px] font-bold text-white backdrop-blur-sm">
+                                                        <i class="fa-solid fa-box text-[9px]"></i>
+                                                        {{ $detail->quantity }}x
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="min-w-0 flex-1">
+
+                                                    <div class="flex items-start justify-between gap-3">
+
+                                                        <div class="min-w-0">
+
+                                                            @if ($produk->kategori)
+                                                                <span class="inline-flex items-center gap-1 rounded-full bg-orange-50 px-2.5 py-1 text-[10px] font-semibold text-orange-600">
+                                                                    <i class="fa-solid fa-tag text-[9px]"></i>
+                                                                    {{ $produk->kategori->nama }}
+                                                                </span>
+                                                            @endif
+
+                                                            <p class="mt-2 line-clamp-2 text-sm font-bold leading-snug text-[#3B2115] sm:text-base">
+                                                                {{ $produk->nama }}
+                                                            </p>
+
+                                                            @if ($produk->toko)
+                                                                <p class="mt-1.5 flex items-center gap-1.5 text-xs text-[#A58C7D]">
+                                                                    <i class="fa-solid fa-store text-[10px]"></i>
+                                                                    {{ $produk->toko->nama_toko }}
+                                                                </p>
+                                                            @endif
+
+                                                        </div>
+
+                                                        <div class="shrink-0 text-right">
+
+                                                            <p class="text-xs text-[#A58C7D]">
+                                                                Harga
+                                                            </p>
+                                                            <p class="mt-0.5 text-sm font-bold text-[#C1440E] sm:text-base">
+                                                                Rp{{ number_format($produk->harga, 0, ',', '.') }}
+                                                            </p>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="my-4 border-t border-orange-50"></div>
+
+                                                    <div class="flex items-center justify-between gap-3">
+
+                                                        <div class="flex items-center gap-2">
+
+                                                            <span class="text-xs text-[#A58C7D]">
+                                                                Jumlah
+                                                            </span>
+
+                                                            <span class="inline-flex min-w-8 items-center justify-center rounded-lg bg-[#FFF7F0] px-2 py-1 text-xs font-bold text-[#72594B]">
+                                                                {{ $detail->quantity }}
+                                                            </span>
+
+                                                        </div>
+
+                                                        <div class="text-right">
+
+                                                            <p class="text-[10px] uppercase tracking-wide text-[#A58C7D]">
+                                                                Subtotal
+                                                            </p>
+
+                                                            <p class="mt-0.5 text-sm font-extrabold text-[#3B2115] sm:text-base">
+                                                                Rp{{ number_format($subtotalItem, 0, ',', '.') }}
+                                                            </p>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
                                             </div>
 
-                                            <p class="shrink-0 text-sm font-bold text-[#C1440E]">
-                                                Rp25.000
-                                            </p>
-
                                         </div>
 
-                                        <div class="mt-4 flex items-center justify-between">
+                                    @empty
 
-                                            <p class="text-xs text-[#72594B]">
-                                                1 produk
-                                            </p>
+                                        {{-- KERANJANG KOSONG --}}
+                                        <div
+                                            class="rounded-3xl border border-dashed border-orange-200
+                                                bg-white px-6 py-12 text-center">
 
-                                            <p class="text-xs font-medium text-[#72594B]">
-                                                Qty: 1
-                                            </p>
+                                            <div
+                                                class="mx-auto flex h-16 w-16 items-center justify-center
+                                                    rounded-2xl bg-orange-50 text-orange-400">
 
-                                        </div>
+                                                <i class="fa-solid fa-cart-shopping text-2xl"></i>
 
-                                    </div>
-
-                                </div>
-
-
-                                {{-- PRODUK 2 --}}
-                                <div class="flex gap-4 p-5 sm:p-6">
-
-                                    <div class="h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-[#FFF1E5] sm:h-24 sm:w-24">
-                                        <img
-                                            src="{{ asset('images/default-product.jpg') }}"
-                                            alt="Produk"
-                                            class="h-full w-full object-cover">
-                                    </div>
-
-                                    <div class="min-w-0 flex-1">
-
-                                        <div class="flex items-start justify-between gap-3">
-
-                                            <div>
-                                                <p class="text-sm font-semibold text-[#3B2115]">
-                                                    Keripik Pisang Coklat
-                                                </p>
-
-                                                <p class="mt-1 text-xs text-[#A58C7D]">
-                                                    UMKM Lokal Jember
-                                                </p>
                                             </div>
 
-                                            <p class="shrink-0 text-sm font-bold text-[#C1440E]">
-                                                Rp18.000
+                                            <h3 class="mt-4 text-base font-bold text-[#3B2115]">
+                                                Keranjang masih kosong
+                                            </h3>
+
+                                            <p class="mx-auto mt-1 max-w-sm text-xs leading-relaxed text-[#A58C7D]">
+                                                Belum ada produk yang bisa diproses ke halaman checkout.
                                             </p>
 
                                         </div>
 
-                                        <div class="mt-4 flex items-center justify-between">
-
-                                            <p class="text-xs text-[#72594B]">
-                                                1 produk
-                                            </p>
-
-                                            <p class="text-xs font-medium text-[#72594B]">
-                                                Qty: 2
-                                            </p>
-
-                                        </div>
-
-                                    </div>
+                                    @endforelse
 
                                 </div>
 
                             </div>
+
                         </div>
 
 
-                        {{-- CATATAN --}}
                         <div class="rounded-3xl border border-[#F1DCC8] bg-white p-5 shadow-sm sm:p-6">
 
                             <div class="flex items-center gap-3">
+
                                 <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#FFF1E5] text-[#FF6B00]">
                                     <i class="fa-regular fa-note-sticky"></i>
                                 </div>
@@ -272,23 +309,21 @@
                                     <h2 class="text-base font-bold text-[#3B2115]">
                                         Catatan Pesanan
                                     </h2>
-
                                     <p class="text-xs text-[#A58C7D]">
                                         Tambahkan catatan untuk penjual
                                     </p>
                                 </div>
+
                             </div>
 
-                            <textarea
-                                name="catatan"
-                                rows="3"
-                                placeholder="Contoh: Tolong jangan terlalu pedas..."
-                                class="mt-4 w-full resize-none rounded-2xl border border-[#E9D7C9] bg-[#FFF9F4] px-4 py-3 text-sm text-[#3B2115] placeholder-[#A58C7D] outline-none transition focus:border-[#FF6B00] focus:ring-2 focus:ring-[#FFD1AD]"></textarea>
+                            <textarea name="catatan"
+                                    rows="3"
+                                    placeholder="Contoh: Tolong jangan terlalu pedas..."
+                                    class="mt-4 w-full resize-none rounded-2xl border border-[#E9D7C9] bg-[#FFF9F4] px-4 py-3 text-sm text-[#3B2115] placeholder-[#A58C7D] outline-none transition focus:border-[#FF6B00] focus:ring-2 focus:ring-[#FFD1AD]">
+                            </textarea>
 
                         </div>
 
-
-                        {{-- PEMBAYARAN --}}
                         <div class="rounded-3xl border border-[#F1DCC8] bg-white p-5 shadow-sm sm:p-6">
 
                             <div class="flex items-center gap-3">
@@ -298,13 +333,14 @@
                                 </div>
 
                                 <div>
+
                                     <h2 class="text-base font-bold text-[#3B2115]">
                                         Metode Pembayaran
                                     </h2>
-
                                     <p class="text-xs text-[#A58C7D]">
                                         Pilih metode pembayaran
                                     </p>
+
                                 </div>
 
                             </div>
@@ -313,8 +349,8 @@
                             <div class="mt-5 space-y-3">
 
                                 <label class="relative block cursor-pointer">
-                                    <input
-                                        type="radio"
+
+                                    <input type="radio"
                                         name="payment_method"
                                         value="cod"
                                         class="peer sr-only"
@@ -332,7 +368,6 @@
                                                 <span class="block text-sm font-semibold text-[#3B2115]">
                                                     Cash On Delivery
                                                 </span>
-
                                                 <span class="mt-0.5 block text-xs text-[#A58C7D]">
                                                     Bayar saat pesanan diterima
                                                 </span>
@@ -349,8 +384,7 @@
 
 
                                 <label class="relative block cursor-pointer">
-                                    <input
-                                        type="radio"
+                                    <input type="radio"
                                         name="payment_method"
                                         value="bank_transfer"
                                         class="peer sr-only">
@@ -424,13 +458,11 @@
                     </div>
 
 
-                    {{-- RIGHT : RINGKASAN --}}
                     <aside class="lg:sticky lg:top-24">
 
                         <div class="overflow-hidden rounded-3xl border border-[#F1DCC8] bg-white shadow-sm">
 
-                            {{-- HEADER --}}
-                            <div class="relative overflow-hidden bg-gradient-to-br from-orange-400 to-orange-600 px-5 py-5 text-white">
+                            <div class="relative overflow-hidden bg-linear-to-br from-orange-400 to-orange-600 px-5 py-5 text-white">
 
                                 <div class="absolute -right-6 -top-6 h-20 w-20 rounded-full bg-white/10"></div>
                                 <div class="absolute -bottom-8 -left-5 h-16 w-16 rounded-full bg-orange-300/20"></div>
@@ -455,8 +487,6 @@
 
                             </div>
 
-
-                            {{-- SUMMARY --}}
                             <div class="p-5 sm:p-6">
 
                                 <div class="space-y-3">
@@ -465,9 +495,8 @@
                                         <span class="text-[#72594B]">
                                             Total Produk
                                         </span>
-
                                         <span class="font-medium text-[#3B2115]">
-                                            Rp61.000
+                                            Rp{{ number_format($subtotal, 0, ',', '.') }}
                                         </span>
                                     </div>
 
@@ -477,7 +506,7 @@
                                         </span>
 
                                         <span class="font-medium text-[#3B2115]">
-                                            Rp10.000
+                                            Rp{{ number_format($ongkir, 0, ',', '.') }}
                                         </span>
                                     </div>
 
@@ -495,12 +524,12 @@
                                         </p>
 
                                         <p class="mt-1 text-xl font-bold text-[#C1440E]">
-                                            Rp71.000
+                                            Rp{{ number_format($totalPembayaran, 0, ',', '.') }}
                                         </p>
                                     </div>
 
                                     <span class="rounded-full bg-[#FFF1E5] px-3 py-1 text-[10px] font-semibold text-[#C1440E]">
-                                        3 Produk
+                                        {{ $totalItem }} Produk
                                     </span>
 
                                 </div>

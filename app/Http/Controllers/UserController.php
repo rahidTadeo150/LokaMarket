@@ -65,16 +65,29 @@ class UserController extends Controller
 
     public function checkoutPage()
     {
-        $produk = produk::with('toko')
-            ->where('is_active', true)
-            ->latest()
-            ->take(3)
-            ->get();
+        $keranjang = keranjang::with(['detail.produk.toko', 'detail.produk.kategori',])->where('user_id', Auth::id())->first();
 
-        return view('user.checkout', [
-            'user' => Auth::user(),
-            'produk' => $produk,
-        ]);
+        $subtotal = 0;
+        $totalItem = 0;
+
+        if ($keranjang) {
+            foreach ($keranjang->detail as $detail) {
+                $subtotal += $detail->produk->harga * $detail->quantity;
+                $totalItem += $detail->quantity;
+            }
+        }
+
+        $ongkir = $totalItem > 0 ? 15000 : 0;
+
+        $totalPembayaran = $subtotal + $ongkir;
+
+        return view('user.checkout', compact(
+            'keranjang',
+            'subtotal',
+            'totalItem',
+            'ongkir',
+            'totalPembayaran',
+        ));
     }
 
     public function invoicePage()

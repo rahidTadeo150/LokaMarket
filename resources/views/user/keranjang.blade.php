@@ -53,7 +53,7 @@
                             Total item dalam keranjang
                         </p>
                         <p class="mt-0.5 text-2xl font-bold">
-                            4
+                            {{ $totalItem }}
                         </p>
 
                     </div>

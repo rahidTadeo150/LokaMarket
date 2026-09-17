@@ -35,7 +35,7 @@ class UserController extends Controller
 
     public function keranjangPage()
     {
-       $keranjang = keranjang::with(['detail.produk.toko', 'detail.produk.kategori',])->where('user_id', Auth::id())->first();
+        $keranjang = keranjang::with(['detail.produk.toko', 'detail.produk.kategori',])->where('user_id', Auth::id())->first();
 
         $subtotal = 0;
         $totalItem = 0;
@@ -67,6 +67,13 @@ class UserController extends Controller
     {
         $keranjang = keranjang::with(['detail.produk.toko', 'detail.produk.kategori',])->where('user_id', Auth::id())->first();
 
+        if (!$keranjang || $keranjang->detail->isEmpty()) {
+            return redirect()->route('cust.keranjang')->with(
+                'error', 
+                'Keranjang masih kosong. Silakan tambahkan produk terlebih dahulu.'
+            );
+        }
+        
         $subtotal = 0;
         $totalItem = 0;
 

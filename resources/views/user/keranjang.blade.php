@@ -65,6 +65,33 @@
         </section>
 
         <section class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
+            
+            @if (session('error'))
+            <div id="error-alert"
+                class="mb-6 flex items-center gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3">
+
+                <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-500">
+                    <i class="fa-solid fa-circle-exclamation text-sm"></i>
+                </div>
+
+                <div class="min-w-0 flex-1">
+                    <p class="text-sm font-bold text-red-700">
+                        Perhatian
+                    </p>
+                    <p class="mt-0.5 text-xs text-red-600">
+                        {{ session('error') }}
+                    </p>
+                </div>
+
+                <button type="button"
+                        id="close-error-alert"
+                        class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-red-400 transition hover:bg-red-100 hover:text-red-600">
+                    <i class="fa-solid fa-xmark text-xs"></i>
+                </button>
+
+            </div>
+            @endif
+
             <div class="grid grid-cols-1 gap-5 items-start lg:gap-6 lg:grid-cols-[minmax(0,1fr)_400px]">
 
                 <div class="overflow-hidden rounded-3xl border-2 border-orange-100 bg-white shadow-lg">
@@ -299,12 +326,11 @@
 
                             </div>
 
-                            <button type="button"
+                            <a href="{{ route('cust.checkout') }}"
                                     class="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-linear-to-r from-orange-500 to-orange-600 px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-orange-200 transition duration-300 hover:-translate-y-0.5 hover:shadow-xl active:scale-[0.98]">
                                 Checkout Sekarang
                                 <i class="fa-solid fa-arrow-right text-xs"></i>
-
-                            </button>
+                            </a>
 
 
                             <button type="button"

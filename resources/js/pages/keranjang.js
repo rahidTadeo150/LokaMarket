@@ -206,4 +206,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
         }, 2500);
     }
+
+    const errorAlert = document.getElementById('error-alert');
+    const closeErrorAlert = document.getElementById('close-error-alert');
+
+    if (errorAlert && closeErrorAlert) {
+        closeErrorAlert.addEventListener('click', function () {
+            errorAlert.remove();
+        });
+    }
+    
 });

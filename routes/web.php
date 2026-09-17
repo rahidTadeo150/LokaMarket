@@ -69,6 +69,7 @@ Route::get('/dashboard-admin/pengguna', [adminController::class, 'penggunaAdmin'
 Route::get('/dashboard-admin/kelola-toko', [adminController::class, 'kelolaTokoAdmin'])->name('admin.kelolaToko');
 Route::view('/withdraw', 'admin.withdraw')->name('admin.withdraw');
 Route::view('/pengajuan-toko', 'admin.pengajuan-toko')->name('admin.pengajuanToko');
+Route::view('/admin-seting', 'admin.admin-seting')->name('admin.pengaturan');
 
 Route::get('/dashboard-seller', [sellerController::class, 'dashboardSeller'])->name('seller.dashboard');
 Route::view('/dashboard-seller/laporan', 'seller.laporan-seller')->name('seller.laporan');

@@ -5,6 +5,7 @@ use App\Http\Controllers\alamatController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\keranjangController;
 use App\Http\Controllers\ongkirController;
+use App\Http\Controllers\paymentController;
 use App\Http\Controllers\pengajuanTokoController;
 use App\Http\Controllers\pesananController;
 use App\Http\Controllers\regions;
@@ -43,6 +44,25 @@ Route::post('/register-customer', [AuthController::class, 'registerCustomer'])->
 Route::get('/register-penjual', [AuthController::class, 'showRegisterPenjualForm'])->name('seller.register');
 Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
+Route::get('/', [UserController::class, 'landingPage'])->name('cust.landingPage');
+Route::get('/cara-kerja', [UserController::class, 'caraKerjaPage'])->name('cust.caraKerja');
+Route::get('/tentang-kami', [UserController::class, 'tentangKamiPage'])->name('cust.tentangKami');
+Route::get('/pilihan-produk/{kategori?}/{sort?}', [ProductController::class, 'pilihanProduk'])->name('cust.pilihanProduk');
+Route::get('/kategori-produk', [ProductController::class, 'kategoriPage'])->name('cust.kategori');
+
+Route::get('/profil-admin', [adminController::class, 'profilAdminPage'])->name('admin.myProfil');
+Route::post('/logout-admin', [AuthController::class, 'logoutAdmin'])->name('admin.logout');
+
+Route::get('/dashboard-admin', [adminController::class, 'dashboardAdmin'])->name('admin.dashboard');
+Route::get('/pengguna', [adminController::class, 'penggunaPage'])->name('admin.pengguna');
+Route::get('/withdraw', [adminController::class, 'withdrawPage'])->name('admin.withdraw');
+
+Route::get('/pengajuan-toko', [adminController::class, 'pengajuanTokoPage'])->name('admin.pengajuanToko');
+Route::get('/detail-pengajuan/{id}', [adminController::class, 'detailPengajuanPage'])->name('admin.pengajuanToko.detail');
+
+Route::get('/regions/kota/{provinsi_id}', [regions::class, 'getKota'])->name('regions.kota');
+Route::get('/regions/kecamatan/{kota_id}', [regions::class, 'getKecamatan'])->name('regions.kecamatan');
+
 Route::middleware(['auth', 'role:customer,pemilik_toko'])->group(function () {
 
     Route::get('/rajaongkir/kecamatan/{kecamatan}/mapping', [ongkirController::class, 'mappingRajaOngkir'])->name('ongkir.mapping');
@@ -70,16 +90,17 @@ Route::middleware(['auth', 'role:customer,pemilik_toko'])->group(function () {
     Route::delete('/keranjang/clear-all', [keranjangController::class, 'clearCart'])->name('cust.keranjang.clearAll');
     Route::delete('/keranjang/{id}', [keranjangController::class, 'removeItem'])->name('cust.keranjang.delete');
 
-    Route::get('/pesanan-saya', [CheckoutController::class, 'pesananSayaPage'])->name('cust.pesananSaya');
-    Route::post('/pesanan/{nomor_pesanan}/return', [CheckoutController::class, 'pengajuanReturn'])->name('cust.pesanan.return');
-    Route::post('/pesanan/{nomor_pesanan}/selesai', [CheckoutController::class, 'pesananSelesai'])->name('cust.pesanan.selesai');
+    Route::get('/pesanan-saya', [UserController::class, 'pesananSayaPage'])->name('cust.pesananSaya');
+    Route::post('/pesanan/{nomor_pesanan}/return', [UserController::class, 'pengajuanReturn'])->name('cust.pesanan.return');
+    Route::post('/pesanan/{nomor_pesanan}/selesai', [UserController::class, 'pesananSelesai'])->name('cust.pesanan.selesai');
 
     Route::get('/checkout', [UserController::class, 'checkoutPage'])->name('cust.checkout');
     Route::post('/checkout/beli-sekarang', [CheckoutController::class, 'beliSekarang'])->name('cust.checkout.beliSekarang');
     Route::get('/checkout/instan', [CheckoutController::class, 'checkoutLangsung'])->name('cust.checkout.langsung');
-    Route::post('checkout/pembayaran', [CheckoutController::class, 'checkoutPayment'])->name('cust.checkout.pay');
-    Route::get('checkout/status/{nomor_pesanan}', [CheckoutController::class, 'checkoutStatusPage'])->name('cust.checkout.status');
-    Route::post('/checkout/{nomor_pesanan}/cancel', [CheckoutController::class, 'cancelOrder',])->name('cust.checkout.cancel');
+
+    Route::post('checkout/pembayaran', [paymentController::class, 'checkoutPayment'])->name('cust.checkout.pay');
+    Route::get('checkout/status/{nomor_pesanan}', [UserController::class, 'checkoutStatusPage'])->name('cust.checkout.status');
+    Route::post('/checkout/{nomor_pesanan}/cancel', [pesananController::class, 'cancelOrder',])->name('cust.checkout.cancel');
 
     Route::get('checkout/invoice', [UserController::class, 'invoicePage'])->name('cust.invoice');
 
@@ -92,23 +113,8 @@ Route::middleware(['auth', 'role:customer,pemilik_toko'])->group(function () {
     Route::get('/edit-alamat/{id}', [UserController::class, 'formEditAlamat'])->name('cust.formEditAlamat');
     Route::put('/edit-alamat/{id}', [alamatController::class, 'updateAlamat'])->name('cust.updateAlamat');
     Route::post('/alamat/{alamat}/set-default', [alamatController::class, 'setDefault'])->name('cust.setDefaultAlamat');
+    
 });
-
-Route::get('/', [UserController::class, 'landingPage'])->name('cust.landingPage');
-Route::get('/cara-kerja', [UserController::class, 'caraKerjaPage'])->name('cust.caraKerja');
-Route::get('/tentang-kami', [UserController::class, 'tentangKamiPage'])->name('cust.tentangKami');
-Route::get('/pilihan-produk/{kategori?}/{sort?}', [ProductController::class, 'pilihanProduk'])->name('cust.pilihanProduk');
-Route::get('/kategori-produk', [ProductController::class, 'kategoriPage'])->name('cust.kategori');
-
-Route::get('/profil-admin', [adminController::class, 'profilAdminPage'])->name('admin.myProfil');
-Route::post('/logout-admin', [AuthController::class, 'logoutAdmin'])->name('admin.logout');
-
-Route::get('/dashboard-admin', [adminController::class, 'dashboardAdmin'])->name('admin.dashboard');
-Route::get('/pengguna', [adminController::class, 'penggunaPage'])->name('admin.pengguna');
-Route::get('/withdraw', [adminController::class, 'withdrawPage'])->name('admin.withdraw');
-
-Route::get('/pengajuan-toko', [adminController::class, 'pengajuanTokoPage'])->name('admin.pengajuanToko');
-Route::get('/detail-pengajuan/{id}', [adminController::class, 'detailPengajuanPage'])->name('admin.pengajuanToko.detail');
 
 Route::middleware(['auth', 'role:pemilik_toko'])->group(function () {
 
@@ -157,6 +163,3 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/approve-toko/{id}', [pengajuanTokoController::class, 'approvePengajuan'])->name('admin.approvePengajuan');
     Route::post('/reject-toko/{id}', [pengajuanTokoController::class, 'rejectPengajuan'])->name('admin.rejectPengajuan');
 });
-
-Route::get('/regions/kota/{provinsi_id}', [regions::class, 'getKota'])->name('regions.kota');
-Route::get('/regions/kecamatan/{kota_id}', [regions::class, 'getKecamatan'])->name('regions.kecamatan');

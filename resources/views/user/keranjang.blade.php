@@ -281,17 +281,6 @@
 
                             </div>
 
-                            <div class="mt-5 flex items-center justify-between text-sm">
-
-                                <span class="text-[#72594B]">
-                                    Ongkos Kirim
-                                </span>
-                                <span class="font-semibold text-[#3B2115]">
-                                    Rp{{ number_format($ongkir, 0, ',', '.') }}
-                                </span>
-
-                            </div>
-
                             <div class="mt-5 flex items-center gap-3 rounded-2xl bg-orange-50 p-4">
 
                                 <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-orange-500 shadow-sm">

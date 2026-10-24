@@ -10,10 +10,9 @@ return new class extends Migration
     {
         Schema::create('detail_pesanan', function (Blueprint $table) {
             $table->id();
-
             $table->foreignId('pesanan_id')->constrained('pesanan')->cascadeOnDelete();
             $table->foreignId('produk_id')->constrained('produk')->restrictOnDelete();
-
+            $table->foreignId('pesanan_toko_id')->nullable()->constrained('pesanan_toko')->restrictOnDelete();
             $table->string('nama_produk');
             $table->decimal('harga', 15, 2);
             $table->unsignedInteger('quantity');

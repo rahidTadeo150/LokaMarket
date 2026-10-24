@@ -94,14 +94,10 @@
 
                             @csrf
 
-                            <button type="button" 
-                                    data-confirm data-form="cancelOrderForm" 
-                                    data-theme="red"
-                                    data-title="Cancel Order?" 
-                                    data-message="Apakah kamu yakin ingin membatalkan pesanan ini?"
-                                    data-confirm-text="Ya, batal" 
-                                    data-icon="fa-solid fa-file-circle-minus"
-                                    class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50 px-5 py-3 font-semibold text-red-600 transition hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto">
+                            <button type="button" data-confirm data-form="cancelOrderForm" data-theme="red"
+                                data-title="Cancel Order?" data-message="Apakah kamu yakin ingin membatalkan pesanan ini?"
+                                data-confirm-text="Ya, batal" data-icon="fa-solid fa-file-circle-minus"
+                                class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50 px-5 py-3 font-semibold text-red-600 transition hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto">
                                 <i class="fa-solid fa-file-circle-minus"></i>
                                 Cancel order
                             </button>
@@ -158,16 +154,16 @@
 
                                 <span class="text-right font-semibold text-[#3B2115]">
                                     @switch($pesanan->payment_method)
-                                        @case('cod')
-                                            Bayar di Tempat (COD)
+                                        @case('other_qris')
+                                            Other Qris
                                         @break
 
                                         @case('bank_transfer')
                                             Transfer Bank
                                         @break
 
-                                        @case('ewallet')
-                                            E-Wallet / QRIS
+                                        @case('ovo_va')
+                                            Ovo
                                         @break
 
                                         @default
@@ -180,7 +176,11 @@
                             <div class="flex items-center justify-between gap-4 text-sm">
                                 <span class="text-[#72594B]">Waktu Pembayaran</span>
                                 <span class="text-right font-medium text-[#3B2115]">
-                                    {{ $pesanan->dibayar_at?->translatedFormat('d M Y, H:i') ?? 'Belum dibayar' }}
+                                    @if ($pesanan->status === 'dibatalkan')
+                                        Canceled
+                                    @else
+                                        {{ $pesanan->dibayar_at?->translatedFormat('d M Y, H:i') ?? 'Belum Lunas' }}
+                                    @endif
                                 </span>
                             </div>
 
@@ -285,8 +285,7 @@
             <div class="mt-6 flex flex-col-reverse gap-3 sm:flex-row">
 
                 @if (in_array($pesanan->status, ['diantar', 'dikirim'], true))
-                    <button type="button" 
-                        data-return-modal-open
+                    <button type="button" data-return-modal-open
                         class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50 px-6 py-3 font-semibold text-red-600 transition hover:bg-red-100 sm:w-auto">
                         <i class="fa-solid fa-rotate-left"></i>
                         Ajukan return
@@ -310,11 +309,12 @@
 
         </div>
 
-        <div id="returnModal" 
-            data-has-errors="{{ $errors->has('return') || $errors->has('alasan_return') || $errors->has('keterangan_return') || $errors->has('foto_return') || collect($errors->keys())->contains(fn ($key) => str_starts_with($key, 'foto_return.')) ? '1' : '0' }}"
+        <div id="returnModal"
+            data-has-errors="{{ $errors->has('return') || $errors->has('alasan_return') || $errors->has('keterangan_return') || $errors->has('foto_return') || collect($errors->keys())->contains(fn($key) => str_starts_with($key, 'foto_return.')) ? '1' : '0' }}"
             class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
-            
-            <div class="max-h-[90vh] w-full max-w-2xl overflow-y-auto hide-scrollbar rounded-2xl bg-white p-5 shadow-xl sm:p-7">
+
+            <div
+                class="max-h-[90vh] w-full max-w-2xl overflow-y-auto hide-scrollbar rounded-2xl bg-white p-5 shadow-xl sm:p-7">
 
                 <div class="flex items-start justify-between gap-4">
 
@@ -337,9 +337,7 @@
 
                 <form id="returnOrderForm"
                     action="{{ route('cust.pesanan.return', ['nomor_pesanan' => $pesanan->nomor_pesanan]) }}"
-                    method="POST" 
-                    enctype="multipart/form-data" 
-                    class="mt-6 space-y-5">
+                    method="POST" enctype="multipart/form-data" class="mt-6 space-y-5">
 
                     @csrf
 
@@ -396,7 +394,7 @@
 
                         <label for="foto_return"
                             class="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-orange-200 bg-orange-50/50 p-6 text-center transition hover:border-orange-500">
-                            
+
                             <i class="fa-solid fa-cloud-arrow-up text-3xl text-orange-500"></i>
 
                             <span class="mt-3 text-sm font-semibold text-[#3B2115]">
@@ -409,7 +407,7 @@
 
                             <input id="foto_return" name="foto_return[]" type="file"
                                 accept="image/jpeg,image/png,image/webp" multiple required class="sr-only">
-                        
+
                         </label>
 
                         <p id="namaFotoReturn" class="mt-2 text-sm text-gray-500">
@@ -448,7 +446,7 @@
 
         </div>
 
-        <x-custom-alert-confirmation/>
+        <x-custom-alert-confirmation />
 
     </main>
 

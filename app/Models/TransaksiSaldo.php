@@ -11,6 +11,7 @@ class TransaksiSaldo extends Model
     protected $fillable = [
         'saldo_penjual_id',
         'pesanan_id',
+        'pesanan_toko_id',
         'penarikan_saldo_id',
         'referensi',
         'jenis',
@@ -30,16 +31,21 @@ class TransaksiSaldo extends Model
 
     public function saldoPenjual()
     {
-        return $this->belongsTo(SaldoPenjual::class, 'saldo_penjual_id');
+        return $this->belongsTo(SaldoPenjual::class, 'saldo_penjual_id' );
     }
 
     public function pesanan()
     {
-        return $this->belongsTo(Pesanan::class, 'pesanan_id');
+        return $this->belongsTo(pesanan::class, 'pesanan_id' );
+    }
+
+    public function pesananToko()
+    {
+        return $this->belongsTo(pesanan_toko::class, 'pesanan_toko_id' );
     }
 
     public function penarikanSaldo()
     {
-        return $this->belongsTo(PenarikanSaldo::class, 'penarikan_saldo_id');
+        return $this->belongsTo(Penarikan_saldo::class, 'penarikan_saldo_id' );
     }
 }

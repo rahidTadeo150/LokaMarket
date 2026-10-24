@@ -161,7 +161,7 @@ class tokoController extends Controller
             'kota_id' => $request->kota,
             'kecamatan_id' => $request->kecamatan,
             'kode_pos' => $request->kode_pos,
-            'alamat_lengkap' => $request->alamat_lengkap,
+            'alamat_lengkap' =>  Str::title($pending->alamat_lengkap),
             'no_telepon' => $noTelp,
             'foto_ktp' => $fotoKtp,
             'token_verifikasi' => $token,
@@ -195,11 +195,13 @@ class tokoController extends Controller
         )->first();
 
         if (!$pending) {
+
             return redirect()->route('cust.login')
                 ->with(
                     'error',
                     'Link verifikasi tidak valid atau sudah digunakan.'
                 );
+                
         }
 
         if ($pending->token_expired_at && $pending->token_expired_at->isPast()) {
@@ -213,6 +215,7 @@ class tokoController extends Controller
                     'error',
                     'Link verifikasi sudah kedaluwarsa. Silakan kirim ulang email verifikasi.'
                 );
+
         }
 
         $pengajuan = pengajuan_Toko::create([

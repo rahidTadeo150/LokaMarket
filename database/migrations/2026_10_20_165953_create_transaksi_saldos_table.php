@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('saldo_penjual_id')->constrained('saldo_penjual')->cascadeOnDelete();
             $table->foreignId('pesanan_id')->nullable()->constrained('pesanan')->nullOnDelete();
             $table->foreignId('penarikan_saldo_id')->nullable()->constrained('penarikan_saldo')->nullOnDelete();
+            $table->foreignId('pesanan_toko_id')->nullable()->constrained('pesanan_toko')->nullOnDelete();
 
             $table->string('referensi')->unique();
             $table->string('jenis');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\alamat_pengguna;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class alamatController extends Controller {
 
@@ -47,7 +48,7 @@ class alamatController extends Controller {
             'kota_id' => $request->kota,
             'kecamatan_id' => $request->kecamatan,
             'kode_pos' => $request->kode_pos,
-            'alamat_lengkap' => $request->alamat_lengkap,
+            'alamat_lengkap' => Str::title($request->alamat_lengkap),
             'is_default' => $isDefault,
         ]);
 
@@ -92,7 +93,7 @@ class alamatController extends Controller {
             'kota_id' => $request->kota,
             'kecamatan_id' => $request->kecamatan,
             'kode_pos' => $request->kode_pos,
-            'alamat_lengkap' => $request->alamat_lengkap,
+            'alamat_lengkap' => Str::title($request->alamat_lengkap),
             'is_default' => $isDefault,
         ]);
 

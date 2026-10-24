@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class alert-error-relative extends Component
+class alert-session extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class alert-error-relative extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.alert-error-relative');
+        return view('components.alert-session');
     }
 }

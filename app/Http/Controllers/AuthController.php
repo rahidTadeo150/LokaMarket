@@ -15,28 +15,27 @@ use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
-    public function showRegisterForm()
-    {
+    public function showRegisterForm() {
         return view('auth.register-pembeli');
     }
 
-    public function showRegisterPenjualForm()
-    {
+    public function showRegisterPenjualForm() {
         return view('auth.register-penjual');
     }
 
-    public function showLoginForm()
-    {
+    public function showLoginForm() {
         return view('auth.login-page');
     }
 
-    public function showForgotPasswordForm()
-    {
+    public function showLoginAdmin() {
+        return view('auth.login-admin-panel');
+    }
+
+    public function showForgotPasswordForm() {
         return view('auth.lupa-password');
     }
 
-    public function sendResetLink(Request $request)
-    {
+    public function sendResetLink(Request $request) {
         $request->validate([
             'email' => 'required|email',
         ]);
@@ -69,16 +68,14 @@ class AuthController extends Controller
         );
     }
 
-    public function showResetPasswordForm(Request $request, string $token)
-    {
+    public function showResetPasswordForm(Request $request, string $token) {
         return view('auth.reset-password', [
             'token' => $token,
             'email' => $request->email,
         ]);
     }
 
-    public function resetPassword(Request $request)
-    {
+    public function resetPassword(Request $request) {
         $request->validate([
             'token' => 'required',
             'email' => 'required|email',
@@ -121,8 +118,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function loginCustomer(Request $request)
-    {
+    public function loginCustomer(Request $request) {
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
@@ -148,8 +144,7 @@ class AuthController extends Controller
         );
     }
 
-    public function registerCustomer(Request $request)
-    {
+    public function registerCustomer(Request $request) {
         $request->validate([
             'username' => 'required|string|max:255',
             'nama' => 'required|string|max:255',
@@ -164,7 +159,6 @@ class AuthController extends Controller
         $nama = Str::title(strtolower(trim($request->nama)));
 
         $noTelp = preg_replace('/\D/', '', $request->no_telp);
-
         $noTelp = '+62' . $noTelp;
 
         $token = Str::random(64);
@@ -199,8 +193,7 @@ class AuthController extends Controller
         return redirect()->route('verification.notice');
     }
 
-    public function verificationNotice()
-    {
+    public function verificationNotice() {
         $email = session('verification_email');
 
         if (!$email) {
@@ -216,8 +209,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function verifyRegistration($token)
-    {
+    public function verifyRegistration($token) {
         $pending = pending_registration::where('token', $token)
             ->where('expires_at', '>', now())
             ->first();
@@ -243,8 +235,7 @@ class AuthController extends Controller
             ->with('success', 'Email berhasil diverifikasi. Akun Anda telah dibuat.');
     }
 
-    public function resendVerification(Request $request)
-    {
+    public function resendVerification(Request $request) {
         $email = session('verification_email');
 
         if (!$email) {
@@ -285,8 +276,7 @@ class AuthController extends Controller
         );
     }
     
-    public function logout(Request $request)
-    {
+    public function logout(Request $request) {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
@@ -294,5 +284,43 @@ class AuthController extends Controller
         return redirect()
             ->route('cust.login')
             ->with('success', 'Anda berhasil keluar dari akun anda');
+    }
+
+    public function loginAdmin(Request $request)  {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $credentials = [
+            'email' => $request->email,
+            'password' => $request->password,
+            'role' => 'admin'
+        ];
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+
+            return redirect()->route('admin.dashboard')->with(
+                'success',
+                'Login berhasil. Selamat datang kembali!'
+            );
+        }
+
+        return back()->withInput($request->only('email'))->with(
+            'error',
+            'Email atau password yang Anda masukkan salah.'
+        );
+    }
+
+    public function logoutAdmin(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('cust.landingPage')
+            ->with('success', 'Anda berhasil keluar dari akun admin.');
     }
 }

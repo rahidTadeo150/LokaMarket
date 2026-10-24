@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     confirmClearCart.addEventListener('click', function () {
+        
         const csrfTokenElement = document.querySelector('meta[name="csrf-token"]');
 
         if (!csrfTokenElement) {
@@ -213,6 +214,157 @@ document.addEventListener('DOMContentLoaded', function () {
     if (errorAlert && closeErrorAlert) {
         closeErrorAlert.addEventListener('click', function () {
             errorAlert.remove();
+        });
+    }
+
+    window.increaseCart = function (detailId) {
+
+        updateCartQuantity(detailId, 'increase');
+    };
+
+    window.decreaseCart = function (detailId) {
+
+        updateCartQuantity(detailId, 'decrease');
+    };
+
+    function updateCartQuantity(detailId, action) {
+
+        const csrfTokenElement = document.querySelector('meta[name="csrf-token"]');
+
+        if (!csrfTokenElement) {
+            console.error('CSRF token tidak ditemukan.');
+            return;
+        }
+
+        const csrfToken = csrfTokenElement.getAttribute('content');
+        const quantityElement = document.getElementById(`quantity-${detailId}`);
+        const subtotalElement = document.getElementById(`subtotal-${detailId}`);
+
+
+        if (!quantityElement || !subtotalElement) {
+            return;
+        }
+
+        const buttons = document.querySelectorAll(
+                `button[onclick*="${action === 'increase'
+                    ? 'increaseCart'
+                    : 'decreaseCart'}(${detailId})"]`
+            );
+
+
+        buttons.forEach(function (button) {
+            button.disabled = true;
+        });
+
+
+        fetch(`/keranjang/${detailId}/quantity`, {
+
+            method: 'PATCH',
+
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+                'Accept': 'application/json'
+            },
+
+            body: JSON.stringify({
+                action: action
+            })
+
+        }).then(function (response) {
+
+            return response.json();
+
+        }).then(function (data) {
+
+            if (!data.success) {
+
+                showOrderToast(
+                    data.message ||
+                    'Gagal mengubah jumlah produk.',
+                    'error'
+                );
+
+                return;
+            }
+
+            quantityElement.textContent = data.quantity;
+            subtotalElement.textContent =
+                'Rp ' +
+                new Intl.NumberFormat('id-ID').format(
+                    data.item_subtotal
+                );
+
+            const subtotalCart = document.getElementById('cart-subtotal');
+
+            if (subtotalCart) {
+
+                subtotalCart.textContent =
+                    'Rp' +
+                    new Intl.NumberFormat('id-ID').format(
+                        data.subtotal
+                    );
+
+            }
+
+            const totalItemElement = document.getElementById('cart-total-item');
+
+            if (totalItemElement) {
+
+                totalItemElement.textContent =
+                    data.total_item;
+            }
+
+            const totalPayment = document.getElementById('cart-total-payment');
+
+            if (totalPayment) {
+
+                totalPayment.textContent =
+                    'Rp' +
+                    new Intl.NumberFormat('id-ID').format(
+                        data.total_pembayaran
+                    );
+
+            }
+
+            const cartBadges = document.querySelectorAll('[data-cart-count]');
+
+            cartBadges.forEach(function (badge) {
+
+                if (data.cart_count > 0) {
+
+                    badge.textContent = data.cart_count;
+                    badge.classList.remove('hidden');
+
+
+                } else {
+
+                    badge.textContent = '0';
+                    badge.classList.add('hidden');
+
+                }
+
+            });
+
+
+        }).catch(function (error) {
+
+            console.error(
+                'Error update quantity:',
+                error
+            );
+
+            showOrderToast(
+                'Terjadi kesalahan saat mengubah jumlah produk.',
+                'error'
+            );
+
+        }).finally(function () {
+
+            buttons.forEach(function (button) {
+                button.disabled = false;
+            });
+
         });
     }
     

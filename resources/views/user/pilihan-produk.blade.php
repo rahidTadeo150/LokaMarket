@@ -4,7 +4,7 @@
 
 @section('content')
     <main class="min-h-screen bg-[#FFF9F4]">
-        <section class="relative isolate overflow-hidden bg-gradient-to-br from-[#FFF3E2] to-[#FBAD51] px-4 py-8 sm:px-6 sm:py-10">
+        <section class="relative isolate overflow-hidden bg-linear-to-br from-[#FFF3E2] to-[#FBAD51] px-4 py-8 sm:px-6 sm:py-10">
            
             <div class="absolute -right-10 -top-10 -z-10 h-32 w-32 rounded-full bg-orange-300/30 blur-2xl"></div>
             <div class="absolute -bottom-8 -left-8 -z-10 h-24 w-24 rounded-full bg-white/30 blur-xl"></div>
@@ -61,25 +61,52 @@
 
         <section class="bg-[#FFF9F4] px-4 py-12 sm:px-6 md:py-16">
             <div class="mx-auto max-w-7xl">
+
                 <div class="mb-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 
                     <div class="flex-1">
-                        <div class="relative">
+                        <form id="searchForm"
+                            method="GET"
+                            action="{{ url()->current() }}"
+                            class="relative">
 
-                            <input type="text"
-                                    id="searchInput"
-                                    placeholder="Cari produk pilihan..."
-                                    autocomplete="off"
-                                    class="w-full rounded-full border border-gray-300 bg-white px-6 py-3 pr-12 text-[#3B2115] placeholder-[#A58C7D] transition focus:border-[#FF6B00] focus:outline-none focus:ring-2 focus:ring-[#FFD1AD]">
-                            <button type="button"
-                                    class="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-[#FF6B00] text-white transition hover:bg-[#E85D00]">
+                            <input type="hidden"
+                                    name="kategori"
+                                    value="{{ request('kategori') }}">
+
+                            <input type="hidden"
+                                    name="sort"
+                                    value="{{ request('sort', 'default') }}">
+
+                            <input type="search"
+                                id="searchInput"
+                                name="search"
+                                value="{{ request('search') }}"
+                                placeholder="Cari produk, toko, atau kategori..."
+                                autocomplete="off"
+                                maxlength="100"
+                                class="w-full rounded-full border border-gray-300 bg-white px-5 py-3 pr-24 text-sm text-[#3B2115] placeholder-[#A58C7D] transition focus:border-[#FF6B00] focus:outline-none focus:ring-2 focus:ring-[#FFD1AD]">
+
+                            @if (request()->filled('search'))
+                            <a href="{{ request()->url() . '?' . http_build_query(request()->except('search', 'page')) }}"
+                            class="absolute right-12 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-[#8A7568] transition hover:bg-orange-50 hover:text-orange-600"
+                            aria-label="Hapus pencarian">
+                                <i class="fa-solid fa-xmark"></i>
+                            </a>
+                            @endif
+
+                            <button type="submit"
+                                    class="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-[#FF6B00] text-white transition hover:bg-[#E85D00]"
+                                    aria-label="Cari produk">
                                 <i class="fa-solid fa-magnifying-glass text-sm"></i>
                             </button>
 
-                        </div>
+                        </form>
                     </div>
 
-                    <button type="button" onclick="toggleFilter()" class="inline-flex items-center justify-center gap-2 rounded-full border border-[#F1DCC8] bg-white px-4 py-3 text-sm font-medium text-[#72594B] shadow-sm transition hover:border-[#FF6B00] hover:text-[#C1440E] md:hidden">
+                    <button type="button"
+                            onclick="toggleFilter()"
+                            class="inline-flex items-center justify-center gap-2 rounded-full border border-[#F1DCC8] bg-white px-4 py-3 text-sm font-medium text-[#72594B] shadow-sm transition hover:border-[#FF6B00] hover:text-[#C1440E] md:hidden">
                         <i class="fa-solid fa-sliders"></i>
                         <span>Filter</span>
                     </button>
@@ -102,40 +129,68 @@
                     <div class="grid grid-cols-2 gap-3 sm:gap-5 xl:grid-cols-4">
 
                         @forelse ($produk as $item)
-                        <x-card-produk :produk="$item"/>
+                        <x-card-produk :produk="$item" />
                         @empty
-                            <div class="col-span-full py-12 text-center">
-                                <i class="fa-regular fa-face-frown text-4xl text-orange-300"></i>
-
-                                <h3 class="mt-4 text-lg font-bold text-[#3B2115]">
-                                    Produk belum tersedia
-                                </h3>
-
-                                <p class="mt-1 text-sm text-[#72594B]">
-                                    Belum ada produk yang tersedia saat ini.
-                                </p>
-                            </div>
-                        @endforelse
-
-                        <div id="searchEmpty"
-                            class="col-span-full hidden py-16 text-center">
+                        <div class="col-span-full rounded-2xl border border-[#F1DCC8] bg-white px-5 py-12 text-center">
 
                             <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#FFF1E5]">
                                 <i class="fa-solid fa-magnifying-glass text-2xl text-[#FF6B00]"></i>
                             </div>
-                            <h3 class="mt-5 text-lg font-bold text-[#3B2115]">
-                                Produk tidak ditemukan
+
+                            <h3 class="mt-4 text-lg font-bold text-[#3B2115]">
+                                @if (request()->filled('search'))
+                                    Produk tidak ditemukan
+                                @else
+                                    Produk belum tersedia
+                                @endif
                             </h3>
-                            <p class="mt-2 text-sm text-[#72594B]">
-                                Tidak ada produk yang sesuai dengan pencarian
-                                "<span id="searchKeyword" class="font-semibold text-[#C1440E]"></span>"
+
+                            <p class="mx-auto mt-2 max-w-md text-sm text-[#72594B]">
+                                @if (request()->filled('search'))
+                                Tidak ditemukan produk yang cocok dengan pencarian
+                                "{{ request('search') }}".
+                                @elseif (request()->filled('kategori'))
+                                Belum ada produk aktif pada kategori ini.
+                                @else
+                                Belum ada produk yang tersedia saat ini.
+                                @endif
                             </p>
-                            <button type="button"
-                                    id="clearSearch"
-                                    class="mt-5 rounded-full bg-[#FF6B00] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#E85D00]">
-                                <i class="fa-solid fa-rotate-left mr-2"></i>
-                                Hapus Pencarian
-                            </button>
+
+                            @if (request()->hasAny(['search', 'kategori', 'sort']))
+                            <a href="{{ url()->current() }}"
+                            class="mt-5 inline-flex items-center justify-center gap-2 rounded-full bg-[#FF6B00] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#E85D00]">
+                                <i class="fa-solid fa-rotate-left"></i>
+                                Reset Pencarian dan Filter
+                            </a>
+                            @endif
+
+                        </div>
+                        @endforelse
+
+                        <div class="col-span-full mt-4 border-t border-[#F1DCC8] pt-6">
+
+                            <div class="mb-4 flex flex-col gap-1 text-center text-xs text-[#72594B] sm:flex-row sm:items-center sm:justify-between sm:text-left">
+                                <p>
+                                    Menampilkan
+                                    <span class="font-semibold text-[#3B2115]">
+                                        {{ $produk->firstItem() ?? 0 }}–{{ $produk->lastItem() ?? 0 }}
+                                    </span>
+                                    dari
+                                    <span class="font-semibold text-[#3B2115]">
+                                        {{ $produk->total() }}
+                                    </span>
+                                    produk
+                                </p>
+
+                                <p>
+                                    Halaman {{ $produk->currentPage() }}
+                                    dari {{ $produk->lastPage() }}
+                                </p>
+                            </div>
+
+                            <div class="flex justify-center">
+                                {{ $produk->onEachSide(1)->links() }}
+                            </div>
 
                         </div>
 
@@ -143,53 +198,52 @@
                     
                 </div>
                 
-                <div id="filterBackdrop" class="fixed inset-0 z-40 hidden bg-[#3B2115]/40" 
-                     onclick="toggleFilter()"></div>
+                <div id="filterBackdrop"
+                    class="fixed inset-0 z-40 hidden bg-[#3B2115]/50"
+                    onclick="toggleFilter()"></div>
 
-                <div id="mobileFilter" class="fixed bottom-0 left-0 right-0 z-50 hidden max-h-[70vh] transform rounded-t-2xl bg-[#FFF9F4] transition-transform duration-300">
-                    <div class="sticky top-0 border-b border-[#F1DCC8] bg-[#FFF9F4] px-4 py-4">
-                        <div class="flex items-center justify-between">
+                <div id="mobileFilter"
+                    class="fixed inset-x-0 bottom-0 z-50 hidden flex-col overflow-hidden rounded-t-3xl border-t border-[#F1DCC8] bg-[#FFF9F4] shadow-2xl"
+                    style="height: 70vh; height: 70dvh; transform: translateY(100%);">
 
+                    <div class="flex shrink-0 items-center justify-between border-b border-[#F1DCC8] px-5 py-4">
+                        
+                        <div>
                             <p class="text-lg font-bold text-[#3B2115]">
                                 Filter Produk
                             </p>
-                            <button onclick="toggleFilter()" class="text-[#72594B] hover:text-[#C1440E]">
-                                <i class="fa-solid fa-xmark text-xl"></i>
-                            </button>
-
+                            <p class="mt-1 text-xs text-[#72594B]">
+                                Atur kategori dan urutan produk
+                            </p>
                         </div>
+
+                        <button
+                            type="button"
+                            onclick="toggleFilter()"
+                            class="flex h-10 w-10 items-center justify-center rounded-full hover:bg-orange-100"
+                            aria-label="Tutup filter">
+                            <i class="fa-solid fa-xmark text-xl text-[#72594B]"></i>
+                        </button>
+
                     </div>
 
-                    <div class="overflow-y-auto p-4">
+                    <div id="mobileFilterContent"
+                        class="min-h-0 flex-1 overflow-x-hidden overflow-y-scroll overscroll-contain p-4"
+                        style="-webkit-overflow-scrolling: touch; touch-action: pan-y;">
                         <x-product-filter
                             :kategori="$kategori"
                             :selectedKategori="request('kategori')"
                             :sort="request('sort', 'default')"/>
+
+                        <div class="h-8"></div>
+
                     </div>
-                    
                 </div>
+
             </div>
+
         </section>
+
     </main>
 
-    <script>
-        function toggleFilter() {
-            const mobileFilter = document.getElementById('mobileFilter');
-            const backdrop = document.getElementById('filterBackdrop');
-
-            if (!mobileFilter || !backdrop) return;
-
-            const isHidden = mobileFilter.classList.contains('hidden');
-            mobileFilter.classList.toggle('hidden');
-            backdrop.classList.toggle('hidden');
-
-            if (isHidden) {
-                mobileFilter.style.transform = 'translateY(0)';
-                document.body.style.overflow = 'hidden';
-            } else {
-                mobileFilter.style.transform = 'translateY(100%)';
-                document.body.style.overflow = 'auto';
-            }
-        }
-    </script>
 @endsection

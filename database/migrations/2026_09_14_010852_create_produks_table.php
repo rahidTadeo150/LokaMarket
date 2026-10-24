@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('harga', 15, 2);
             $table->decimal('rating', 2, 1)->default(0.0);
             $table->unsignedInteger('stok')->default(0);
+            $table->unsignedBigInteger('berat')->default(1);
             $table->string('gambar')->nullable();
             $table->foreignId('kategori_id')->constrained('kategori')->cascadeOnDelete();
             $table->foreignId('toko_id')->constrained('toko')->cascadeOnDelete();

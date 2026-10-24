@@ -12,8 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class KeranjangController extends Controller
 {
-    public function addToCart(Request $request)
-    {
+    public function addToCart(Request $request) {
         $validated = $request->validate([
             'produk_id' => 'required|integer|exists:produk,id',
             'quantity' => 'required|integer|min:1',
@@ -101,8 +100,7 @@ class KeranjangController extends Controller
         }
     }
 
-    public function clearCart()
-    {
+    public function clearCart() {
         $keranjang = keranjang::where('user_id', Auth::id())->first();
 
         if ($keranjang) {
@@ -115,8 +113,7 @@ class KeranjangController extends Controller
         ]);
     }
 
-    public function removeItem($id)
-    {
+    public function removeItem($id) {
         $detail = detail_keranjang::whereHas('keranjang', function ($query) {
                 $query->where('user_id', Auth::id());
             })->findOrFail($id);
@@ -126,6 +123,60 @@ class KeranjangController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Produk berhasil dihapus dari keranjang.',
+        ]);
+    }
+
+    public function updateQuantity(Request $request, $detailId) {
+        $request->validate([
+            'action' => 'required|in:increase,decrease',
+        ]);
+
+        $detail = detail_keranjang::with('produk')->where('id', $detailId)->whereHas('keranjang', function ($query) {
+                $query->where('user_id', auth()->id());
+            })->firstOrFail();
+
+        if ($request->action === 'increase') {
+
+            $detail->quantity++;
+
+        } elseif ($request->action === 'decrease') {
+
+            if ($detail->quantity > 1) {
+                $detail->quantity--;
+            }
+
+        }
+
+        $detail->save();
+
+        $keranjang = Keranjang::with('detail.produk')->where('user_id', auth()->id())->first();
+
+        if (!$keranjang) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Keranjang tidak ditemukan.',
+            ], 404);
+        }
+
+        $subtotal = $keranjang->detail->sum(function ($item) {
+            return $item->produk->harga * $item->quantity;
+        });
+
+        $totalItem = $keranjang->detail->sum('quantity');
+
+        $ongkir = 0;
+
+        $totalPembayaran = $subtotal + $ongkir;
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Jumlah produk berhasil diperbarui.',
+            'quantity' => $detail->quantity,
+            'item_subtotal' => $detail->produk->harga * $detail->quantity,
+            'subtotal' => $subtotal,
+            'total_item' => $totalItem,
+            'total_pembayaran' => $totalPembayaran,
+            'cart_count' => $totalItem,
         ]);
     }
 }

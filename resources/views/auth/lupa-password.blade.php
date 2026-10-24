@@ -15,15 +15,7 @@
 				</p>
 			</div>
 
-			@if (session('success'))
-				<x-alert-success-relative></x-alert-success-relative>
-			@endif
-
-			@if ($errors->any())
-				<div class="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-xs text-red-600">
-					{{ $errors->first('email') }}
-				</div>
-			@endif
+			<x-alert-session/>	
 
 			<form action="{{ route('password.email') }}" method="POST" class="space-y-5">
 				@csrf

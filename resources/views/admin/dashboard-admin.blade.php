@@ -25,20 +25,12 @@
             <div class="flex items-center justify-between">
 
                 <div>
-
                     <p class="text-xs font-medium text-[#A58E81]">
                         Total Pengguna
                     </p>
-
-                    <h2 class="mt-2 text-2xl font-extrabold text-[#3B2115]">
-                        1.248
-                    </h2>
-
-                    <p class="mt-2 text-xs font-semibold text-green-600">
-                        <i class="fa-solid fa-arrow-trend-up mr-1"></i>
-                        +12,5% bulan ini
+                    <p class="mt-2 text-2xl font-extrabold text-[#3B2115]">
+                        {{ $totalPengguna }}
                     </p>
-
                 </div>
 
                 <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-orange-50 text-orange-500">
@@ -54,20 +46,16 @@
             <div class="flex items-center justify-between">
 
                 <div>
-
                     <p class="text-xs font-medium text-[#A58E81]">
                         Total Toko
                     </p>
-
-                    <h2 class="mt-2 text-2xl font-extrabold text-[#3B2115]">
-                        186
-                    </h2>
-
+                    <p class="mt-2 text-2xl font-extrabold text-[#3B2115]">
+                        {{ $totalToko }}
+                    </p>
                     <p class="mt-2 text-xs font-semibold text-green-600">
                         <i class="fa-solid fa-arrow-trend-up mr-1"></i>
                         +8 toko baru
                     </p>
-
                 </div>
 
                 <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-orange-50 text-orange-500">
@@ -83,20 +71,16 @@
             <div class="flex items-center justify-between">
 
                 <div>
-
                     <p class="text-xs font-medium text-[#A58E81]">
                         Total Produk
                     </p>
-
-                    <h2 class="mt-2 text-2xl font-extrabold text-[#3B2115]">
-                        2.540
-                    </h2>
-
+                    <p class="mt-2 text-2xl font-extrabold text-[#3B2115]">
+                        {{ $totalProduk }}
+                    </p>
                     <p class="mt-2 text-xs font-semibold text-green-600">
                         <i class="fa-solid fa-arrow-trend-up mr-1"></i>
                         +124 produk
                     </p>
-
                 </div>
 
                 <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-orange-50 text-orange-500">
@@ -112,20 +96,23 @@
             <div class="flex items-center justify-between">
 
                 <div>
-
                     <p class="text-xs font-medium text-[#A58E81]">
                         Pengajuan Toko
                     </p>
-
-                    <h2 class="mt-2 text-2xl font-extrabold text-[#3B2115]">
-                        12
-                    </h2>
-
-                    <p class="mt-2 text-xs font-semibold text-orange-600">
-                        <i class="fa-solid fa-clock mr-1"></i>
-                        Perlu diperiksa
+                    <p class="mt-2 text-2xl font-extrabold text-[#3B2115]">
+                        {{ $totalPengajuan }}
                     </p>
-
+                    @if ($totalPengajuan > 0)
+                        <p class="mt-2 text-xs font-semibold text-orange-600">
+                            <i class="fa-solid fa-clock mr-1"></i>
+                            Perlu diperiksa
+                        </p>
+                    @else
+                        <p class="mt-2 text-xs font-semibold text-green-600">
+                            <i class="fa-solid fa-circle-check mr-1"></i>
+                            Tidak ada yang perlu diperiksa
+                        </p>
+                    @endif
                 </div>
 
                 <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-orange-50 text-orange-500">
@@ -138,10 +125,8 @@
 
     </div>
 
-    {{-- CONTENT UTAMA --}}
     <div class="mt-6 grid grid-cols-1 gap-5 xl:grid-cols-3">
 
-        {{-- GRAFIK --}}
         <div class="rounded-2xl border border-orange-100 bg-white p-5 shadow-sm xl:col-span-2">
 
             <div class="flex items-center justify-between">
@@ -248,30 +233,32 @@
 
         </div>
 
-        {{-- PENGAJUAN TOKO --}}
         <div class="flex h-full flex-col rounded-2xl border border-orange-100 bg-white p-5 shadow-sm">
 
             <div class="flex items-center justify-between">
 
                 <div>
-                    <h2 class="text-sm font-bold text-[#3B2115]">
+                    <p class="text-sm font-bold text-[#3B2115]">
                         Pengajuan Toko
-                    </h2>
+                    </p>
                     <p class="mt-1 text-[11px] text-[#A58E81]">
                         Menunggu pemeriksaan
                     </p>
                 </div>
 
-                <a href="#"
-                class="text-[10px] font-bold text-orange-500 hover:text-orange-600">
+                <a href="{{ route('admin.pengajuanToko') }}"
+                class="text-[10px] font-bold text-orange-500 transition hover:text-orange-600">
                     Lihat semua
                 </a>
 
             </div>
 
+
             <div class="mt-5 flex-1 space-y-3">
 
-                <div class="flex items-center gap-3 rounded-xl border border-orange-100 p-3">
+                @forelse ($pengajuanToko as $pengajuan)
+
+                <div class="flex items-center gap-3 rounded-xl border border-orange-100 p-3 transition hover:border-orange-200 hover:bg-orange-50/40">
 
                     <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-50 text-orange-500">
                         <i class="fa-solid fa-store text-sm"></i>
@@ -279,26 +266,50 @@
 
                     <div class="min-w-0 flex-1">
                         <p class="truncate text-xs font-bold text-[#3B2115]">
-                            Geprek WW
+                            {{ $pengajuan->nama_toko }}
                         </p>
-                        <p class="mt-1 text-[10px] text-[#A58E81]">
-                            Budi Santoso
+                        <p class="mt-1 truncate text-[10px] text-[#A58E81]">
+                            {{ $pengajuan->user->username ?? 'Pengguna' }}
                         </p>
                     </div>
 
-                    <span class="rounded-full bg-yellow-100 px-2 py-1 text-[8px] font-bold text-yellow-700">
+                    <span class="shrink-0 rounded-full bg-yellow-100 px-2 py-1 text-[8px] font-bold text-yellow-700">
                         Pending
                     </span>
 
                 </div>
 
+                @empty
+
+                <div class="flex flex-col items-center justify-center rounded-xl border border-dashed border-orange-100 bg-orange-50/30 px-4 py-8 text-center">
+
+                    <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-white text-orange-300 shadow-sm">
+                        <i class="fa-solid fa-store-slash"></i>
+                    </div>
+
+                    <p class="mt-3 text-xs font-bold text-[#3B2115]">
+                        Tidak Ada Pengajuan
+                    </p>
+
+                    <p class="mt-1 text-[10px] leading-5 text-[#A58E81]">
+                        Belum ada pengajuan toko yang menunggu pemeriksaan.
+                    </p>
+
+                </div>
+
+                @endforelse
+
             </div>
 
-            <a href="#"
-            class="mt-5 flex items-center justify-center gap-2 rounded-xl bg-orange-50 py-3 text-[10px] font-bold text-orange-600 transition hover:bg-orange-100">
-                Periksa Pengajuan
-                <i class="fa-solid fa-arrow-right text-[9px]"></i>
-            </a>
+            @if ($pengajuanToko->count() > 0)
+
+                <a href="{{ route('admin.pengajuanToko') }}"
+                class="mt-5 flex items-center justify-center gap-2 rounded-xl bg-orange-50 py-3 text-[10px] font-bold text-orange-600 transition hover:bg-orange-100">
+                    Periksa Pengajuan
+                    <i class="fa-solid fa-arrow-right text-[9px]"></i>
+                </a>
+
+            @endif
 
         </div>
 

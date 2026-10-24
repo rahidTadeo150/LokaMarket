@@ -1,0 +1,45 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class TransaksiSaldo extends Model
+{
+    protected $table = 'transaksi_saldo';
+
+    protected $fillable = [
+        'saldo_penjual_id',
+        'pesanan_id',
+        'penarikan_saldo_id',
+        'referensi',
+        'jenis',
+        'status',
+        'jumlah',
+        'komisi',
+        'keterangan',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'jumlah' => 'integer',
+            'komisi' => 'integer',
+        ];
+    }
+
+    public function saldoPenjual()
+    {
+        return $this->belongsTo(SaldoPenjual::class, 'saldo_penjual_id');
+    }
+
+    public function pesanan()
+    {
+        return $this->belongsTo(Pesanan::class, 'pesanan_id');
+    }
+
+    public function penarikanSaldo()
+    {
+        return $this->belongsTo(PenarikanSaldo::class, 'penarikan_saldo_id');
+    }
+}

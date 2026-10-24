@@ -4,14 +4,21 @@
 
 @section('content')
     <main>
-        {{-- HERO --}}
+
         <section class="relative overflow-hidden bg-linear-to-br from-[#FFF3E2] to-[#FBAD51]">
-            <div class="flex flex-col-reverse items-center justify-between gap-8 px-4 py-10 sm:px-6 md:flex-row md:px-16 md:py-14">
-                <div class="flex min-w-0 w-full flex-col items-center gap-y-3 text-center md:w-7/12 md:items-start md:text-left">
-                    <span class="mb-2 flex w-fit uppercase items-center gap-1.5 rounded-full border border-orange-200 bg-white px-3 py-1 text-xs font-medium text-orange-600 shadow-sm">
+
+            <div
+                class="flex flex-col-reverse items-center justify-between gap-8 px-4 py-10 sm:px-6 md:flex-row md:px-16 md:py-14">
+
+                <div
+                    class="flex min-w-0 w-full flex-col items-center gap-y-3 text-center md:w-7/12 md:items-start md:text-left">
+
+                    <span
+                        class="mb-2 flex w-fit uppercase items-center gap-1.5 rounded-full border border-orange-200 bg-white px-3 py-1 text-xs font-medium text-orange-600 shadow-sm">
                         <span class="h-1.5 w-1.5 rounded-full bg-orange-500"></span>
                         kategori Produk
                     </span>
+
                     <div>
                         <p class="max-w-xl text-3xl font-bold leading-tight text-[#3B2115] sm:text-4xl lg:text-5xl">
                             Semua Kebutuhan Lokal,
@@ -25,51 +32,79 @@
                         </p>
                     </div>
 
-                    {{-- Animated Category Tags --}}
                     <div class="mt-6 w-full min-w-0 overflow-hidden">
-                        <div class="relative w-full min-w-0 overflow-hidden rounded-full border border-orange-100 bg-white/50 p-2 shadow-lg">
-                            
-                            {{-- Fade Effect --}}
-                            <div class="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-linear-to-r from-white/50 to-transparent"></div>
-                            <div class="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-linear-to-l from-white/50 to-transparent"></div>
 
-                            {{-- Kategori Looping --}}
-                            <div class="flex w-max animate-kategori-slide items-center gap-2">
-                                {{-- Loop Pertama --}}
-                                @foreach ($kategoriList as $kategori)
-                                    <a href="{{ route('cust.pilihanProduk', ['category' => $kategori->slug]) }}"
-                                        class="shrink-0 rounded-full bg-orange-50 px-4 py-2 text-xs font-semibold text-[#C1440E] transition hover:bg-orange-100">
-                                        <i class="fa-solid {{ $kategori['icon'] }} mr-1.5"></i>
-                                        {{ $kategori['nama'] }}
-                                    </a>
-                                @endforeach
-                                {{-- Loop Kedua --}}
-                                @foreach ($kategoriList as $kategori)
-                                    <a href="{{ route('cust.pilihanProduk', ['category' => $kategori->slug]) }}"
-                                        class="shrink-0 rounded-full bg-orange-50 px-4 py-2 text-xs font-semibold text-[#C1440E] transition hover:bg-orange-100">
-                                        <i class="fa-solid {{ $kategori['icon'] }} mr-1.5"></i>
-                                        {{ $kategori['nama'] }}
-                                    </a>
-                                @endforeach
+                        <div
+                            class="relative w-full min-w-0 overflow-hidden rounded-full border border-orange-100 bg-white/50 p-2 shadow-lg">
+
+                            <div
+                                class="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-linear-to-r from-white/50 to-transparent">
                             </div>
+                            <div
+                                class="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-linear-to-l from-white/50 to-transparent">
+                            </div>
+
+
+                            <div class="flex w-max animate-kategori-slide items-center gap-2">
+
+                                @foreach ($kategoriList as $kategori)
+                                    <form action="{{ route('cust.pilihanProduk') }}" method="GET" class="shrink-0">
+
+                                        <input type="hidden" name="search" value="">
+                                        <input type="hidden" name="kategori" value="{{ $kategori->slug }}">
+                                        <input type="hidden" name="sort" value="default">
+
+                                        <button type="submit"
+                                            class="shrink-0 rounded-full bg-orange-50 px-4 py-2 text-xs font-semibold text-[#C1440E] transition hover:bg-orange-100">
+                                            <i class="fa-solid {{ $kategori->icon }} mr-1.5"></i>
+                                            {{ $kategori->nama }}
+                                        </button>
+
+                                    </form>
+                                @endforeach
+
+                                @foreach ($kategoriList as $kategori)
+                                    <form action="{{ route('cust.pilihanProduk') }}" method="GET" class="shrink-0">
+
+                                        <input type="hidden" name="search" value="">
+                                        <input type="hidden" name="kategori" value="{{ $kategori->slug }}">
+                                        <input type="hidden" name="sort" value="default">
+
+                                        <button type="submit"
+                                            class="shrink-0 rounded-full bg-orange-50 px-4 py-2 text-xs font-semibold text-[#C1440E] transition hover:bg-orange-100">
+                                            <i class="fa-solid {{ $kategori->icon }} mr-1.5"></i>
+                                            {{ $kategori->nama }}
+                                        </button>
+                                        
+                                    </form>
+                                @endforeach
+
+                            </div>
+
                         </div>
+
                         <p class="mt-2 text-center text-[10px] text-[#A88978]">
                             Banyak Jenis Produk Dari UMKM Lokal Untuk anda!
                         </p>
+
                     </div>
+
                 </div>
-                <div class="relative flex w-full justify-center md:absolute md:right-0 md:top-0 md:bottom-0 md:w-5/12 md:justify-end">
-                    <img
-                        src="{{ asset('storage/hero-kategori.png') }}"
-                        alt="Kategori produk lokal"
+
+                <div
+                    class="relative flex w-full justify-center md:absolute md:right-0 md:top-0 md:bottom-0 md:w-5/12 md:justify-end">
+                    <img src="{{ asset('storage/hero-kategori.png') }}" alt="Kategori produk lokal"
                         class="h-auto w-full object-cover md:h-full md:max-h-none md:w-full md:object-cover md:object-bottom">
                 </div>
+
             </div>
+
         </section>
-    
-        {{-- Kategori Card --}}
+
         <section id="kategori" class="bg-[#FFF9F4] py-12 sm:py-16">
+
             <div class="px-6 lg:px-10">
+
                 <div class="text-center">
                     <p class="text-xs font-extrabold tracking-wider text-[#C1440E]">
                         JELAJAHI SEMUA
@@ -81,23 +116,45 @@
                         13 kategori, ratusan UMKM lokal siap kirim hari ini.
                     </p>
                 </div>
+
                 <div class="mt-10 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
+
                     @forelse ($kategoriList as $kategori)
-                        <a href="{{ route('cust.pilihanProduk', ['kategori' => $kategori->slug]) }}"
-                        class="group relative rounded-xl border border-[#F3E5D9] bg-white p-4 text-left shadow-sm transition duration-300 ease-in-out hover:-translate-y-1 hover:border-2 hover:border-orange-400 hover:shadow-lg sm:p-6">
-                            <span class="absolute right-3 top-3 rounded-full bg-orange-600 px-2.5 py-1 text-[10px] font-semibold text-white">
-                                {{ $kategori->produks_count }} Produk
-                            </span>
-                            <div class="flex h-14 w-14 items-center justify-center rounded-full bg-orange-50 transition group-hover:bg-orange-100">
-                                <i class="fa-solid {{ $kategori->icon }} text-[#C1440E] text-2xl"></i>
-                            </div>
-                            <p class="mt-4 text-base font-bold text-[#3B2115] lg:text-lg">
-                                {{ $kategori->nama }}
-                            </p>
-                            <p class="mt-1 text-[11px] font-light leading-5 text-gray-400 lg:text-xs">
-                                {{ $kategori->deskripsi }}
-                            </p>
-                        </a>
+                        <form action="{{ route('cust.pilihanProduk') }}" method="GET" class="h-full">
+
+                            <input type="hidden" name="search" value="">
+                            <input type="hidden" name="kategori" value="{{ $kategori->slug }}">
+                            <input type="hidden" name="sort" value="default">
+
+                            <button type="submit"
+                                class="group relative flex h-full w-full flex-col rounded-xl border border-[#F3E5D9] bg-white p-4 text-left shadow-sm transition duration-300 hover:-translate-y-1 hover:border-orange-400 hover:shadow-lg sm:p-6">
+
+                                <span
+                                    class="absolute right-3 top-3 rounded-full bg-orange-600 px-2.5 py-1 text-[10px] font-semibold text-white">
+                                    {{ $kategori->produk_count ?? 0 }} Produk
+                                </span>
+
+                                <div
+                                    class="flex h-14 w-14 items-center justify-center rounded-full bg-orange-50 transition group-hover:bg-orange-100">
+                                    <i class="fa-solid {{ $kategori->icon }} text-2xl text-[#C1440E]"></i>
+                                </div>
+
+                                <p class="mt-4 text-base font-bold text-[#3B2115] lg:text-lg">
+                                    {{ $kategori->nama }}
+                                </p>
+
+                                <p class="mt-1 text-[11px] font-light leading-5 text-gray-400 lg:text-xs">
+                                    {{ $kategori->deskripsi }}
+                                </p>
+
+                                <div class="mt-4 flex items-center gap-2 text-xs font-semibold text-[#C1440E]">
+                                    Lihat Produk
+                                    <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                                </div>
+
+                            </button>
+
+                        </form>
                     @empty
                         <div class="col-span-full rounded-xl border border-orange-100 bg-orange-50 p-8 text-center">
                             <p class="font-medium text-[#3B2115]">
@@ -105,11 +162,13 @@
                             </p>
                         </div>
                     @endforelse
+
                 </div>
+
             </div>
+
         </section>
-    
-        {{-- Cust Service Banner --}}
+
         <section class="relative overflow-hidden bg-[#EA4F0C]">
             <div class="px-6 py-14 text-center sm:py-16">
                 <p class="text-2xl font-bold text-white sm:text-3xl">
@@ -124,5 +183,6 @@
                 </a>
             </div>
         </section>
+
     </main>
 @endsection

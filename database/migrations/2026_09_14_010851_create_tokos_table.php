@@ -17,9 +17,12 @@ return new class extends Migration
             $table->string('nama_toko');
             $table->string('slug')->unique();
             $table->text('deskripsi')->nullable();
-            $table->text('alamat')->nullable();
+            $table->text('alamat_lengkap')->nullable();
             $table->string('no_telepon')->nullable();
             $table->string('foto_profil')->nullable();
+            $table->foreignId('provinsi_id')->constrained('provinsi')->restrictOnDelete();
+            $table->foreignId('kota_id')->constrained('kota')->restrictOnDelete();
+            $table->foreignId('kecamatan_id')->constrained('kecamatan')->restrictOnDelete();
             $table->timestamps();
         });
     }

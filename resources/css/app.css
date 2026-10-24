@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
-@import 'tailwindcss';
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
+@import "tailwindcss";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -26,15 +26,176 @@ body {
 }
 
 .hover-navbar-user {
-    @apply relative hover:text-orange-600 transition duration-300 after:absolute after:left-1/2 after:-translate-x-1/2 after:-bottom-2 after:h-0.5 after:w-0 after:bg-orange-600 after:transition-all after:duration-300 hover:after:w-full
+    @apply relative hover:text-orange-600 transition duration-300 after:absolute after:left-1/2 after:-translate-x-1/2 after:-bottom-2 after:h-0.5 after:w-0 after:bg-orange-600 after:transition-all after:duration-300 hover:after:w-full;
 }
 
 .state-navbar-user {
     @apply relative text-orange-600 transition duration-300 after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 after:-bottom-2 after:h-0.5 after:w-full after:bg-orange-600 after:transition-all after:duration-300;
 }
+
 .sidebar-menu-active {
-    @apply bg-orange-100 text-orange-600
+    @apply bg-orange-100 text-orange-600;
 }
+
 .sidebar-menu-default {
-    @apply text-gray-600 hover:bg-orange-50 hover:text-orange-600
+    @apply text-gray-600 hover:bg-orange-50 hover:text-orange-600;
+}
+
+.sidebar-admin-default {
+    @apply mb-1 flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition text-[#72594B] hover:bg-orange-50 hover:text-orange-600;
+}
+
+.sidebar-admin-active {
+    @apply mb-1 flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition bg-linear-to-r from-orange-500 to-orange-600 text-white shadow-md shadow-orange-200;
+}
+
+.bank-option {
+    border: 1px solid #f1dcc8;
+    background: #ffffff;
+    transition:
+        border-color 200ms ease,
+        background-color 200ms ease,
+        box-shadow 200ms ease,
+        transform 200ms ease;
+}
+
+.bank-option:has(.bank-radio:checked) {
+    border-color: #f97316;
+    background: linear-gradient(145deg, #fff7ed 0%, #ffffff 100%);
+    box-shadow:
+        0 0 0 1px #f97316,
+        0 5px 15px rgb(249 115 22 / 10%);
+    transform: translateY(-1px);
+}
+
+.bank-option:has(.bank-radio:checked) .bank-check {
+    border-color: #f97316;
+    background-color: #f97316;
+    box-shadow: 0 0 0 3px rgb(249 115 22 / 12%);
+}
+
+.bank-option:has(.bank-radio:checked) .bank-check i {
+    transform: scale(1);
+}
+
+.bank-option:focus-within {
+    outline: 2px solid rgb(249 115 22 / 35%);
+    outline-offset: 3px;
+}
+
+.bank-check i {
+    transform: scale(0);
+    transition: transform 200ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .bank-option,
+    .bank-check,
+    .bank-check i {
+        transition: none !important;
+    }
+}
+
+```css
+/* ========================================
+   PILIHAN METODE PEMBAYARAN
+======================================== */
+
+.payment-option {
+    border: 1px solid #f1dcc8;
+    background-color: #ffffff;
+    transition:
+        border-color 200ms ease,
+        background-color 200ms ease,
+        box-shadow 200ms ease,
+        transform 200ms ease;
+}
+
+.payment-option:has(.payment-radio:checked) {
+    border-color: #f97316;
+    background: linear-gradient(145deg, #fff7ed 0%, #ffffff 100%);
+    box-shadow:
+        0 0 0 1px #f97316,
+        0 5px 15px rgb(249 115 22 / 10%);
+    transform: translateY(-1px);
+}
+
+.payment-option:has(.payment-radio:checked) .custom-radio {
+    border-color: #f97316;
+    background-color: #f97316;
+    box-shadow: 0 0 0 3px rgb(249 115 22 / 12%);
+}
+
+.payment-option:has(.payment-radio:checked) .radio-dot {
+    transform: scale(1);
+}
+
+.payment-option:focus-within {
+    outline: 2px solid rgb(249 115 22 / 35%);
+    outline-offset: 3px;
+}
+
+/* ========================================
+   PILIHAN BANK
+======================================== */
+
+.bank-option {
+    border: 1px solid #f1dcc8;
+    background-color: #ffffff;
+    transition:
+        border-color 200ms ease,
+        background-color 200ms ease,
+        box-shadow 200ms ease,
+        transform 200ms ease;
+}
+
+.bank-option:has(.bank-radio:checked) {
+    border-color: #f97316;
+    background: linear-gradient(145deg, #fff7ed 0%, #ffffff 100%);
+    box-shadow:
+        0 0 0 1px #f97316,
+        0 5px 15px rgb(249 115 22 / 10%);
+    transform: translateY(-1px);
+}
+
+.bank-option:has(.bank-radio:checked) .bank-check {
+    border-color: #f97316;
+    background-color: #f97316;
+    box-shadow: 0 0 0 3px rgb(249 115 22 / 12%);
+}
+
+.bank-option:has(.bank-radio:checked) .bank-check i {
+    transform: scale(1);
+}
+
+.bank-option:focus-within {
+    outline: 2px solid rgb(249 115 22 / 35%);
+    outline-offset: 3px;
+}
+
+.radio-dot,
+.bank-check i {
+    transform: scale(0);
+    transition: transform 200ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .payment-option,
+    .bank-option,
+    .custom-radio,
+    .radio-dot,
+    .bank-check,
+    .bank-check i {
+        transition: none !important;
+    }
+
+    .hide-scrollbar {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
 }

@@ -1,46 +1,68 @@
 document.addEventListener('DOMContentLoaded', function () {
+    const searchForm = document.getElementById('searchForm');
     const searchInput = document.getElementById('searchInput');
-    const searchEmpty = document.getElementById('searchEmpty');
-    const searchKeyword = document.getElementById('searchKeyword');
-    const clearSearch = document.getElementById('clearSearch');
+
+    if (!searchForm || !searchInput) return;
+
+    let searchTimer;
+
+    const scrollKey = 'lokamarket_search_scroll';
+
+    const savedScroll = sessionStorage.getItem(scrollKey);
+
+    if (savedScroll !== null) {
+        window.scrollTo({
+            top: parseInt(savedScroll, 10),
+            behavior: 'instant'
+        });
+
+        sessionStorage.removeItem(scrollKey);
+    }
 
     searchInput.addEventListener('input', function () {
-        const keyword = this.value.toLowerCase().trim();
-        const cards = document.querySelectorAll('.produk-card');
-        let found = 0;
+        clearTimeout(searchTimer);
 
-        cards.forEach(function (card) {
-            const nameElement = card.querySelector('.nama-produk');
-            if (!nameElement) {
-                return;
-            }
+        searchTimer = setTimeout(function () {
 
-            const productName = nameElement.textContent.toLowerCase().trim();
-            const isMatch = productName.includes(keyword);
+            sessionStorage.setItem(
+                scrollKey,
+                window.scrollY.toString()
+            );
 
-            if (isMatch) {
-                card.style.display = '';
-                found++;
-            } else {
-                card.style.display = 'none';
-            }
-
-        });
-
-        if (keyword !== '' && found === 0) {
-            searchEmpty.classList.remove('hidden');
-            searchKeyword.textContent = this.value;
-        } else {
-            searchEmpty.classList.add('hidden');
-        }
+            searchForm.requestSubmit();
+            
+        }, 500);
     });
 
-    if (clearSearch) {
+    searchForm.addEventListener('submit', function () {
+        clearTimeout(searchTimer);
+    });
 
-        clearSearch.addEventListener('click', function () {
-            searchInput.value = '';
-            searchInput.dispatchEvent(new Event('input'));
-            searchInput.focus();
-        });
-    }
+    window.toggleFilter = function() {
+        const panel = document.getElementById('mobileFilter');
+        const backdrop = document.getElementById('filterBackdrop');
+
+        if (!panel || !backdrop) return;
+
+        const isOpening = panel.classList.contains('hidden');
+
+        if (isOpening) {
+            panel.classList.remove('hidden');
+            panel.style.display = 'flex';
+
+            backdrop.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+
+            requestAnimationFrame(() => {
+                panel.style.transform = 'translateY(0)';
+            });
+        } else {
+            panel.style.transform = 'translateY(100%)';
+            panel.style.display = 'none';
+            panel.classList.add('hidden');
+
+            backdrop.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+    };
 });

@@ -1,6 +1,5 @@
-<nav class="mx-auto mb-7 flex max-w-[540px] items-center text-[9px] font-semibold sm:text-[10px]">
+<nav class="mx-auto mb-7 flex max-w-135 items-center text-[9px] font-semibold sm:text-[10px]">
 
-    {{-- Keranjang --}}
     <a href="{{ route('cust.keranjang') }}"
        class="flex items-center gap-2 whitespace-nowrap
        {{ $step >= 1 ? 'text-[#3f2a20]' : 'text-[#9c897d]' }}">
@@ -15,11 +14,8 @@
         <span>Keranjang</span>
     </a>
 
-
     <span class="mx-3 h-px flex-1 bg-[#f3b27f] sm:mx-5"></span>
 
-
-    {{-- Checkout --}}
     <a href="{{ route('cust.checkout') }}"
        class="flex items-center gap-2 whitespace-nowrap
        {{ $step >= 2 ? 'text-[#3f2a20]' : 'text-[#9c897d]' }}">
@@ -34,11 +30,8 @@
         <span>Checkout</span>
     </a>
 
-
     <span class="mx-3 h-px flex-1 bg-[#ead8ca] sm:mx-5"></span>
 
-
-    {{-- Pembayaran --}}
     <a href="{{ route('cust.pembayaran') }}"
        class="flex items-center gap-2 whitespace-nowrap
        {{ $step >= 3 ? 'text-[#3f2a20]' : 'text-[#9c897d]' }}">

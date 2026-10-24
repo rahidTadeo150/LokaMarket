@@ -13,15 +13,11 @@
 </head>
 <body class="bg-white text-gray-800 antialiased">
 
-    {{-- Menu Navigasi --}}
     <x-navbar-user></x-navbar-user>
-
-    {{-- Konten Halaman --}}
     @yield('content')
-
-    {{-- Footer --}}
     <x-footer></x-footer>
-
+    @stack('scripts')
+    
 </body>
 </html>
 

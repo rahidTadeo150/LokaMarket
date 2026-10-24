@@ -13,21 +13,14 @@ return new class extends Migration
     {
         Schema::create('pengajuan_toko', function (Blueprint $table) {
             $table->id();
-
-            // Pemilik pengajuan
             $table->foreignId('user_id') ->constrained('users')->cascadeOnDelete();
-
-            // Informasi toko
             $table->string('nama_toko');
             $table->string('slug')->unique();
             $table->text('deskripsi')->nullable();
             $table->string('foto_profil')->nullable();
-
-            // Lokasi toko
             $table->foreignId('provinsi_id')->constrained('provinsi')->restrictOnDelete();
             $table->foreignId('kota_id')->constrained('kota')->restrictOnDelete();
             $table->foreignId('kecamatan_id')->constrained('kecamatan')->restrictOnDelete();
-
             $table->string('kode_pos', 5);
             $table->text('alamat_lengkap');
             $table->string('no_telepon', 20);
@@ -36,7 +29,6 @@ return new class extends Migration
             $table->timestamp('token_expired_at')->nullable();
             $table->timestamp('email_verified_at')->nullable();
 
-            // Status pengajuan
             $table->enum('status', [
                 'pending',
                 'approved',
@@ -44,11 +36,10 @@ return new class extends Migration
             ])->default('pending');
 
             $table->text('alasan_reject')->nullable();
-
+            $table->timestamp('rejected_at')->nullable();
             $table->foreignId('by_admin')->nullable()->constrained('users')->nullOnDelete();
-
             $table->timestamps();
-                });
+        });
     }
 
     /**

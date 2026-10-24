@@ -100,24 +100,19 @@
 
                         @forelse ($keranjang?->detail ?? [] as $detail)
 
-                            @php
-                                $item = $detail->produk;
-                                $subtotalItem = $item->harga * $detail->quantity;
-                            @endphp
-
                             <div class="group p-4 sm:p-6"
                                 data-cart-item="{{ $detail->id }}">
                                 <div class="flex gap-3 sm:gap-5">
 
                                     <div class="relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl bg-orange-50 sm:h-32 sm:w-32">
 
-                                        <img src="{{ $item->gambar ? asset('storage/' . $item->gambar) : asset('images/default-product.jpg') }}"
-                                            alt="{{ $item->nama }}"
+                                        <img src="{{ ('storage/' . $detail->produk->thumbnail->foto) }}"
+                                            alt="{{ $detail->produk->nama }}"
                                             class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
 
-                                        @if ($item->kategori)
+                                        @if ($detail->produk->kategori)
                                             <span class="absolute left-2 top-2 rounded-full bg-orange-500 px-2 py-1 text-[9px] font-bold text-white sm:text-[10px]">
-                                                {{ $item->kategori->nama }}
+                                                {{ $detail->produk->kategori->nama }}
                                             </span>
                                         @endif
 
@@ -130,20 +125,22 @@
                                             <div class="min-w-0">
 
                                                 <p class="truncate text-sm font-bold text-[#3B2115] sm:text-base">
-                                                    {{ $item->nama }}
+                                                    {{ $detail->produk->nama }}
                                                 </p>
 
                                                 <div class="mt-2 flex flex-wrap items-center gap-2">
 
                                                     <span class="inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-3 py-1 text-xs font-semibold text-orange-700">
                                                         <i class="fa-solid fa-store text-[10px]"></i>
-                                                        {{ $item->toko->nama_toko }}
+                                                        {{ $detail->produk->toko->nama_toko }}
                                                     </span>
 
-                                                    <span class="inline-flex items-center gap-1.5 rounded-full bg-[#FFF9F4] px-3 py-1 text-xs font-medium text-[#72594B]">
-                                                        <i class="fa-solid fa-tag text-[10px]"></i>
-                                                        {{ $item->kategori->nama }}
-                                                    </span>
+                                                    @if ($detail->produk->kategori)
+                                                        <span class="inline-flex items-center gap-1.5 rounded-full bg-[#FFF9F4] px-3 py-1 text-xs font-medium text-[#72594B]">
+                                                            <i class="fa-solid fa-tag text-[10px]"></i>
+                                                            {{ $detail->produk->kategori->nama }}
+                                                        </span>
+                                                    @endif
 
                                                 </div>
 
@@ -184,11 +181,11 @@
 
                                                 <p id="subtotal-{{ $detail->id }}"
                                                 class="text-sm font-bold text-orange-500 sm:text-lg">
-                                                    Rp {{ number_format($subtotalItem, 0, ',', '.') }}
+                                                    Rp {{ number_format($subtotal, 0, ',', '.') }}
                                                 </p>
 
                                                 <p class="mt-0.5 text-[10px] text-[#72594B]">
-                                                    Rp {{ number_format($item->harga, 0, ',', '.') }} / item
+                                                    Rp {{ number_format($detail->produk->harga, 0, ',', '.') }} / item
                                                 </p>
 
                                             </div>
@@ -277,7 +274,8 @@
                                 <span class="text-[#72594B]">
                                     Subtotal ({{ $totalItem }})
                                 </span>
-                                <span class="font-semibold text-[#3B2115]">
+                                <span id="cart-subtotal"
+                                    class="font-semibold text-[#3B2115]">
                                     Rp{{ number_format($subtotal, 0, ',', '.') }}
                                 </span>
 
@@ -320,7 +318,8 @@
                                 <span class="text-sm font-bold text-[#3B2115]">
                                     Total Pembayaran
                                 </span>
-                                <span class="whitespace-nowrap text-xl font-extrabold text-orange-500 sm:text-2xl">
+                                <span id="cart-total-payment"
+                                    class="whitespace-nowrap text-xl font-extrabold text-orange-500 sm:text-2xl">
                                     Rp{{ number_format($totalPembayaran, 0, ',', '.') }}
                                 </span>
 

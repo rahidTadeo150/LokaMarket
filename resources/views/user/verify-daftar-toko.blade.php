@@ -29,10 +29,12 @@
                     Verifikasi Email Anda
                 </h1>
 
-                <p class="mx-auto mt-3 max-w-xl text-sm leading-6 text-[#72594B] sm:text-base">
+                <p class="mb-10 mx-auto mt-3 max-w-xl text-sm leading-6 text-[#72594B] sm:text-base">
                     Kami telah mengirimkan email verifikasi ke alamat email yang Anda gunakan.
                     Silakan periksa inbox untuk melanjutkan proses pengajuan toko.
                 </p>
+
+                <x-alert-session/>
 
                 <div class="mx-auto mt-8 max-w-lg rounded-2xl border border-orange-100 bg-orange-50/60 p-4 sm:p-5">
                     <div class="flex items-center gap-4 text-left">
@@ -133,7 +135,7 @@
                 </div>
 
                 <a href="{{ route('cust.landingPage') }}"
-                    class="inline-flex items-center justify-center gap-2 rounded-xl border border-[#F1DCC8] bg-white px-5 py-3 text-sm font-bold text-[#72594B] transition hover:border-orange-200 hover:bg-orange-50">
+                    class="mt-10 inline-flex items-center justify-center gap-2 rounded-xl border border-[#F1DCC8] bg-white px-5 py-3 text-sm font-bold text-[#72594B] transition hover:border-orange-200 hover:bg-orange-50">
                     <i class="fa-solid fa-house"></i>
                     Kembali ke Beranda
                 </a>
@@ -148,6 +150,25 @@
                         <span class="font-bold text-[#72594B]">Spam</span> atau
                         <span class="font-bold text-[#72594B]">Promosi</span>.
                     </p>
+
+                    <form action="{{ route('cust.resendVerifikasi') }}"
+                        method="POST"
+                        class="mt-5">
+
+                        @csrf
+
+                        <input type="hidden"
+                            name="email"
+                            value="{{ $email }}">
+
+                        <button type="submit"
+                            id="resendButton"
+                            class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-orange-200 bg-orange-50 px-5 py-3 text-sm font-bold text-orange-600 transition hover:bg-orange-100 hover:border-orange-300 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto">
+                            <i class="fa-solid fa-paper-plane text-xs"></i>
+                            <span>Kirim Ulang Email Verifikasi</span>
+                        </button>
+
+                    </form>
 
                 </div>
 

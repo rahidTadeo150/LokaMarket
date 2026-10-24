@@ -5,8 +5,8 @@
 
     <div class="relative overflow-hidden bg-[#FFF3E5]">
 
-        @if ($produk->gambar)
-            <img src="{{ asset('storage/' . $produk->gambar) }}"
+        @if ($produk->thumbnail)
+            <img src="{{ asset('storage/' . $produk->thumbnail->foto) }}"
                 alt="{{ $produk->nama }}"
                 class="h-56 w-full object-cover transition duration-500 group-hover:scale-105">
         @else
@@ -32,11 +32,7 @@
             </span>
         </div>
 
-        <button type="button"
-                onclick="event.preventDefault();"
-                class="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-[#72594B] shadow-sm transition hover:bg-orange-500 hover:text-white">
-            <i class="fa-regular fa-heart"></i>
-        </button>
+        <x-wishlist-button :produk="$produk" :is-wishlisted="$produk->is_wishlisted ?? false"/>
 
     </div>
 

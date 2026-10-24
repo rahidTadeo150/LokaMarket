@@ -26,6 +26,8 @@ class pesanan extends Model
         'ongkir',
         'total_pembayaran',
         'status',
+        'snap_token',
+        'payment_method',
         'dibayar_at',
         'selesai_at',
     ];
@@ -46,8 +48,9 @@ class pesanan extends Model
         return $this->hasMany(detail_pesanan::class, 'pesanan_id');
     }
 
-    public function pembayaran() {
-        return $this->hasOne(pembayaran::class, 'pesanan_id');
+    public function payment()
+    {
+        return $this->hasOne(payments::class, 'pesanan_id');
     }
 
     public function provinsi() {

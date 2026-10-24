@@ -27,6 +27,7 @@ class pengajuan_toko extends Model
         'token_verifikasi',
         'token_expired_at',
         'email_verified_at',
+        'rejected_at',
         'status',
         'alasan_reject',
         'by_admin',
@@ -35,6 +36,7 @@ class pengajuan_toko extends Model
     protected $casts = [
         'token_expired_at' => 'datetime',
         'email_verified_at' => 'datetime',
+        'rejected_at' => 'datetime',
     ];
 
     public function user()

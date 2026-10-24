@@ -66,26 +66,26 @@
 					@foreach ($stores as $store)
 							<tr class="transition hover:bg-[#FFFDF9]">
 								<td class="px-5 py-3.5">
-								<span class="flex h-10 w-10 items-center justify-center rounded-xl text-[10px] font-extrabold {{ $store['color'] }}">{{ $store['logo'] }}</span>
-							</td>
+									<span class="flex h-10 w-10 items-center justify-center rounded-xl text-[10px] font-extrabold {{ $store['color'] }}">{{ $store['logo'] }}</span>
+								</td>
 								<td class="px-4 py-3.5 font-semibold">{{ $store['name'] }}</td>
 								<td class="px-4 py-3.5 text-[11px] text-[#72594B]">{{ $store['owner'] }}</td>
 								<td class="whitespace-nowrap px-4 py-3.5 text-[11px] text-[#72594B]">{{ $store['date'] }}</td>
 								<td class="px-4 py-3.5 font-semibold">{{ $store['products'] }}</td>
 								<td class="px-4 py-3.5">
-								<span class="whitespace-nowrap rounded-full px-2.5 py-1 text-[10px] font-bold {{ match ($store['status']) {
-									'Aktif' => 'bg-green-100 text-green-700',
-									'Nonaktif' => 'bg-red-100 text-red-700',
-									default => 'bg-yellow-100 text-yellow-700',
-								} }}">{{ $store['status'] }}</span>
-							</td>
-								<td class="px-5 py-3.5">
-									<div class="flex items-center gap-3 text-[#72594B]">
-										<button type="button" title="Edit toko" class="transition hover:text-orange-500"><i class="fa-solid fa-pen-to-square"></i><span class="sr-only">Edit</span></button>
-										<button type="button" title="{{ $store['status'] === 'Nonaktif' ? 'Aktifkan toko' : 'Nonaktifkan toko' }}" class="transition hover:text-red-500"><i class="fa-solid {{ $store['status'] === 'Nonaktif' ? 'fa-toggle-on' : 'fa-ban' }}"></i><span class="sr-only">{{ $store['status'] === 'Nonaktif' ? 'Aktifkan' : 'Nonaktifkan' }}</span></button>
-										<button type="button" title="Hapus toko" class="transition hover:text-red-500"><i class="fa-solid fa-trash-can"></i><span class="sr-only">Hapus</span></button>
-								</div>
-							</td>
+									<span class="whitespace-nowrap rounded-full px-2.5 py-1 text-[10px] font-bold {{ match ($store['status']) {
+										'Aktif' => 'bg-green-100 text-green-700',
+										'Nonaktif' => 'bg-red-100 text-red-700',
+										default => 'bg-yellow-100 text-yellow-700',
+									} }}">{{ $store['status'] }}</span>
+								</td>
+									<td class="px-5 py-3.5">
+										<div class="flex items-center gap-3 text-[#72594B]">
+											<button type="button" title="Edit toko" class="transition hover:text-orange-500"><i class="fa-solid fa-pen-to-square"></i><span class="sr-only">Edit</span></button>
+											<button type="button" title="{{ $store['status'] === 'Nonaktif' ? 'Aktifkan toko' : 'Nonaktifkan toko' }}" class="transition hover:text-red-500"><i class="fa-solid {{ $store['status'] === 'Nonaktif' ? 'fa-toggle-on' : 'fa-ban' }}"></i><span class="sr-only">{{ $store['status'] === 'Nonaktif' ? 'Aktifkan' : 'Nonaktifkan' }}</span></button>
+											<button type="button" title="Hapus toko" class="transition hover:text-red-500"><i class="fa-solid fa-trash-can"></i><span class="sr-only">Hapus</span></button>
+									</div>
+								</td>
 						</tr>
 					@endforeach
 				</tbody>

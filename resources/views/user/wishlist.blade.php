@@ -3,7 +3,6 @@
 @section('title', 'Wishlist Kamu - LokaMarket')
 
 @section('content')
-
 <main class="min-h-screen bg-[#FFF9F4]">
 
     <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -15,12 +14,15 @@
                 <button type="button"
                         onclick="history.back()"
                         class="group inline-flex mb-5 items-center gap-2 text-sm font-medium text-slate-600 hover:text-orange-600 transition">
+                    
                     <span class="flex items-center justify-center w-9 h-9 rounded-full bg-white border border-orange-100 shadow-sm group-hover:bg-orange-50 group-hover:border-orange-200 transition">
                         <i class="fa-solid fa-arrow-left text-xs"></i>
                     </span>
+
                     <span>
                         kembali
                     </span>
+
                 </button>
 
                 <div class="relative overflow-hidden rounded-2xl bg-linear-to-br from-orange-500 via-orange-500 to-[#D9490B] px-5 py-6 text-white shadow-xl shadow-orange-200/50 sm:px-7 sm:py-7 md:rounded-3xl">
@@ -82,8 +84,8 @@
 
             <div class="rounded-2xl border border-orange-100 bg-white p-4 shadow-sm sm:p-5">
                 <div class="flex items-center gap-3">
-                    <div
-                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-50 text-orange-500">
+
+                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-50 text-orange-500">
                         <i class="fa-solid fa-heart"></i>
                     </div>
 
@@ -92,16 +94,19 @@
                             Produk Disimpan
                         </p>
                         <p class="mt-1 text-lg font-extrabold text-[#3B2115]">
-                            9 Produk
+                            {{ number_format($totalWishlist, 0, ',', '.') }} Produk
                         </p>
                     </div>
+
                 </div>
+
             </div>
 
             <div class="rounded-2xl border border-orange-100 bg-white p-4 shadow-sm sm:p-5">
+
                 <div class="flex items-center gap-3">
-                    <div
-                        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-50 text-orange-500">
+
+                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-50 text-orange-500">
                         <i class="fa-solid fa-tags"></i>
                     </div>
 
@@ -110,10 +115,12 @@
                             Perkiraan Nilai
                         </p>
                         <p class="mt-1 text-lg font-extrabold text-[#3B2115]">
-                            Rp365.000
+                            Rp{{ number_format($totalNilai, 0, ',', '.') }}
                         </p>
                     </div>
+
                 </div>
+
             </div>
 
         </section>
@@ -124,18 +131,46 @@
 
                 <div class="flex flex-wrap items-center gap-3">
 
-                    <label class="flex cursor-pointer items-center gap-2 text-xs font-bold text-[#3B2115]">
+                    <label class="group flex cursor-pointer items-center gap-2.5 text-xs font-bold text-[#3B2115]">
+
                         <input type="checkbox"
-                            class="h-4 w-4 cursor-pointer rounded border-gray-300 accent-[#FF6B00]">
-                        Pilih semua
+                            id="selectAllWishlist"
+                            class="select-all-checkbox peer sr-only"
+                            aria-label="Pilih semua produk">
+
+                        <span class="flex h-5 w-5 items-center justify-center rounded-md border border-orange-200 bg-white text-transparent shadow-sm transition-all duration-200 group-hover:border-orange-400 peer-checked:border-orange-500 peer-checked:bg-orange-500 peer-checked:text-white peer-focus-visible:ring-4 peer-focus-visible:ring-orange-300/50">
+                            <i class="fa-solid fa-check text-[10px]"></i>
+                        </span>
+
+                        <span class="transition-colors duration-200 group-hover:text-orange-600">
+                            Pilih semua
+                        </span>
+
                     </label>
 
                     <span class="hidden h-5 w-px bg-orange-100 sm:block"></span>
 
+                    <form id="deleteWishlistForm"
+                        action="{{ route('cust.wishlist.deleteSelected') }}"
+                        method="POST"
+                        class="hidden">
+
+                        @csrf
+                        @method('DELETE')
+                        <div id="selectedWishlistInputs"></div>
+                    </form>
+
                     <button type="button"
-                            class="text-xs font-semibold text-red-500 transition hover:text-red-600">
+                            id="deleteSelectedWishlist"
+                            disabled
+                            data-theme="red"
+                            data-title="Hapus Produk Wishlist?"
+                            data-confirm-text="Ya, Hapus"
+                            data-icon="fa-trash-can"
+                            class="cursor-pointer text-xs font-semibold text-red-500 transition hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-40">
                         <i class="fa-regular fa-trash-can mr-1"></i>
                         Hapus pilihan
+                        <span id="selectedWishlistCount" class="ml-1">(0)</span>
                     </button>
 
                 </div>
@@ -163,704 +198,226 @@
 
             </div>
 
-
             <div class="mt-4 flex gap-2 overflow-x-auto pb-1">
 
-                <button type="button"
-                        class="shrink-0 rounded-full bg-[#EA4F0C] px-4 py-2 text-[10px] font-bold text-white shadow-sm">
+                <a href="{{ route('cust.wishlist') }}"
+                class="shrink-0 rounded-full px-4 py-2 text-[10px] font-bold transition {{ !request('kategori') ? 'bg-[#EA4F0C] text-white shadow-sm' : 'border border-orange-100 bg-white text-[#72594B] hover:bg-orange-50' }}">
                     Semua
-                </button>
+                </a>
 
-                <button type="button"
-                        class="shrink-0 rounded-full border border-orange-100 bg-white px-4 py-2 text-[10px] font-bold text-[#72594B] transition hover:bg-orange-50">
-                    Makanan & Minuman
-                </button>
-
-                <button type="button"
-                        class="shrink-0 rounded-full border border-orange-100 bg-white px-4 py-2 text-[10px] font-bold text-[#72594B] transition hover:bg-orange-50">
-                    Kerajinan
-                </button>
-
-                <button type="button"
-                        class="shrink-0 rounded-full border border-orange-100 bg-white px-4 py-2 text-[10px] font-bold text-[#72594B] transition hover:bg-orange-50">
-                    Fashion
-                </button>
-
-                <button type="button"
-                        class="shrink-0 rounded-full border border-orange-100 bg-white px-4 py-2 text-[10px] font-bold text-[#72594B] transition hover:bg-orange-50">
-                    Kesehatan
-                </button>
-
-                <button type="button"
-                        class="shrink-0 rounded-full border border-orange-100 bg-white px-4 py-2 text-[10px] font-bold text-[#72594B] transition hover:bg-orange-50">
-                    Rumah Tangga
-                </button>
+                @forelse ($kategoriWishlist as $kategori)
+                <a href="{{ route('cust.wishlist', array_merge(request()->except('page'), ['kategori' => $kategori->slug])) }}"
+                class="shrink-0 rounded-full border px-4 py-2 text-[10px] font-bold transition {{ request('kategori') === $kategori->slug ? 'border-[#EA4F0C] bg-[#EA4F0C] text-white shadow-sm' : 'border-orange-100 bg-white text-[#72594B] hover:bg-orange-50' }}">
+                    {{ $kategori->nama }}
+                </a>
+                @empty
+                <span class="px-2 py-2 text-[10px] text-[#A08F85]">
+                    Belum ada kategori di wishlist.
+                </span>
+                @endforelse
 
             </div>
 
         </section>
 
-        {{-- PRODUCT GRID --}}
-        <div class="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        @if ($wishlists->count())
+            <div class="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
 
+                @foreach ($wishlists as $item)
+                @continue(!$item->produk)
+                <article class="group relative flex flex-col overflow-hidden rounded-2xl border border-orange-100 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
 
-            {{-- PRODUCT 1 --}}
-            <div
-                class="group relative flex flex-col overflow-hidden rounded-2xl border border-orange-100 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+                    <div class="relative h-44 overflow-hidden bg-orange-50 sm:h-48">
 
-                <div class="relative h-44 overflow-hidden bg-orange-100 sm:h-48">
+                        <a href="{{ route('cust.detailProduk', $item->produk->slug) }}"
+                        class="flex h-full w-full items-center justify-center">
 
-                    {{-- IMAGE DUMMY --}}
-                    <div
-                        class="flex h-full w-full items-center justify-center bg-gradient-to-br from-orange-100 to-orange-200">
+                            @if ($item->produk->thumbnail && $item->produk->thumbnail->foto)
+                            <img src="{{ asset('storage/' . $item->produk->thumbnail->foto) }}"
+                                alt="{{ $item->produk->nama }}"
+                                class="h-full w-full object-cover"
+                                loading="lazy">
+                            @else
+                            <img src="{{ asset('images/default-product.jpg') }}"
+                                alt="Foto produk tidak tersedia"
+                                class="h-full w-full object-cover"
+                                loading="lazy">
+                            @endif
 
-                        <i
-                            class="fa-solid fa-bowl-food text-5xl text-orange-400">
-                        </i>
+                        </a>
 
-                    </div>
+                        <div class="absolute left-3 top-3 z-10">
 
+                            <label class="group relative flex cursor-pointer items-center justify-center">
 
-                    {{-- CHECKBOX --}}
-                    <div class="absolute left-3 top-3">
+                                <input type="checkbox"
+                                    name="selected_wishlist[]"
+                                    value="{{ $item->id }}"
+                                    class="wishlist-checkbox peer sr-only"
+                                    aria-label="Pilih {{ $item->produk->nama }}">
 
-                        <input
-                            type="checkbox"
-                            class="h-5 w-5 cursor-pointer rounded border-gray-300 accent-[#FF6B00] shadow-sm">
+                                <span class="flex h-6 w-6 items-center justify-center rounded-lg
+                                        border border-white/80 bg-white/90 text-transparent
+                                        shadow-md backdrop-blur-sm
+                                        transition-all duration-200 ease-out
+                                        group-hover:scale-110 group-hover:border-orange-400
+                                        peer-checked:scale-105 peer-checked:border-orange-500
+                                        peer-checked:bg-orange-500 peer-checked:text-white
+                                        peer-focus-visible:ring-4 peer-focus-visible:ring-orange-300/60">
+                                    <i class="fa-solid fa-check text-xs transition-transform duration-200 peer-checked:scale-100"></i>
+                                </span>
 
-                    </div>
+                            </label>
 
+                        </div>
 
-                    {{-- HEART --}}
-                    <button
-                        type="button"
-                        class="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-md transition hover:scale-105">
+                        <x-wishlist-button :produk="$item->produk" :is-wishlisted="$item->produk->is_wishlisted ?? false"/>
 
-                        <i class="fa-solid fa-heart text-sm text-[#EA4F0C]"></i>
-
-                    </button>
-
-                </div>
-
-
-                <div class="flex flex-1 flex-col p-4">
-
-                    <p class="text-[9px] font-bold text-orange-500">
-                        Makanan & Minuman
-                    </p>
-
-                    <h3 class="mt-1 line-clamp-2 text-sm font-bold leading-5 text-[#3B2115]">
-                        Nasi Pecel Bu Sri
-                    </h3>
-
-                    <p class="mt-3 text-base font-extrabold text-[#EA4F0C]">
-                        Rp12.000
-                    </p>
-
-                    <p class="mt-1 text-[9px] text-[#A08F85]">
-                        Dapur Bu Sri
-                    </p>
-
-
-                    <div
-                        class="mt-auto flex items-center justify-between border-t border-dashed border-orange-100 pt-3">
-
-                        <span class="text-[9px] text-[#A08F85]">
-                            2 hari lalu
-                        </span>
-
-                        <button
-                            type="button"
-                            class="flex h-8 w-8 items-center justify-center rounded-full bg-[#EA4F0C] text-white transition hover:bg-[#D4460A]">
-
-                            <i class="fa-solid fa-cart-plus text-xs"></i>
-
-                        </button>
+                        @if (($item->produk->stok ?? 0) <= 0)
+                            <span class="absolute bottom-3 left-3 rounded-full bg-red-500 px-2.5 py-1 text-[9px] font-bold text-white">
+                                Stok habis
+                            </span>
+                        @elseif (($item->produk->stok ?? 0) <= 5)
+                            <span class="absolute bottom-3 left-3 rounded-full bg-amber-100 px-2.5 py-1 text-[9px] font-bold text-amber-800">
+                                Stok terbatas
+                            </span>
+                        @endif
 
                     </div>
 
-                </div>
+                    <div class="flex flex-1 flex-col p-3 sm:p-4">
+
+                        <p class="text-[10px] font-bold text-orange-500">
+                            {{ $item->produk->kategori->nama ?? 'Kategori lainnya' }}
+                        </p>
+
+                        <a href="{{ route('cust.detailProduk', $item->produk->slug) }}">
+                            <p class="mt-1 line-clamp-2 text-sm font-bold leading-5 text-[#3B2115] transition hover:text-orange-600">
+                                {{ $item->produk->nama }}
+                            </p>
+                        </a>
+
+                        <p class="mt-3 text-base font-extrabold text-[#EA4F0C]">
+                            Rp{{ number_format($item->produk->harga, 0, ',', '.') }}
+                        </p>
+
+                        <p class="mt-1 truncate text-[10px] text-[#A08F85]">
+                            {{ $item->produk->toko->nama_toko ?? 'Toko lokal' }}
+                        </p>
+
+                        <div class="mt-auto flex items-center justify-between gap-2 border-t border-dashed border-orange-100 pt-3">
+
+                            <span class="text-[9px] text-[#A08F85]">
+                                Disimpan {{ $item->created_at?->diffForHumans() ?? '-' }}
+                            </span>
+
+                            <a href="{{ route('cust.detailProduk', $item->produk->slug) }}"
+                            class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#EA4F0C] text-white transition hover:bg-[#D4460A]"
+                            aria-label="Lihat {{ $item->produk->nama }}"
+                            title="Lihat produk">
+                                <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </article>
+                @endforeach
 
             </div>
 
+            @if ($wishlists->hasPages())
+            <div class="mt-8 rounded-2xl border border-orange-100 bg-white px-4 py-4 shadow-sm sm:px-5">
 
-            {{-- ======================================== --}}
-            {{-- PRODUCT 2 --}}
-            {{-- ======================================== --}}
+                <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
-            <div
-                class="group relative flex flex-col overflow-hidden rounded-2xl border border-orange-100 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
-
-                <div class="relative h-44 overflow-hidden bg-amber-100 sm:h-48">
-
-                    <div
-                        class="flex h-full w-full items-center justify-center bg-gradient-to-br from-amber-100 to-orange-100">
-
-                        <i
-                            class="fa-solid fa-mug-hot text-5xl text-amber-500">
-                        </i>
-
-                    </div>
-
-                    <div class="absolute left-3 top-3">
-
-                        <input
-                            type="checkbox"
-                            class="h-5 w-5 cursor-pointer rounded border-gray-300 accent-[#FF6B00] shadow-sm">
-
-                    </div>
-
-                    <button
-                        type="button"
-                        class="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-md transition hover:scale-105">
-
-                        <i class="fa-solid fa-heart text-sm text-[#EA4F0C]"></i>
-
-                    </button>
-
-                </div>
-
-
-                <div class="flex flex-1 flex-col p-4">
-
-                    <p class="text-[9px] font-bold text-orange-500">
-                        Makanan & Minuman
-                    </p>
-
-                    <h3 class="mt-1 line-clamp-2 text-sm font-bold leading-5 text-[#3B2115]">
-                        Kopi Tubruk Cak Man
-                    </h3>
-
-                    <p class="mt-3 text-base font-extrabold text-[#EA4F0C]">
-                        Rp8.000
-                    </p>
-
-                    <p class="mt-1 text-[9px] text-[#A08F85]">
-                        Kopi Cak Man
-                    </p>
-
-                    <div
-                        class="mt-auto flex items-center justify-between border-t border-dashed border-orange-100 pt-3">
-
-                        <span class="text-[9px] text-[#A08F85]">
-                            5 hari lalu
+                    <p class="text-xs text-[#72594B]">
+                        Menampilkan
+                        <span class="font-bold text-[#3B2115]">
+                            {{ $wishlists->firstItem() }}–{{ $wishlists->lastItem() }}
                         </span>
+                        dari
+                        <span class="font-bold text-[#3B2115]">
+                            {{ $wishlists->total() }}
+                        </span>
+                        produk
+                    </p>
 
-                        <button
-                            type="button"
-                            class="flex h-8 w-8 items-center justify-center rounded-full bg-[#EA4F0C] text-white transition hover:bg-[#D4460A]">
+                    <div class="flex flex-wrap items-center gap-2">
+                        @if ($wishlists->onFirstPage())
+                        <span class="flex h-9 w-9 items-center justify-center rounded-xl border border-orange-100 text-gray-300">
+                            <i class="fa-solid fa-chevron-left text-xs"></i>
+                        </span>
+                        @else
+                        <a href="{{ $wishlists->previousPageUrl() }}"
+                        class="flex h-9 w-9 items-center justify-center rounded-xl border border-orange-100 text-[#72594B] transition hover:border-orange-300 hover:bg-orange-50">
+                            <i class="fa-solid fa-chevron-left text-xs"></i>
+                        </a>
+                        @endif
 
-                            <i class="fa-solid fa-cart-plus text-xs"></i>
+                        @foreach ($wishlists->getUrlRange(1, $wishlists->lastPage()) as $page => $url)
+                        <a href="{{ $url }}"
+                        class="flex h-9 min-w-9 items-center justify-center rounded-xl px-3 text-xs font-bold transition
+                        {{ $page == $wishlists->currentPage()
+                                ? 'bg-[#EA4F0C] text-white shadow-sm'
+                                : 'border border-orange-100 bg-white text-[#72594B] hover:bg-orange-50' }}">
+                            {{ $page }}
+                        </a>
+                        @endforeach
 
-                        </button>
-
+                        @if ($wishlists->hasMorePages())
+                        <a href="{{ $wishlists->nextPageUrl() }}"
+                        class="flex h-9 w-9 items-center justify-center rounded-xl border border-orange-100 text-[#72594B] transition hover:border-orange-300 hover:bg-orange-50">
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </a>
+                        @else
+                        <span class="flex h-9 w-9 items-center justify-center rounded-xl border border-orange-100 text-gray-300">
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </span>
+                        @endif
                     </div>
 
                 </div>
+            </div>
+            @endif
 
+        @else
+        <div class="rounded-3xl border border-dashed border-orange-200 bg-white px-5 py-14 text-center shadow-sm sm:py-16">
+
+            <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-orange-50 text-orange-400">
+                <i class="fa-regular fa-heart text-3xl"></i>
             </div>
 
-
-            {{-- ======================================== --}}
-            {{-- PRODUCT 3 --}}
-            {{-- ======================================== --}}
-
-            <div
-                class="group relative flex flex-col overflow-hidden rounded-2xl border border-orange-100 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
-
-                <div class="relative h-44 overflow-hidden bg-yellow-100 sm:h-48">
-
-                    <div
-                        class="flex h-full w-full items-center justify-center bg-gradient-to-br from-yellow-100 to-orange-100">
-
-                        <i
-                            class="fa-solid fa-cookie-bite text-5xl text-yellow-600">
-                        </i>
-
-                    </div>
-
-                    <div class="absolute left-3 top-3">
-
-                        <input
-                            type="checkbox"
-                            class="h-5 w-5 cursor-pointer rounded border-gray-300 accent-[#FF6B00] shadow-sm">
-
-                    </div>
-
-                    <button
-                        type="button"
-                        class="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-md transition hover:scale-105">
-
-                        <i class="fa-solid fa-heart text-sm text-[#EA4F0C]"></i>
-
-                    </button>
-
-                    {{-- TURUN HARGA --}}
-                    <span
-                        class="absolute bottom-3 left-3 rounded-full bg-green-500 px-2.5 py-1 text-[8px] font-bold text-white">
-
-                        Turun harga
-
-                    </span>
-
-                </div>
-
-
-                <div class="flex flex-1 flex-col p-4">
-
-                    <p class="text-[9px] font-bold text-orange-500">
-                        Makanan & Minuman
-                    </p>
-
-                    <h3 class="mt-1 line-clamp-2 text-sm font-bold leading-5 text-[#3B2115]">
-                        Keripik Tempe Renyah
-                    </h3>
-
-                    <p class="mt-3 text-base font-extrabold text-[#EA4F0C]">
-                        Rp15.000
-                    </p>
-
-                    <p class="mt-1 text-[9px] text-[#A08F85]">
-                        Oleh-Oleh Banyuwangi
-                    </p>
-
-                    <div
-                        class="mt-auto flex items-center justify-between border-t border-dashed border-orange-100 pt-3">
-
-                        <span class="text-[9px] text-[#A08F85]">
-                            1 minggu lalu
-                        </span>
-
-                        <button
-                            type="button"
-                            class="flex h-8 w-8 items-center justify-center rounded-full bg-[#EA4F0C] text-white transition hover:bg-[#D4460A]">
-
-                            <i class="fa-solid fa-cart-plus text-xs"></i>
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            {{-- ======================================== --}}
-            {{-- PRODUCT 4 --}}
-            {{-- ======================================== --}}
-
-            <div
-                class="group relative flex flex-col overflow-hidden rounded-2xl border border-orange-100 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
-
-                <div class="relative h-44 overflow-hidden bg-green-100 sm:h-48">
-
-                    <div
-                        class="flex h-full w-full items-center justify-center bg-gradient-to-br from-green-100 to-lime-100">
-
-                        <i
-                            class="fa-solid fa-bag-shopping text-5xl text-green-600">
-                        </i>
-
-                    </div>
-
-                    <div class="absolute left-3 top-3">
-
-                        <input
-                            type="checkbox"
-                            class="h-5 w-5 cursor-pointer rounded border-gray-300 accent-[#FF6B00] shadow-sm">
-
-                    </div>
-
-                    <button
-                        type="button"
-                        class="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-md transition hover:scale-105">
-
-                        <i class="fa-solid fa-heart text-sm text-[#EA4F0C]"></i>
-
-                    </button>
-
-                    {{-- STOK --}}
-                    <span
-                        class="absolute bottom-3 left-3 rounded-full bg-[#FFF3E2] px-2.5 py-1 text-[8px] font-bold text-[#8D6B42]">
-
-                        Stok terbatas
-
-                    </span>
-
-                </div>
-
-
-                <div class="flex flex-1 flex-col p-4">
-
-                    <p class="text-[9px] font-bold text-orange-500">
-                        Kerajinan Tangan
-                    </p>
-
-                    <h3 class="mt-1 line-clamp-2 text-sm font-bold leading-5 text-[#3B2115]">
-                        Tas Anyaman Bambu
-                    </h3>
-
-                    <p class="mt-3 text-base font-extrabold text-[#EA4F0C]">
-                        Rp45.000
-                    </p>
-
-                    <p class="mt-1 text-[9px] text-[#A08F85]">
-                        Kerajinan Bu Ani
-                    </p>
-
-                    <div
-                        class="mt-auto flex items-center justify-between border-t border-dashed border-orange-100 pt-3">
-
-                        <span class="text-[9px] text-[#A08F85]">
-                            3 hari lalu
-                        </span>
-
-                        <button
-                            type="button"
-                            class="flex h-8 w-8 items-center justify-center rounded-full bg-[#EA4F0C] text-white transition hover:bg-[#D4460A]">
-
-                            <i class="fa-solid fa-cart-plus text-xs"></i>
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            {{-- ======================================== --}}
-            {{-- PRODUCT 5 --}}
-            {{-- ======================================== --}}
-
-            <div
-                class="group relative flex flex-col overflow-hidden rounded-2xl border border-orange-100 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
-
-                <div class="relative h-44 overflow-hidden bg-pink-100 sm:h-48">
-
-                    <div
-                        class="flex h-full w-full items-center justify-center bg-gradient-to-br from-pink-100 to-orange-100">
-
-                        <i
-                            class="fa-solid fa-shirt text-5xl text-pink-500">
-                        </i>
-
-                    </div>
-
-                    <div class="absolute left-3 top-3">
-
-                        <input
-                            type="checkbox"
-                            class="h-5 w-5 cursor-pointer rounded border-gray-300 accent-[#FF6B00] shadow-sm">
-
-                    </div>
-
-                    <button
-                        type="button"
-                        class="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-md transition hover:scale-105">
-
-                        <i class="fa-solid fa-heart text-sm text-[#EA4F0C]"></i>
-
-                    </button>
-
-                </div>
-
-
-                <div class="flex flex-1 flex-col p-4">
-
-                    <p class="text-[9px] font-bold text-orange-500">
-                        Fashion
-                    </p>
-
-                    <h3 class="mt-1 line-clamp-2 text-sm font-bold leading-5 text-[#3B2115]">
-                        Kaos Lokal Banyuwangi
-                    </h3>
-
-                    <p class="mt-3 text-base font-extrabold text-[#EA4F0C]">
-                        Rp75.000
-                    </p>
-
-                    <p class="mt-1 text-[9px] text-[#A08F85]">
-                        Banyuwangi Apparel
-                    </p>
-
-                    <div
-                        class="mt-auto flex items-center justify-between border-t border-dashed border-orange-100 pt-3">
-
-                        <span class="text-[9px] text-[#A08F85]">
-                            4 hari lalu
-                        </span>
-
-                        <button
-                            type="button"
-                            class="flex h-8 w-8 items-center justify-center rounded-full bg-[#EA4F0C] text-white transition hover:bg-[#D4460A]">
-
-                            <i class="fa-solid fa-cart-plus text-xs"></i>
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            {{-- ======================================== --}}
-            {{-- PRODUCT 6 --}}
-            {{-- ======================================== --}}
-
-            <div
-                class="group relative flex flex-col overflow-hidden rounded-2xl border border-orange-100 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
-
-                <div class="relative h-44 overflow-hidden bg-blue-100 sm:h-48">
-
-                    <div
-                        class="flex h-full w-full items-center justify-center bg-gradient-to-br from-blue-100 to-cyan-100">
-
-                        <i
-                            class="fa-solid fa-leaf text-5xl text-green-500">
-                        </i>
-
-                    </div>
-
-                    <div class="absolute left-3 top-3">
-
-                        <input
-                            type="checkbox"
-                            class="h-5 w-5 cursor-pointer rounded border-gray-300 accent-[#FF6B00] shadow-sm">
-
-                    </div>
-
-                    <button
-                        type="button"
-                        class="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-md transition hover:scale-105">
-
-                        <i class="fa-solid fa-heart text-sm text-[#EA4F0C]"></i>
-
-                    </button>
-
-                </div>
-
-
-                <div class="flex flex-1 flex-col p-4">
-
-                    <p class="text-[9px] font-bold text-orange-500">
-                        Kesehatan
-                    </p>
-
-                    <h3 class="mt-1 line-clamp-2 text-sm font-bold leading-5 text-[#3B2115]">
-                        Madu Murni Hutan
-                    </h3>
-
-                    <p class="mt-3 text-base font-extrabold text-[#EA4F0C]">
-                        Rp55.000
-                    </p>
-
-                    <p class="mt-1 text-[9px] text-[#A08F85]">
-                        Madu Alam Jember
-                    </p>
-
-                    <div
-                        class="mt-auto flex items-center justify-between border-t border-dashed border-orange-100 pt-3">
-
-                        <span class="text-[9px] text-[#A08F85]">
-                            6 hari lalu
-                        </span>
-
-                        <button
-                            type="button"
-                            class="flex h-8 w-8 items-center justify-center rounded-full bg-[#EA4F0C] text-white transition hover:bg-[#D4460A]">
-
-                            <i class="fa-solid fa-cart-plus text-xs"></i>
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            {{-- ======================================== --}}
-            {{-- PRODUCT 7 --}}
-            {{-- ======================================== --}}
-
-            <div
-                class="group relative flex flex-col overflow-hidden rounded-2xl border border-orange-100 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
-
-                <div class="relative h-44 overflow-hidden bg-stone-100 sm:h-48">
-
-                    <div
-                        class="flex h-full w-full items-center justify-center bg-gradient-to-br from-stone-100 to-orange-100">
-
-                        <i
-                            class="fa-solid fa-mortar-pestle text-5xl text-stone-500">
-                        </i>
-
-                    </div>
-
-                    <div class="absolute left-3 top-3">
-
-                        <input
-                            type="checkbox"
-                            class="h-5 w-5 cursor-pointer rounded border-gray-300 accent-[#FF6B00] shadow-sm">
-
-                    </div>
-
-                    <button
-                        type="button"
-                        class="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-md">
-
-                        <i class="fa-solid fa-heart text-sm text-[#EA4F0C]"></i>
-
-                    </button>
-
-                </div>
-
-
-                <div class="flex flex-1 flex-col p-4">
-
-                    <p class="text-[9px] font-bold text-orange-500">
-                        Rumah Tangga
-                    </p>
-
-                    <h3 class="mt-1 line-clamp-2 text-sm font-bold leading-5 text-[#3B2115]">
-                        Sambal Cobek Tradisional
-                    </h3>
-
-                    <p class="mt-3 text-base font-extrabold text-[#EA4F0C]">
-                        Rp18.000
-                    </p>
-
-                    <p class="mt-1 text-[9px] text-[#A08F85]">
-                        Dapur Mbak Rina
-                    </p>
-
-                    <div
-                        class="mt-auto flex items-center justify-between border-t border-dashed border-orange-100 pt-3">
-
-                        <span class="text-[9px] text-[#A08F85]">
-                            1 minggu lalu
-                        </span>
-
-                        <button
-                            type="button"
-                            class="flex h-8 w-8 items-center justify-center rounded-full bg-[#EA4F0C] text-white">
-
-                            <i class="fa-solid fa-cart-plus text-xs"></i>
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            {{-- ======================================== --}}
-            {{-- PRODUCT 8 --}}
-            {{-- ======================================== --}}
-
-            <div
-                class="group relative flex flex-col overflow-hidden rounded-2xl border border-orange-100 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
-
-                <div class="relative h-44 overflow-hidden bg-purple-100 sm:h-48">
-
-                    <div
-                        class="flex h-full w-full items-center justify-center bg-gradient-to-br from-purple-100 to-pink-100">
-
-                        <i
-                            class="fa-solid fa-gift text-5xl text-purple-500">
-                        </i>
-
-                    </div>
-
-                    <div class="absolute left-3 top-3">
-
-                        <input
-                            type="checkbox"
-                            class="h-5 w-5 cursor-pointer rounded border-gray-300 accent-[#FF6B00] shadow-sm">
-
-                    </div>
-
-                    <button
-                        type="button"
-                        class="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-md">
-
-                        <i class="fa-solid fa-heart text-sm text-[#EA4F0C]"></i>
-
-                    </button>
-
-                </div>
-
-
-                <div class="flex flex-1 flex-col p-4">
-
-                    <p class="text-[9px] font-bold text-orange-500">
-                        Kerajinan Tangan
-                    </p>
-
-                    <h3 class="mt-1 line-clamp-2 text-sm font-bold leading-5 text-[#3B2115]">
-                        Hampers UMKM Nusantara
-                    </h3>
-
-                    <p class="mt-3 text-base font-extrabold text-[#EA4F0C]">
-                        Rp85.000
-                    </p>
-
-                    <p class="mt-1 text-[9px] text-[#A08F85]">
-                        Kreasi Lokal
-                    </p>
-
-                    <div
-                        class="mt-auto flex items-center justify-between border-t border-dashed border-orange-100 pt-3">
-
-                        <span class="text-[9px] text-[#A08F85]">
-                            2 minggu lalu
-                        </span>
-
-                        <button
-                            type="button"
-                            class="flex h-8 w-8 items-center justify-center rounded-full bg-[#EA4F0C] text-white">
-
-                            <i class="fa-solid fa-cart-plus text-xs"></i>
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
+            <h3 class="mt-5 text-lg font-extrabold text-[#3B2115]">
+                Wishlist kamu masih kosong
+            </h3>
+
+            <p class="mx-auto mt-2 max-w-md text-sm leading-6 text-[#72594B]">
+                Simpan produk yang kamu sukai dengan menekan ikon hati agar mudah ditemukan saat ingin berbelanja.
+            </p>
+
+            <a href="{{ route('cust.pilihanProduk') }}"
+            class="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#EA4F0C] px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-[#D4460A]">
+                <i class="fa-solid fa-bag-shopping"></i>
+                Jelajahi Produk
+            </a>
 
         </div>
+        @endif
 
-
-        {{-- ======================================== --}}
-        {{-- BOTTOM ACTION --}}
-        {{-- ======================================== --}}
-
-        <div
-            class="mt-8 flex flex-col gap-3 rounded-2xl border border-orange-100 bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+        <div class="mt-8 flex flex-col gap-3 rounded-2xl border border-orange-100 bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
 
             <div>
-
                 <p class="text-sm font-bold text-[#3B2115]">
                     Sudah menemukan produk favorit?
                 </p>
-
                 <p class="mt-1 text-[10px] text-[#A08F85]">
                     Tambahkan produk pilihanmu ke keranjang dan lanjutkan belanja.
                 </p>
-
             </div>
 
-            <a href="#"
+            <a href="{{ route('cust.keranjang') }}"
             class="inline-flex items-center justify-center gap-2 rounded-xl bg-[#EA4F0C] px-5 py-3 text-xs font-bold text-white shadow-sm transition hover:bg-[#D4460A]">
                 <i class="fa-solid fa-cart-shopping"></i>
                 Lihat Keranjang
@@ -870,6 +427,7 @@
 
     </div>
 
-</main>
+    <x-custom-alert-confirmation/>
 
+</main>
 @endsection

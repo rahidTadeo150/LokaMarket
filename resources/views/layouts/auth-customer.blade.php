@@ -13,6 +13,7 @@
     <x-navbar-auth></x-navbar-auth>
     @yield('content')
     <x-footer></x-footer>
+    @stack('scripts')
 </body>
 </html>
 

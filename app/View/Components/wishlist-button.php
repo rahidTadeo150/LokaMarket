@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class alert-success-relative extends Component
+class wishlist-button extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class alert-success-relative extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.alert-success-relative');
+        return view('components.wishlist-button');
     }
 }

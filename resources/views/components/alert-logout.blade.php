@@ -1,3 +1,7 @@
+@props([
+    'message' => 'Apakah Anda yakin ingin keluar dari akun LokaMarket Anda?',
+])
+
 <div id="logoutModal"
     class="fixed inset-0 z-9999 hidden items-center justify-center bg-black/30 px-5 backdrop-blur-sm">
     <div id="logoutModalContent"
@@ -15,8 +19,7 @@
                 Keluar dari Akun?
             </h3>
             <p class="mt-2 text-sm leading-6 text-gray-500">
-                Apakah Anda yakin ingin keluar dari akun
-                LokaMarket Anda?
+                {{ $message }}
             </p>
 
         </div>

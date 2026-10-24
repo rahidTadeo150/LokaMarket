@@ -1,39 +1,59 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const openLogoutModalButton = document.getElementById('openLogoutModal');
+
+    const openLogoutButtons = document.querySelectorAll('.openLogoutModal');
     const closeLogoutModalButton = document.getElementById('closeLogoutModal');
     const confirmLogoutButton = document.getElementById('confirmLogout');
     const logoutModal = document.getElementById('logoutModal');
     const logoutModalContent = document.getElementById('logoutModalContent');
     const logoutForm = document.getElementById('logoutForm');
 
-    if ( !openLogoutModalButton || !closeLogoutModalButton || !confirmLogoutButton || !logoutModal || !logoutModalContent || !logoutForm) {
-        return;
-    }
+    openLogoutButtons.forEach(function (button) {
 
-    openLogoutModalButton.addEventListener('click', function () {
+        button.addEventListener('click', function (event) {
 
-        logoutModal.classList.remove('hidden');
-        logoutModal.classList.add('flex');
+            event.preventDefault();
 
-        document.body.classList.add('overflow-hidden');
+            if (!logoutModal || !logoutModalContent) {
+                console.error(
+                    '❌ #logoutModal atau #logoutModalContent tidak ditemukan'
+                );
 
-        setTimeout(function () {
+                return;
+            }
 
-            logoutModalContent.classList.remove(
-                'scale-95',
-                'opacity-0'
-            );
+            logoutModal.classList.remove('hidden');
+            logoutModal.classList.add('flex');
 
-            logoutModalContent.classList.add(
-                'scale-100',
-                'opacity-100'
-            );
+            document.body.classList.add('overflow-hidden');
 
-        }, 10);
+            setTimeout(function () {
+
+                logoutModalContent.classList.remove(
+                    'scale-95',
+                    'opacity-0'
+                );
+
+                logoutModalContent.classList.add(
+                    'scale-100',
+                    'opacity-100'
+                );
+
+            }, 10);
+
+        });
 
     });
 
+
+    // ========================================
+    // TUTUP MODAL
+    // ========================================
+
     function closeLogoutModal() {
+
+        if (!logoutModal || !logoutModalContent) {
+            return;
+        }
 
         logoutModalContent.classList.remove(
             'scale-100',
@@ -50,42 +70,102 @@ document.addEventListener('DOMContentLoaded', function () {
             logoutModal.classList.remove('flex');
             logoutModal.classList.add('hidden');
 
-            document.body.classList.remove('overflow-hidden');
+            document.body.classList.remove(
+                'overflow-hidden'
+            );
 
         }, 200);
 
     }
 
-    closeLogoutModalButton.addEventListener(
-        'click',
-        closeLogoutModal
+
+    // ========================================
+    // TOMBOL CLOSE
+    // ========================================
+
+    if (closeLogoutModalButton) {
+
+        closeLogoutModalButton.addEventListener(
+            'click',
+            closeLogoutModal
+        );
+
+    }
+
+
+    // ========================================
+    // KLIK BACKDROP
+    // ========================================
+
+    if (logoutModal) {
+
+        logoutModal.addEventListener(
+            'click',
+            function (event) {
+
+                if (event.target === logoutModal) {
+                    closeLogoutModal();
+                }
+
+            }
+        );
+
+    }
+
+
+    // ========================================
+    // ESCAPE
+    // ========================================
+
+    document.addEventListener(
+        'keydown',
+        function (event) {
+
+            if (
+                event.key === 'Escape' &&
+                logoutModal &&
+                !logoutModal.classList.contains('hidden')
+            ) {
+
+                closeLogoutModal();
+
+            }
+
+        }
     );
 
-    logoutModal.addEventListener('click', function (event) {
 
-        if (event.target === logoutModal) {
-            closeLogoutModal();
-        }
+    // ========================================
+    // KONFIRMASI LOGOUT
+    // ========================================
 
-    });
+    if (confirmLogoutButton) {
 
-    document.addEventListener('keydown', function (event) {
+        confirmLogoutButton.addEventListener(
+            'click',
+            function () {
 
-        if ( event.key === 'Escape' && !logoutModal.classList.contains('hidden')) {
-            closeLogoutModal();
-        }
+                if (!logoutForm) {
 
-    });
+                    console.error(
+                        '❌ #logoutForm tidak ditemukan'
+                    );
 
-    confirmLogoutButton.addEventListener('click', function () {
-        confirmLogoutButton.disabled = true;
-        confirmLogoutButton.innerHTML = `
-            <i class="fa-solid fa-spinner fa-spin mr-1"></i>
-            Keluar...
-        `;
+                    return;
+                }
 
-        logoutForm.submit();
+                confirmLogoutButton.disabled = true;
 
-    });
+                confirmLogoutButton.innerHTML = `
+                    <i class="fa-solid fa-spinner fa-spin mr-1"></i>
+                    Keluar...
+                `;
+
+                logoutForm.submit();
+
+            }
+        );
+
+    }
 
 });

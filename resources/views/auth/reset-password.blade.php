@@ -15,11 +15,7 @@
                 </p>
             </div>
 
-            @if ($errors->any())
-                <div class="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-xs text-red-600">
-                    {{ $errors->first() }}
-                </div>
-            @endif
+            <x-alert-session/>
 
             <form action="{{ route('password.update') }}" method="POST" class="space-y-5">
                 @csrf

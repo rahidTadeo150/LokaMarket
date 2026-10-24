@@ -15,11 +15,7 @@ window.closeAlert = function (alertId) {
 };
 
 
-// Auto close setelah 5 detik
-[
-    'alert-success',
-    'alert-error'
-].forEach(alertId => {
+['alert-success', 'alert-error'].forEach(alertId => {
 
     const alert = document.getElementById(alertId);
 

@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('no_telp', 20)->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('pin')->nullable();
+            $table->string('foto_profil')->nullable();
 
             $table->enum('jenis_kelamin', [
                 'Laki-laki', 

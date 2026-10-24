@@ -1,0 +1,17 @@
+##################################################
+################ OPERATIONAL WEB #################
+##################################################
+
+1. Extract zip bernama ngrok pindahkan dia ke dalam c/: berguna karena 
+local host perlu end point API untuk migration dengan midtrans sebagai Payment gateway all method
+
+2. Seperti Biasa Npm Run Dev dan PHP artisan serve --port 800
+
+3. lalu lalukan migrasi + seeder "php artisan migrate --seed"
+
+4. setelah itu buka terminal baru lalu ketik "C:\ngrok\ngrok.exe http 8000" untuk 
+menjalankan ngrok nya ini dilakukan setelah php artisan serve
+
+5. testing seperti Biasa
+
+NOTE : GUNAKAN SETTINGAN ENV SEPERTI DI ENV.EXAMPLE

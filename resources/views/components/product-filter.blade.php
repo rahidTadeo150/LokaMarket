@@ -40,6 +40,10 @@
         action="{{ route('cust.pilihanProduk') }}"
         class="p-5 sm:p-6">
 
+        <input type="hidden"
+            name="search"
+            value="{{ request('search', '') }}">
+
         <div>
             <div class="mb-3 flex items-center justify-between">
 
@@ -136,15 +140,18 @@
             <div class="relative">
 
                 <select name="sort"
+                        onchange="this.form.submit()"
                         class="w-full appearance-none rounded-2xl border border-[#E9DDD5] bg-[#FFFDFC] px-4 py-3 pr-10 text-sm font-medium text-[#72594B] outline-none transition-all hover:border-[#DCC8BB] focus:border-[#FF9A5C] focus:ring-4 focus:ring-[#FFF0E5]">
-
-                    <option value="default" @selected($sort === 'default')}>
+                    
+                    <option value="default" @selected($sort === 'default')>
                         Terbaru
                     </option>
-                    <option value="price_low" @selected($sort === 'price_low')}>
+
+                    <option value="price_low" @selected($sort === 'price_low')>
                         Harga Terendah
                     </option>
-                    <option value="price_high" @selected($sort === 'price_high')}>
+
+                    <option value="price_high" @selected($sort === 'price_high')>
                         Harga Tertinggi
                     </option>
 
@@ -158,7 +165,7 @@
         <div class="mt-6 flex gap-2.5">
 
             <a href="{{ route('cust.pilihanProduk') }}"
-                class="flex-1 rounded-2xl border border-[#E9DDD5] bg-white px-4 py-3 text-center text-xs font-semibold text-[#72594B] transition-all duration-200 hover:border-[#D8C5B8] hover:bg-[#FFF9F5]">
+            class="flex-1 rounded-2xl border border-[#E9DDD5] bg-white px-4 py-3 text-center text-xs font-semibold text-[#72594B] transition hover:bg-[#FFF9F5]">
                 Reset
             </a>
 

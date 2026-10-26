@@ -34,6 +34,8 @@ class pending_pengajuan_toko extends Model
 
     public function user()
     {
+
         return $this->belongsTo(User::class, 'user_id');
+        
     }
 }

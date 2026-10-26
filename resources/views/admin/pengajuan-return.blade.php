@@ -3,56 +3,6 @@
 @section('title', 'Pengajuan Return - LokaMarket')
 
 @section('content')
-    @php
-
-        $statusAktif = request('status', 'semua');
-
-        $tabs = [
-            'semua' => [
-                'label' => 'Semua',
-                'count' => $statistik['total'],
-            ],
-            'diajukan' => [
-                'label' => 'Menunggu Review',
-                'count' => ($jumlahStatus['diajukan'] ?? 0) + ($jumlahStatus['menunggu_review'] ?? 0),
-            ],
-            'diproses' => [
-                'label' => 'Diproses',
-                'count' => $statistik['diproses'],
-            ],
-            'disetujui' => [
-                'label' => 'Disetujui',
-                'count' => $statistik['disetujui'],
-            ],
-            'ditolak' => [
-                'label' => 'Ditolak',
-                'count' => $statistik['ditolak'],
-            ],
-            'selesai' => [
-                'label' => 'Selesai',
-                'count' => $statistik['selesai'],
-            ],
-        ];
-
-        $statusLabel = [
-            'diajukan' => 'Menunggu Review',
-            'menunggu_review' => 'Menunggu Review',
-            'diproses' => 'Diproses',
-            'disetujui' => 'Disetujui',
-            'ditolak' => 'Ditolak',
-            'selesai' => 'Selesai',
-        ];
-
-        $statusClass = [
-            'diajukan' => 'bg-amber-50 text-amber-700',
-            'menunggu_review' => 'bg-amber-50 text-amber-700',
-            'diproses' => 'bg-blue-50 text-blue-700',
-            'disetujui' => 'bg-emerald-50 text-emerald-700',
-            'ditolak' => 'bg-red-50 text-red-700',
-            'selesai' => 'bg-gray-100 text-gray-700',
-        ];
-
-    @endphp
 
     <div class="min-h-screen bg-[#FFF9F2] px-4 py-6 sm:px-6 lg:px-8">
 
@@ -73,15 +23,6 @@
                         Kelola dan tinjau permintaan pengembalian barang dari customer.
                     </p>
                 </div>
-
-                <button type="button" onclick="window.print()"
-                    class="inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50">
-                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z" />
-                    </svg>
-                    Cetak Data
-                </button>
 
             </div>
 
@@ -147,7 +88,7 @@
                     </div>
 
                     <p class="mt-3 text-3xl font-bold text-emerald-600">
-                        {{ $statistik['disetujui'] }}
+                        {{ $statistik['diproses'] }}
                     </p>
 
                     <p class="mt-1 text-xs text-gray-400">
@@ -197,37 +138,32 @@
                             </p>
                         </div>
 
-                        <form id="formSearchReturn" 
-                            method="GET" 
-                            action="{{ route('admin.pengajuanReturn') }}"
+                        <form id="formSearchReturn" method="GET" action="{{ route('admin.pengajuanReturn') }}"
                             class="flex w-full flex-col gap-2 sm:flex-row lg:max-w-xl">
                             @if ($statusAktif !== 'semua')
                                 <input type="hidden" name="status" value="{{ $statusAktif }}">
                             @endif
 
                             <div class="relative w-full">
-                                <div class="pointer-events-none absolute left-3 top-1/2 flex h-4 w-4 -translate-y-1/2 items-center justify-center text-gray-400">
+                                <div
+                                    class="pointer-events-none absolute left-3 top-1/2 flex h-4 w-4 -translate-y-1/2 items-center justify-center text-gray-400">
                                     <i class="fa-solid fa-magnifying-glass"></i>
                                 </div>
 
-                                <input id="searchReturn" 
-                                    type="search" 
-                                    name="search" 
-                                    value="{{ request('search') }}"
+                                <input id="searchReturn" type="search" name="search" value="{{ request('search') }}"
                                     placeholder="Cari nomor pesanan, customer, atau alasan..." autocomplete="off"
                                     class="w-full rounded-xl border border-gray-200 py-2.5 pl-10 pr-3 text-sm outline-none transition focus:border-orange-400 focus:ring-2 focus:ring-orange-100">
                             </div>
 
-                            <button id="btnSearchReturn"
-                                    type="submit"
-                                    class="inline-flex items-center justify-center gap-2 rounded-xl bg-orange-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-600">
+                            <button id="btnSearchReturn" type="submit"
+                                class="inline-flex items-center justify-center gap-2 rounded-xl bg-orange-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-600">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                                 Cari
                             </button>
 
                             @if (request()->filled('search'))
                                 <a id="resetSearchReturn"
-                                href="{{ route('admin.pengajuanReturn', $statusAktif === 'semua' ? [] : ['status' => $statusAktif]) }}"
+                                    href="{{ route('admin.pengajuanReturn', $statusAktif === 'semua' ? [] : ['status' => $statusAktif]) }}"
                                     class="rounded-xl border border-gray-200 px-4 py-2.5 text-center text-sm font-semibold text-gray-600 hover:bg-gray-50">
                                     Reset
                                 </a>
@@ -261,6 +197,7 @@
                                 ])>
                                     {{ $tab['count'] }}
                                 </span>
+
                             </a>
                         @endforeach
 
@@ -297,7 +234,7 @@
                                 <tr class="transition hover:bg-orange-50/50">
                                     <td class="px-6 py-4">
                                         <p class="font-semibold text-gray-800">
-                                            {{ $item->nomor_pesanan ?? '-' }}
+                                            {{ $item->pesanan->nomor_pesanan ?? '-' }}
                                         </p>
                                         <p class="mt-1 max-w-xs text-xs text-gray-500">
                                             {{ $item->alasan ?? '-' }}
@@ -306,7 +243,7 @@
 
                                     <td class="px-6 py-4">
                                         <p class="font-medium text-gray-800">
-                                            {{ $item->user?->name ?? 'Customer tidak ditemukan' }}
+                                            {{ $item->user?->nama ?? 'Customer tidak ditemukan' }}
                                         </p>
                                         <p class="mt-1 text-xs text-gray-500">
                                             {{ $item->user?->email ?? '-' }}
@@ -336,8 +273,8 @@
                                     </td>
 
                                     <td class="px-6 py-4 text-right">
-                                        <a href="{{ route('admin.pengajuanReturn.detail', $item->id) }}"
-                                            class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-orange-500 px-3 py-2 text-xs font-semibold text-white transition hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-300 focus:ring-offset-2">
+                                        <a href="{{ route('admin.pengajuanReturn.detail', ['id' => $item->id]) }}"
+                                            class="inline-flex items-center gap-2 rounded-lg bg-[#FFF1E5] px-3 py-2 text-sm font-semibold text-[#D9490B] transition hover:bg-[#FFE4CC]">
                                             <i class="fa-solid fa-eye"></i>
                                             Detail
                                         </a>

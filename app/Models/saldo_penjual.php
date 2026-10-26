@@ -27,17 +27,23 @@ class saldo_penjual extends Model
 
     public function toko()
     {
+
         return $this->belongsTo(Toko::class, 'toko_id');
+
     }
 
     public function transaksi()
     {
-        return $this->hasMany(TransaksiSaldo::class, 'saldo_penjual_id');
+
+        return $this->hasMany(transaksi_saldo::class, 'saldo_penjual_id');
+
     }
 
     public function penarikan()
     {
-        return $this->hasMany(PenarikanSaldo::class, 'saldo_penjual_id');
+
+        return $this->hasMany(Penarikan_saldo::class, 'saldo_penjual_id');
+        
     }
 
 }

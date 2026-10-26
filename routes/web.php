@@ -10,6 +10,7 @@ use App\Http\Controllers\pengajuanTokoController;
 use App\Http\Controllers\pesananController;
 use App\Http\Controllers\regions;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\returnController;
 use App\Http\Controllers\sellerController;
 use App\Http\Controllers\tokoController;
 use App\Http\Controllers\UserController;
@@ -90,17 +91,17 @@ Route::middleware(['auth', 'role:customer,pemilik_toko'])->group(function () {
     Route::delete('/keranjang/clear-all', [keranjangController::class, 'clearCart'])->name('cust.keranjang.clearAll');
     Route::delete('/keranjang/{id}', [keranjangController::class, 'removeItem'])->name('cust.keranjang.delete');
 
-    Route::get('/pesanan-saya', [UserController::class, 'pesananSayaPage'])->name('cust.pesananSaya');
-    Route::post('/pesanan/{nomor_pesanan}/return', [UserController::class, 'pengajuanReturn'])->name('cust.pesanan.return');
-    Route::post('/pesanan/{nomor_pesanan}/selesai', [UserController::class, 'pesananSelesai'])->name('cust.pesanan.selesai');
+    Route::get('/pesanan-saya', [CheckoutController::class, 'pesananSayaPage'])->name('cust.pesananSaya');
+    Route::post('/pesanan/{nomor_pesanan}/return', [returnController::class, 'pengajuanReturn'])->name('cust.pesanan.return');
+    Route::post('/pesanan/{nomor_pesanan}/selesai', [pesananController::class, 'pesananSelesai'])->name('cust.pesanan.selesai');
 
     Route::get('/checkout', [UserController::class, 'checkoutPage'])->name('cust.checkout');
     Route::post('/checkout/beli-sekarang', [CheckoutController::class, 'beliSekarang'])->name('cust.checkout.beliSekarang');
     Route::get('/checkout/instan', [CheckoutController::class, 'checkoutLangsung'])->name('cust.checkout.langsung');
 
     Route::post('checkout/pembayaran', [paymentController::class, 'checkoutPayment'])->name('cust.checkout.pay');
-    Route::get('checkout/status/{nomor_pesanan}', [UserController::class, 'checkoutStatusPage'])->name('cust.checkout.status');
-    Route::post('/checkout/{nomor_pesanan}/cancel', [pesananController::class, 'cancelOrder',])->name('cust.checkout.cancel');
+    Route::get('checkout/status/{nomor_pesanan}', [CheckoutController::class, 'checkoutStatusPage'])->name('cust.checkout.status');
+    Route::post('/checkout/{nomor_pesanan}/cancel', [pesananController::class, 'cancelPesanan',])->name('cust.checkout.cancel');
 
     Route::get('checkout/invoice', [UserController::class, 'invoicePage'])->name('cust.invoice');
 
@@ -112,8 +113,9 @@ Route::middleware(['auth', 'role:customer,pemilik_toko'])->group(function () {
     Route::post('/tambah-alamat', [alamatController::class, 'storeAlamat'])->name('cust.storeAlamat');
     Route::get('/edit-alamat/{id}', [UserController::class, 'formEditAlamat'])->name('cust.formEditAlamat');
     Route::put('/edit-alamat/{id}', [alamatController::class, 'updateAlamat'])->name('cust.updateAlamat');
+    Route::delete('/edit-alamat/{id}', [alamatController::class, 'hapusAlamat'])->name('cust.deleteAlamat');
     Route::post('/alamat/{alamat}/set-default', [alamatController::class, 'setDefault'])->name('cust.setDefaultAlamat');
-    
+
 });
 
 Route::middleware(['auth', 'role:pemilik_toko'])->group(function () {
@@ -157,7 +159,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/pengguna', [adminController::class, 'penggunaPage'])->name('admin.pengguna');
     Route::get('/withdraw', [adminController::class, 'withdrawPage'])->name('admin.withdraw');
 
-    Route::get('/pengajuan-return', [adminController::class, 'pengajuanReturnPage'])->name('admin.pengajuanReturn');
+    Route::get('/pengajuan-return', [returnController::class, 'pengajuanReturnPage'])->name('admin.pengajuanReturn');
+
+
+    Route::get('/pengajuan-return', [returnController::class, 'pengajuanReturnPage'])->name('admin.pengajuanReturn');
+    Route::get('/pengajuan-return/detail/{id}', [returnController::class, 'detailPengajuanReturn'])->name('admin.pengajuanReturn.detail');
+    Route::patch('/pengajuan-return/detail/{id}/approve', [returnController::class, 'approveReturn'])->name('admin.pengajuanReturn.approve');
+    Route::patch('/pengajuan-return/detail/{id}/reject', [returnController::class, 'rejectReturn'])->name('admin.pengajuanReturn.reject');
 
     Route::get('/pengajuan-toko', [adminController::class, 'pengajuanTokoPage'])->name('admin.pengajuanToko');
     Route::post('/approve-toko/{id}', [pengajuanTokoController::class, 'approvePengajuan'])->name('admin.approvePengajuan');

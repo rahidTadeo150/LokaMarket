@@ -17,18 +17,13 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('alasan');
             $table->text('keterangan')->nullable();
-
             $table->enum('status', [
                 'diajukan',
-                'diproses',
                 'disetujui',
                 'ditolak',
-                'selesai',
             ])->default('diajukan');
-
             $table->text('catatan_admin')->nullable();
             $table->timestamps();
-
             $table->index(['pesanan_id', 'status']);
         });
     }

@@ -15,7 +15,10 @@ class produk_foto extends Model
         'urutan',
     ];
 
-    public function produk() {
+    public function produk() 
+    {
+
         return $this->belongsTo(produk::class, 'produk_id');
+        
     }
 }

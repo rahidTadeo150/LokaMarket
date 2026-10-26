@@ -161,7 +161,7 @@ class tokoController extends Controller
             'kota_id' => $request->kota,
             'kecamatan_id' => $request->kecamatan,
             'kode_pos' => $request->kode_pos,
-            'alamat_lengkap' =>  Str::title($pending->alamat_lengkap),
+            'alamat_lengkap' =>  Str::title($request->alamat_lengkap),
             'no_telepon' => $noTelp,
             'foto_ktp' => $fotoKtp,
             'token_verifikasi' => $token,

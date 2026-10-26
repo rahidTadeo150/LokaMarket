@@ -16,7 +16,10 @@ class kecamatan extends Model
 
     protected $keyType = 'string';
 
-    public function kota() {
+    public function kota() 
+    {
+
         return $this->belongsTo(kota::class, 'kota_id', 'id');
+        
     }
 }

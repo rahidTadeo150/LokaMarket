@@ -13,8 +13,10 @@ class foto_return_produk extends Model
         'foto_path',
     ];
 
-    public function pengajuanReturn()
+    public function returnProduk()
     {
+
         return $this->belongsTo(return_produk::class, 'return_produk_id');
+
     }
 }

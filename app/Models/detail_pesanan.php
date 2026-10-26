@@ -27,11 +27,17 @@ class detail_pesanan extends Model
         'subtotal' => 'decimal:2',
     ];
 
-    public function pesanan() {
+    public function pesanan() 
+    {
+
         return $this->belongsTo(pesanan::class, 'pesanan_id');
+        
     }
 
-    public function produk() {
+    public function produk() 
+    {
+
         return $this->belongsTo(produk::class, 'produk_id');
+        
     }
 }

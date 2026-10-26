@@ -20,16 +20,30 @@ class return_produk extends Model
 
     public function pesanan()
     {
+
         return $this->belongsTo(Pesanan::class, 'pesanan_id');
+        
     }
 
     public function pengguna()
     {
+
         return $this->belongsTo(User::class, 'user_id');
+
     }
 
     public function user()
     {
+
         return $this->belongsTo(User::class, 'user_id');
+        
     }
+
+    public function fotoReturn()
+    {
+
+        return $this->hasMany(foto_return_produk::class, 'return_produk_id');
+
+    }
+
 }

@@ -21,7 +21,10 @@ class rajaongkir_lokasi extends Model
 
     public function kecamatan()
     {
+
         return $this->belongsTo(Kecamatan::class, 'kecamatan_id');
+
     }
+
 
 }

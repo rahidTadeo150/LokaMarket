@@ -7,9 +7,9 @@ use App\Models\pesanan;
 use App\Models\produk;
 use App\Models\provinsi;
 use App\Models\RekeningPenjual;
-use App\Models\SaldoPenjual;
+use App\Models\saldo_penjual;
 use App\Models\toko;
-use App\Models\TransaksiSaldo;
+use App\Models\transaksi_saldo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -393,32 +393,6 @@ class sellerController extends Controller
 
         return redirect()->route('seller.verifyPin')
             ->with('success', 'Akses toko berhasil dikunci.');
-
-    }
-
-    public function saldoSayaPage(Request $request)
-    {
-
-        $toko = Auth::user()->toko;
-
-        abort_if(!$toko, 403, 'Akun ini belum memiliki toko.');
-
-        $saldo = SaldoPenjual::firstOrCreate(['toko_id' => $toko->id], [
-                'saldo_pending' => 0,
-                'saldo_tersedia' => 0,
-                'saldo_ditahan' => 0,
-            ]
-        );
-
-        $rekening = RekeningPenjual::where('toko_id', $toko->id)->orderByDesc('is_default')->orderByDesc('id')->get();
-
-        $transaksi = TransaksiSaldo::where('saldo_penjual_id', $saldo->id)->latest()->paginate(10);
-
-        return view('seller.saldo-saya', compact(
-            'saldo',
-            'rekening',
-            'transaksi'
-        ));
 
     }
 

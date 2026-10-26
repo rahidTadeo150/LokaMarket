@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class RekeningPenjual extends Model
+class Rekening_penjual extends Model
 {
 
     protected $table = 'rekening_penjual';
@@ -20,14 +20,18 @@ class RekeningPenjual extends Model
 
     protected function casts(): array
     {
+
         return [
             'is_default' => 'boolean',
         ];
+
     }
 
     public function toko()  
     {
+
         return $this->belongsTo(Toko::class, 'toko_id');
+        
     }
     
 }

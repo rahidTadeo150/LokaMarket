@@ -29,19 +29,31 @@ class alamat_pengguna extends Model
         'is_utama' => 'boolean',
     ];
 
-    public function user() {
+    public function user() 
+    {
+
         return $this->belongsTo(User::class);
+
     }
 
-    public function provinsi() {
+    public function provinsi() 
+    {
+
         return $this->belongsTo(provinsi::class, 'provinsi_id');
+        
     }
 
-    public function kota() {
+    public function kota() 
+    {
+
         return $this->belongsTo(kota::class,'kota_id');
+
     }
 
-    public function kecamatan() {
+    public function kecamatan() 
+    {
+
         return $this->belongsTo(kecamatan::class, 'kecamatan_id');
+        
     }
 }

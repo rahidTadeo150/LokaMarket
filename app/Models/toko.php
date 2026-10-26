@@ -23,33 +23,53 @@ class toko extends Model
         'rajaongkir_origin_id',
     ];
 
-    public function user() {
+    public function user()
+    {
+
         return $this->belongsTo(User::class);
+
     }
-    
-    public function produk() {
+
+    public function produk()
+    {
+
         return $this->hasMany(Produk::class);
+
     }
 
-    public function provinsi() {
+    public function provinsi()
+    {
+
         return $this->belongsTo(provinsi::class, 'provinsi_id');
+
     }
 
-    public function kota() {
-        return $this->belongsTo(kota::class,'kota_id');
+    public function kota()
+    {
+
+        return $this->belongsTo(kota::class, 'kota_id');
+
     }
 
-    public function kecamatan() {
+    public function kecamatan()
+    {
+
         return $this->belongsTo(kecamatan::class, 'kecamatan_id');
+
     }
 
     public function saldoPenjual()
     {
+
         return $this->hasOne(SaldoPenjual::class, 'toko_id');
+
     }
 
     public function rekeningPenjual()
     {
+
         return $this->hasMany(RekeningPenjual::class, 'toko_id');
+
     }
+
 }

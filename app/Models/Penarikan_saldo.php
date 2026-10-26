@@ -30,16 +30,22 @@ class Penarikan_saldo extends Model
 
     public function saldoPenjual()
     {
-        return $this->belongsTo(SaldoPenjual::class, 'saldo_penjual_id');
+
+        return $this->belongsTo(saldo_penjual::class, 'saldo_penjual_id');
+
     }
 
     public function rekening()
     {
-        return $this->belongsTo(RekeningPenjual::class, 'rekening_penjual_id');
+
+        return $this->belongsTo(Rekening_penjual::class, 'rekening_penjual_id');
+        
     }
 
     public function admin()
     {
+
         return $this->belongsTo(User::class, 'diproses_oleh');
+        
     }
 }

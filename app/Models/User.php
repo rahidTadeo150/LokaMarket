@@ -32,30 +32,49 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    protected function casts(): array {
+    protected function casts(): array
+    {
+
         return [
             'email_verified_at' => 'datetime',
             'tanggal_lahir' => 'date',
             'password' => 'hashed',
         ];
+
     }
 
-     public function isCustomer(): bool {
+    public function isCustomer(): bool
+    {
+
         return $this->role === 'customer';
+
     }
 
-    public function isPemilikToko(): bool {
+    public function isPemilikToko(): bool
+    {
+
         return $this->role === 'pemilik_toko';
+
     }
 
-    public function isAdmin(): bool {
+    public function isAdmin(): bool
+    {
+
         return $this->role === 'admin';
+
     }
 
-    public function toko() {
+    public function toko()
+    {
+
         return $this->hasOne(toko::class);
+
     }
-    public function alamat() {
+    public function alamat()
+    {
+
         return $this->hasMany(alamat_pengguna::class, 'user_id');
+
     }
+
 }

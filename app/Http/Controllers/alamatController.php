@@ -7,9 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
-class alamatController extends Controller {
+class alamatController extends Controller
+{
 
-    public function storeAlamat(Request $request) {
+    public function storeAlamat(Request $request)
+    {
         $request->validate([
             'label' => 'required|string|max:50',
             'nama_penerima' => 'required|string|max:100',
@@ -59,7 +61,35 @@ class alamatController extends Controller {
             );
     }
 
-    public function updateAlamat(Request $request, $id) {
+    public function hapusAlamat($id)
+    {
+        $user = Auth::user();
+
+        $alamat = $user->alamat()->findOrFail($id);
+
+        $isDefault = $alamat->is_default;
+
+        $alamat->delete();
+
+        if ($isDefault) {
+
+            $alamatBaru = $user->alamat()->orderBy('id', 'asc')->first();
+
+            if ($alamatBaru) {
+
+                $alamatBaru->update([
+                    'is_default' => true,
+                ]);
+
+            }
+        }
+
+        return redirect()->route('cust.pilihAlamat')->with('success', 'Alamat berhasil dihapus.');
+        
+    }
+
+    public function updateAlamat(Request $request, $id)
+    {
         $request->validate([
             'label' => 'required|string|max:50',
             'nama_penerima' => 'required|string|max:100',
@@ -101,7 +131,8 @@ class alamatController extends Controller {
             ->with('success', 'Alamat berhasil diperbarui!');
     }
 
-    public function setDefault(Request $request, $id) {
+    public function setDefault(Request $request, $id)
+    {
         $user = auth()->user();
 
         $alamat = alamat_pengguna::where('id', $id)->where('user_id', $user->id)->firstOrFail();

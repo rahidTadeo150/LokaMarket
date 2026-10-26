@@ -23,14 +23,15 @@ class detail_keranjang extends Model
 
     public function keranjang()
     {
-        return $this->belongsTo(
-            keranjang::class,
-            'keranjang_id'
-        );
+
+        return $this->belongsTo(keranjang::class, 'keranjang_id');
+
     }
 
     public function produk()
     {
+
         return $this->belongsTo(produk::class,'produk_id');
+        
     }
 }

@@ -17,11 +17,15 @@ class keranjang extends Model
 
     public function user()
     {
+
         return $this->belongsTo(User::class, 'user_id');
+
     }
 
     public function detail()
     {
+
         return $this->hasMany(detail_keranjang::class, 'keranjang_id');
+        
     }
 }

@@ -28,23 +28,28 @@ class ProductController extends Controller
             'thumbnail',
         ])->where('is_active', true);
 
-        // Pencarian produk, toko, dan kategori
         if ($request->filled('search')) {
             $keyword = trim($request->input('search'));
 
             $query->where(function ($q) use ($keyword) {
+                
                 $q->where('nama', 'like', "%{$keyword}%")
                     ->orWhereHas('toko', function ($toko) use ($keyword) {
+
                         $toko->where('nama_toko', 'like', "%{$keyword}%");
+
                     })
                     ->orWhereHas('kategori', function ($kategori) use ($keyword) {
+
                         $kategori->where('nama', 'like', "%{$keyword}%");
+                        
                     });
+
             });
         }
 
-        // Filter berdasarkan slug kategori
         if ($request->filled('kategori')) {
+
             $slugKategori = $request->input('kategori');
 
             $query->whereHas('kategori', function ($q) use ($slugKategori) {
@@ -52,8 +57,8 @@ class ProductController extends Controller
             });
         }
 
-        // Sorting produk
         switch ($request->input('sort', 'default')) {
+
             case 'price_low':
                 $query->orderBy('harga', 'asc');
                 break;
@@ -65,23 +70,20 @@ class ProductController extends Controller
             default:
                 $query->latest('created_at');
                 break;
+
         }
 
-        // Pagination tetap mempertahankan parameter filter
         $produk = $query->paginate(20)->withQueryString();
 
-        // Status wishlist pengguna
-        $wishlistIds = Auth::check()
-            ? wishlist::where('user_id', $userId)
-                ->pluck('produk_id')
-                ->toArray()
-            : [];
+        $wishlistIds = Auth::check() ? wishlist::where('user_id', $userId)->pluck('produk_id')->toArray() : [];
 
         $produk->each(function ($item) use ($wishlistIds) {
+
             $item->is_wishlisted = in_array(
                 $item->id,
                 $wishlistIds
             );
+
         });
 
         return view('user.pilihan-produk', [
@@ -147,9 +149,11 @@ class ProductController extends Controller
         $fotoDihapus = $produk->preview()->whereIn('id', $idsHapus)->get();
 
         if ($fotoDihapus->count() !== $idsHapus->count()) {
+
             throw ValidationException::withMessages([
                 'hapus_foto_ids' => 'Foto preview yang ingin dihapus tidak valid.',
             ]);
+
         }
 
         $fotoBaru = $request->file('foto_preview', []);
@@ -160,22 +164,23 @@ class ProductController extends Controller
             + count($fotoBaru);
 
         if ($jumlahPreviewAkhir > 4) {
+
             throw ValidationException::withMessages([
                 'foto_preview' => 'Maksimal hanya 4 foto preview.',
             ]);
+
         }
 
-        $fileLama = $fotoDihapus->pluck('foto')
-            ->filter()
-            ->values()
-            ->all();
+        $fileLama = $fotoDihapus->pluck('foto')->filter()->values()->all();
 
         $thumbnailLama = null;
         $thumbnailBaru = null;
         $fileBaru = [];
 
         try {
+
             DB::transaction(function () use ($request, $validated, $produk, $fotoDihapus, $fotoBaru, &$thumbnailLama, &$thumbnailBaru, &$fileBaru) {
+
                 $produk->update([
                     'nama' => $validated['nama'],
                     'kategori_id' => $validated['kategori_id'],
@@ -186,36 +191,44 @@ class ProductController extends Controller
                 ]);
 
                 if ($request->hasFile('thumbnail')) {
+
                     $thumbnail = $produk->thumbnail()->first();
 
                     $thumbnailLama = $thumbnail?->foto;
 
-                    $thumbnailBaru = $request->file('thumbnail')
-                        ->store('produk/thumbnail', 'public');
+                    $thumbnailBaru = $request->file('thumbnail')->store('produk/thumbnail', 'public');
 
                     $fileBaru[] = $thumbnailBaru;
 
                     if ($thumbnail) {
+
                         $thumbnail->update([
                             'foto' => $thumbnailBaru,
                         ]);
+
                     } else {
+
                         produk_foto::create([
                             'produk_id' => $produk->id,
                             'foto' => $thumbnailBaru,
                             'tipe' => 'thumbnail',
                             'urutan' => 0,
                         ]);
+
                     }
+
                 }
 
                 foreach ($fotoDihapus as $foto) {
+
                     $foto->delete();
+
                 }
 
                 $urutan = (int) $produk->preview()->max('urutan') + 1;
 
                 foreach ($fotoBaru as $file) {
+
                     $path = $file->store('produk/preview', 'public');
 
                     $fileBaru[] = $path;
@@ -226,23 +239,34 @@ class ProductController extends Controller
                         'tipe' => 'preview',
                         'urutan' => $urutan++,
                     ]);
+
                 }
+
             });
+
         } catch (\Throwable $e) {
+
             foreach ($fileBaru as $path) {
+
                 Storage::disk('public')->delete($path);
+
             }
+
             throw $e;
+
         }
 
         $semuaFileLama = array_filter([...$fileLama, $thumbnailLama]);
 
         foreach (array_unique($semuaFileLama) as $path) {
+
             Storage::disk('public')->delete($path);
+
         }
 
         return redirect()->route('seller.editProduk', ['slug' => $produk->slug])
             ->with('success', 'Produk berhasil diperbarui.');
+
     }
 
     public function deleteProduk(string $slug)
@@ -261,12 +285,16 @@ class ProductController extends Controller
 
     public function detailTokoPage(Request $request)
     {
+
         return view('user.detail-toko');
+
     }
 
     public function kategoriPage(Request $request)
     {
+
         $kategoriList = kategori::withCount('produk')->orderBy('nama', 'asc')->get();
         return view('user.kategori-produk', compact('kategoriList'));
+        
     }
 }

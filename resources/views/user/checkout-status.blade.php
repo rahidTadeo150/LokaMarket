@@ -163,7 +163,7 @@
                                         @break
 
                                         @case('ovo_va')
-                                            Ovo
+                                            OVO E-wallet
                                         @break
 
                                         @default
@@ -285,8 +285,9 @@
             <div class="mt-6 flex flex-col-reverse gap-3 sm:flex-row">
 
                 @if (in_array($pesanan->status, ['diantar', 'dikirim'], true))
-                    <button type="button" data-return-modal-open
-                        class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50 px-6 py-3 font-semibold text-red-600 transition hover:bg-red-100 sm:w-auto">
+                    <button type="button" 
+                            data-return-modal-open
+                            class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50 px-6 py-3 font-semibold text-red-600 transition hover:bg-red-100 sm:w-auto">
                         <i class="fa-solid fa-rotate-left"></i>
                         Ajukan return
                     </button>
@@ -314,7 +315,7 @@
             class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
 
             <div
-                class="max-h-[90vh] w-full max-w-2xl overflow-y-auto hide-scrollbar rounded-2xl bg-white p-5 shadow-xl sm:p-7">
+                class="max-h-[90vh] w-full max-w-2xl overflow-y-auto hide-scrollbar rounded-2xl bg-white border border-gray-300 p-5 shadow-xl sm:p-7">
 
                 <div class="flex items-start justify-between gap-4">
 
@@ -337,7 +338,9 @@
 
                 <form id="returnOrderForm"
                     action="{{ route('cust.pesanan.return', ['nomor_pesanan' => $pesanan->nomor_pesanan]) }}"
-                    method="POST" enctype="multipart/form-data" class="mt-6 space-y-5">
+                    method="POST" 
+                    enctype="multipart/form-data" 
+                    class="mt-6 space-y-5">
 
                     @csrf
 
@@ -358,8 +361,6 @@
                             <option value="">-- Pilih alasan return --</option>
                             <option value="produk_tidak_sesuai" @selected(old('alasan_return') === 'produk_tidak_sesuai')>Produk tidak sesuai</option>
                             <option value="produk_rusak" @selected(old('alasan_return') === 'produk_rusak')>Produk rusak atau cacat</option>
-                            <option value="produk_tidak_diterima" @selected(old('alasan_return') === 'produk_tidak_diterima')>Produk belum diterima
-                            </option>
                             <option value="produk_salah" @selected(old('alasan_return') === 'produk_salah')>Produk yang diterima salah</option>
                             <option value="lainnya" @selected(old('alasan_return') === 'lainnya')>Alasan lainnya</option>
                         </select>
@@ -449,7 +450,6 @@
         <x-custom-alert-confirmation />
 
     </main>
-
 
     @push('scripts')
         @if ($pesanan->status === 'menunggu_pembayaran' && $pesanan->payment_method !== 'cod' && $pesanan->snap_token)

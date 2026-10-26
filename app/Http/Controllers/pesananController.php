@@ -6,9 +6,7 @@ use App\Models\pesanan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Models\return_produk;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Validation\ValidationException;
 use Midtrans\Transaction;
 use App\Services\SaldoPenjualService;
 
@@ -28,8 +26,8 @@ class pesananController extends Controller
         }
 
         $pesanan = Pesanan::where('nomor_pesanan', $nomor_pesanan)->whereHas('detail.produk', function ($query) use ($toko) {
-                $query->where('toko_id', $toko->id);
-            })
+            $query->where('toko_id', $toko->id);
+        })
             ->first();
 
         if (!$pesanan) {
@@ -68,8 +66,8 @@ class pesananController extends Controller
         }
 
         $pesanan = Pesanan::where('nomor_pesanan', $nomor_pesanan)->whereHas('detail.produk', function ($query) use ($toko) {
-                $query->where('toko_id', $toko->id);
-            })->first();
+            $query->where('toko_id', $toko->id);
+        })->first();
 
         if (!$pesanan) {
             return back()->with(
@@ -128,65 +126,7 @@ class pesananController extends Controller
         }
     }
 
-    public function pengajuanReturn(Request $request, string $nomor_pesanan, SaldoPenjualService $saldoService)
-    {
-
-        $validated = $request->validate([
-            'alasan_return' => 'required|string|in:produk_tidak_sesuai,produk_rusak,produk_tidak_diterima,produk_salah,lainnya',
-            'keterangan_return' => 'nullable|string|max:1000',
-        ], [
-            'alasan_return.required' => 'Silakan pilih alasan return.',
-            'alasan_return.in' => 'Alasan return tidak valid.',
-            'keterangan_return.max' => 'Keterangan maksimal 1000 karakter.',
-        ]);
-
-        $userId = $request->user()->id;
-
-        DB::transaction(function () use ($nomor_pesanan, $userId, $validated, $saldoService) {
-
-            $pesanan = Pesanan::where('nomor_pesanan', $nomor_pesanan)->where('user_id', $userId)->lockForUpdate()->firstOrFail();
-
-            if ($pesanan->status !== 'dikirim') {
-                throw ValidationException::withMessages([
-                    'return' => 'return hanya dapat diajukan ketika pesanan berstatus diantar.',
-                ]);
-            }
-
-            $sudahMengajukan = return_produk::where('pesanan_id', $pesanan->id)
-                ->whereIn('status', [
-                    'diajukan',
-                    'diproses',
-                    'disetujui',
-                ])->exists();
-
-            if ($sudahMengajukan) {
-                throw ValidationException::withMessages([
-                    'return' => 'Pesanan ini sudah memiliki pengajuan return.',
-                ]);
-            }
-
-            return_produk::create([
-                'pesanan_id' => $pesanan->id,
-                'user_id' => $userId,
-                'alasan' => $validated['alasan_return'],
-                'keterangan' => $validated['keterangan_return'] ?? null,
-                'status' => 'diajukan',
-            ]);
-
-            $saldoService->tahanSaldoPesanan($pesanan);
-
-            $pesanan->status = 'pengajuan_return';
-            $pesanan->save();
-        });
-
-        return redirect()->back()->with(
-            'success',
-            'Pengajuan return berhasil dikirim. Saldo penjual ditahan selama pemeriksaan.'
-        );
-
-    }
-
-    public function cancelOrder(Request $request, string $nomor_pesanan)
+    public function cancelPesanan(Request $request, string $nomor_pesanan)
     {
 
         $pesanan = Pesanan::where('nomor_pesanan', $nomor_pesanan)->where('user_id', auth()->id())->firstOrFail();

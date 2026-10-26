@@ -35,16 +35,22 @@ class pesanan_toko extends Model
 
     public function pesanan()
     {
+
         return $this->belongsTo(pesanan::class,'pesanan_id');
+
     }
 
     public function toko()
     {
+
         return $this->belongsTo(toko::class, 'toko_id');
+
     }
 
     public function detail()
     {
+
         return $this->hasMany(detail_pesanan::class, 'pesanan_toko_id');
+        
     }
 }

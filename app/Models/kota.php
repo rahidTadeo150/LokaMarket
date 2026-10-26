@@ -16,11 +16,17 @@ class kota extends Model
     
     protected $keyType = 'string';
 
-    public function provinsi() {
+    public function provinsi() 
+    {
+
         return $this->belongsTo(provinsi::class, 'provinsi_id', 'id');
+
     }
 
-    public function kecamatan() {
+    public function kecamatan() 
+    {
+
         return $this->hasMany(kecamatan::class, 'kota_id', 'id');
+        
     }
 }

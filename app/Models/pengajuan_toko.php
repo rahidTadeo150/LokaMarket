@@ -41,26 +41,37 @@ class pengajuan_toko extends Model
 
     public function user()
     {
+
         return $this->belongsTo(User::class, 'user_id');
+
     }
 
     public function provinsi()
     {
+
         return $this->belongsTo(Provinsi::class, 'provinsi_id');
+
     }
 
     public function kota()
     {
+
         return $this->belongsTo(Kota::class, 'kota_id');
+
     }
 
     public function kecamatan()
     {
+
         return $this->belongsTo(Kecamatan::class, 'kecamatan_id');
+
     }
 
     public function pemeriksa()
     {
+
         return $this->belongsTo(User::class, 'diperiksa_oleh');
+        
     }
+
 }

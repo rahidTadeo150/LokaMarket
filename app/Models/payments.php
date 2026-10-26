@@ -18,6 +18,8 @@ class payments extends Model
 
     public function pesanan()
     {
+
         return $this->belongsTo(Pesanan::class, 'pesanan_id');
+        
     }
 }

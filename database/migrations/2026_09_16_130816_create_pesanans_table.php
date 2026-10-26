@@ -34,7 +34,8 @@ return new class extends Migration
                 'dikirim',
                 'selesai',
                 'pengajuan_return',
-                'return',
+                'return_ditolak',
+                'telah_direturn',
                 'dibatalkan'
             ])->default('menunggu_pembayaran');
 

@@ -42,36 +42,50 @@ class pesanan extends Model
 
     public function user()
     {
+
         return $this->belongsTo(User::class);
+
     }
 
     public function detail()
     {
+
         return $this->hasMany(detail_pesanan::class, 'pesanan_id');
+
     }
 
     public function payment()
     {
+
         return $this->hasOne(payments::class, 'pesanan_id');
+
     }
 
     public function provinsi()
     {
+
         return $this->belongsTo(provinsi::class, 'provinsi_id');
+
     }
 
     public function kota()
     {
+
         return $this->belongsTo(kota::class, 'kota_id');
+
     }
 
     public function kecamatan()
     {
+
         return $this->belongsTo(kecamatan::class, 'kecamatan_id');
+
     }
 
     public function pesananToko()
     {
+
         return $this->hasMany(pesanan_toko::class, 'pesanan_id');
+        
     }
 }

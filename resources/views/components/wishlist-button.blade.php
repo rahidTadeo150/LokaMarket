@@ -3,7 +3,7 @@
     'isWishlisted' => false,
 ])
 
-<div class="absolute right-4 top-4 z-10">
+<div class="absolute right-2 top-2 z-10">
     @auth
         <form action="{{ route('cust.wishlist.toggle', $produk->slug) }}"
             method="POST"

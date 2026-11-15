@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class produk extends Model
 {
-    protected $table = "produk";
+    protected $table = 'produk';
+
     protected $fillable = [
         'nama',
         'slug',
@@ -21,45 +22,52 @@ class produk extends Model
         'is_active',
     ];
 
-    public function kategori() 
+    public function kategori()
     {
 
         return $this->belongsTo(Kategori::class);
 
     }
 
-    public function toko() 
+    public function toko()
     {
 
         return $this->belongsTo(Toko::class);
 
     }
 
-    public function foto() 
+    public function foto()
     {
 
         return $this->hasMany(produk_foto::class, 'produk_id');
 
     }
 
-    public function thumbnail() 
+    public function thumbnail()
     {
 
         return $this->hasOne(produk_foto::class, 'produk_id')->where('tipe', 'thumbnail');
 
     }
 
-    public function preview() 
+    public function preview()
     {
 
         return $this->hasMany(produk_foto::class, 'produk_id')->where('tipe', 'preview')->orderBy('urutan');
 
     }
 
-    public function wishlist() 
+    public function wishlist()
     {
 
         return $this->hasMany(Wishlist::class, 'produk_id');
-        
+
+    }
+
+    public function ulasan()
+    {
+
+        return $this->hasMany(ulasan_produk::class, 'produk_id', 'id');
+
     }
 }

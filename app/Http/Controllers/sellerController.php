@@ -2,398 +2,331 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\kategori;
+use App\Models\detail_pesanan;
 use App\Models\pesanan;
-use App\Models\produk;
-use App\Models\provinsi;
-use App\Models\RekeningPenjual;
-use App\Models\saldo_penjual;
-use App\Models\toko;
-use App\Models\transaksi_saldo;
-use Illuminate\Http\Request;
+use App\Models\pesanan_toko;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Illuminate\Validation\ValidationException;
 
 class sellerController extends Controller
 {
-
     public function dashboardSeller()
     {
 
         $user = Auth::user();
-
         $toko = $user->toko;
 
-        if (!$toko) {
-            return redirect()->route('cust.statusPengajuan')
-                ->with(
-                    'error',
-                    'Data toko Anda belum tersedia.'
-                );
+        abort_unless($toko, 404, 'Data toko tidak ditemukan.');
+
+        $tokoId = $toko->id;
+        $sekarang = now();
+
+        $awalBulan = $sekarang->copy()->startOfMonth();
+        $awalBulanLalu = $sekarang->copy()->subMonth()->startOfMonth();
+        $akhirBulanLalu = $sekarang->copy()->subMonth()->endOfMonth();
+
+        $pesananToko = pesanan_toko::query()->where('toko_id', $tokoId);
+
+        $statusPenjualan = [
+            'dibayar',
+            'diproses',
+            'dikirim',
+            'selesai',
+        ];
+
+        $totalPenjualan = (clone $pesananToko)->whereIn('status', $statusPenjualan)
+            ->whereBetween('created_at', [
+                $awalBulan,
+                $sekarang,
+            ])->sum('total_penjual');
+
+        $penjualanBulanLalu = (clone $pesananToko)->whereIn('status', $statusPenjualan)
+            ->whereBetween('created_at', [
+                $awalBulanLalu,
+                $akhirBulanLalu,
+            ])->sum('total_penjual');
+
+        if ($penjualanBulanLalu > 0) {
+
+            $trenGrafik = (
+                ($totalPenjualan - $penjualanBulanLalu)
+                / $penjualanBulanLalu
+            ) * 100;
+
+        } else {
+
+            $trenGrafik = $totalPenjualan > 0 ? 100 : 0;
+
         }
 
-        $produkAktif = produk::where('toko_id', $toko->id)->where('is_active', true)->count();
-        $totalProduk = produk::where('toko_id', $toko->id)->count();
+        $trenGrafik = round($trenGrafik, 2);
 
-        $ratingToko = 0;
+        $totalPesanan = (clone $pesananToko)->whereIn('status', $statusPenjualan)
+            ->whereBetween('created_at', [
+                $awalBulan,
+                $sekarang,
+            ])->count();
+
+        $pesananSelesai = (clone $pesananToko)->where('status', 'selesai')->count();
+
+        $totalProduk = DB::table('produk')->where('toko_id', $tokoId)->count();
+
+        $produkAktif = DB::table('produk')->where('toko_id', $tokoId)->where('is_active', true)->count();
+
+        $statistik = [
+            'total_penjualan' => $totalPenjualan,
+            'total_pesanan' => $totalPesanan,
+            'total_produk' => $totalProduk,
+            'produk_aktif' => $produkAktif,
+            'pesanan_selesai' => $pesananSelesai,
+        ];
+
+        $ringkasanPesanan = [
+            [
+                'label' => 'Menunggu Pembayaran',
+                'jumlah' => (clone $pesananToko)
+                    ->where('status', 'menunggu_pembayaran')
+                    ->count(),
+                'warna' => 'orange',
+                'icon' => 'fa-clock',
+                'deskripsi' => 'Pesanan menunggu pembayaran',
+            ],
+            [
+                'label' => 'Perlu Diproses',
+                'jumlah' => (clone $pesananToko)
+                    ->where('status', 'dibayar')
+                    ->count(),
+                'warna' => 'blue',
+                'icon' => 'fa-box-open',
+                'deskripsi' => 'Pesanan sudah dibayar',
+            ],
+            [
+                'label' => 'Dalam Pengiriman',
+                'jumlah' => (clone $pesananToko)
+                    ->where('status', 'dikirim')
+                    ->count(),
+                'warna' => 'emerald',
+                'icon' => 'fa-truck',
+                'deskripsi' => 'Pesanan sedang dikirim',
+            ],
+        ];
+
+        $dataPesanan = (clone $pesananToko)->orderByDesc('created_at')->limit(4)->get();
+
+        $labelStatus = [
+            'menunggu_pembayaran' => 'Menunggu Pembayaran',
+            'dibayar' => 'Pesanan Baru',
+            'diproses' => 'Diproses',
+            'dikirim' => 'Dikirim',
+            'selesai' => 'Selesai',
+            'dibatalkan' => 'Dibatalkan',
+        ];
+
+        $pesanan = $dataPesanan->map(function ($item) use ($labelStatus) {
+
+            $item->kode = '#PESANAN-'.$item->pesanan_id;
+
+            $item->total = $item->total_penjual;
+
+            $item->status_label = $labelStatus[$item->status]
+                ?? ucfirst(str_replace('_', ' ', $item->status));
+
+            $item->waktu = $item->created_at->diffForHumans();
+
+            $item->warna = match ($item->status) {
+                'menunggu_pembayaran' => 'orange',
+                'dibayar' => 'blue',
+                'diproses' => 'orange',
+                'dikirim' => 'purple',
+                'selesai' => 'green',
+                'dibatalkan' => 'red',
+                default => 'gray',
+            };
+
+            return $item;
+
+        });
+
+        $grafik = [];
+        $hari = [];
+
+        for ($i = 6; $i >= 0; $i--) {
+
+            $tanggal = $sekarang->copy()->subDays($i);
+
+            $penjualanHarian = (clone $pesananToko)->whereIn('status', $statusPenjualan)->whereDate('created_at', $tanggal->toDateString())->sum('total_penjual');
+
+            $grafik[] = $penjualanHarian;
+
+            $hari[] = $tanggal->translatedFormat('D');
+        }
+
+        $totalPenjualanGrafik = array_sum($grafik);
+
+        $nilaiMaksimum = max($grafik) ?: 1;
+
+        $lebarGrafik = 600;
+        $tinggiGrafik = 200;
+
+        $jarak = $lebarGrafik / 6;
+
+        $titikGrafik = [];
+        $grafikPoint = [];
+
+        foreach ($grafik as $index => $nilai) {
+
+            $x = round($index * $jarak, 2);
+
+            $y = round(
+                $tinggiGrafik - (($nilai / $nilaiMaksimum) * 180),
+                2
+            );
+
+            $titikGrafik[] = $x.','.$y;
+
+            $grafikPoint[] = [
+                'x' => $x,
+                'y' => $y,
+                'nilai' => 'Rp'.number_format(
+                    $nilai,
+                    0,
+                    ',',
+                    '.'
+                ),
+            ];
+        }
+
+        $grafikLinePath = 'M '.implode(' L ', $titikGrafik);
+
+        $grafikAreaPath = $grafikLinePath.' L 600,200 L 0,200 Z';
+
+        $grafik = $grafikPoint;
+
+        $labelGrafik = $hari;
 
         return view('seller.dashboard-seller', compact(
-            'user',
             'toko',
-            'produkAktif',
             'totalProduk',
-            'ratingToko'
-        ));
-    }
-
-    public function editTokoPage()
-    {
-        $toko = Toko::where('user_id', Auth::id())->first();
-
-        if (!$toko) {
-            return redirect()
-                ->route('seller.kelolaToko')
-                ->with('error', 'Data toko belum tersedia.');
-        }
-
-        $provinsi = provinsi::orderBy('nama')->get();
-
-        return view('seller.edit-profil-toko', compact(
-            'toko',
-            'provinsi'
-        ));
-    }
-
-    public function formEditToko()
-    {
-        return view('seller.form-edit-toko');
-    }
-
-    public function produkSeller(Request $request)
-    {
-
-        $user = auth()->user();
-
-        $toko = $user->toko;
-
-        if (!$toko) {
-            abort(404, 'Toko tidak ditemukan.');
-        }
-
-        $query = Produk::with(['kategori', 'thumbnail'])->where('toko_id', $toko->id);
-
-        if ($request->filled('search')) {
-            $query->where('nama', 'like', '%' . $request->search . '%');
-        }
-
-        if ($request->filled('kategori')) {
-            $query->whereHas('kategori', function ($q) use ($request) {
-                $q->where('slug', $request->kategori);
-            });
-        }
-
-        if ($request->filled('status') && $request->status !== 'semua') {
-
-            switch ($request->status) {
-
-                case 'aktif':
-                    $query->where('is_active', true)->where('stok', '>', 0);
-                    break;
-
-                case 'habis':
-                    $query->where('stok', '<=', 0);
-                    break;
-
-                case 'nonaktif':
-                    $query->where('is_active', false)->where('stok', '>', 0);
-                    break;
-
-            }
-
-        }
-
-        $produk = $query->latest()->paginate(10)->withQueryString();
-
-        $kategori = Kategori::orderBy('nama')->get();
-
-        $jumlahSemua = Produk::where('toko_id', $toko->id)->count();
-        $jumlahAktif = Produk::where('toko_id', $toko->id)->where('is_active', true)->where('stok', '>', 0)->count();
-        $jumlahHabis = Produk::where('toko_id', $toko->id)->where('stok', '<=', 0)->count();
-        $jumlahNonaktif = Produk::where('toko_id', $toko->id)->where('is_active', false)->where('stok', '>', 0)->count();
-
-        return view('seller.produk-seller', compact(
-            'produk',
-            'kategori',
-            'jumlahSemua',
-            'jumlahAktif',
-            'jumlahHabis',
-            'jumlahNonaktif'
-        ));
-
-    }
-
-    public function tambahProdukPage()
-    {
-        $kategori = kategori::orderBy('nama', 'asc')->get();
-
-        return view('seller.form-tambah-produk', compact('kategori'));
-    }
-
-    public function daftarPesananPage(Request $request)
-    {
-
-        $user = auth()->user();
-
-        $toko = $user->toko;
-
-        if (!$toko) {
-            return redirect()->back()->with('error', 'Data toko tidak ditemukan.');
-        }
-
-        $statusValid = ['dibayar', 'diproses', 'dikirim'];
-
-        $status = $request->query('status', 'dibayar');
-
-        if (!in_array($status, $statusValid, true)) {
-            $status = 'dibayar';
-        }
-
-        $query = Pesanan::query()->where('status', $status)->whereHas('detail.produk', function ($q) use ($toko) {
-                $q->where('toko_id', $toko->id);
-            })->with([
-                'user',
-                'provinsi',
-                'kota',
-                'kecamatan',
-                'detail.produk.thumbnail',
-            ])->when($request->filled('search'), function ($q) use ($request) {
-                $search = $request->search;
-
-                $q->where(function ($subQuery) use ($search) {
-                    $subQuery->where('nomor_pesanan', 'like', "%{$search}%")
-                        ->orWhere('nama_penerima', 'like', "%{$search}%");
-                });
-            })->latest();
-
-        $pesanan = $query->paginate(10)->withQueryString();
-
-        $jumlahDibayar = Pesanan::where('status', 'dibayar')->whereHas('detail.produk', fn ($q) => $q->where('toko_id', $toko->id))->count();
-        $jumlahDiproses = Pesanan::where('status', 'diproses')->whereHas('detail.produk', fn ($q) => $q->where('toko_id', $toko->id))->count();
-        $jumlahDikirim = Pesanan::where('status', 'dikirim')->whereHas('detail.produk', fn ($q) => $q->where('toko_id', $toko->id))->count();
-
-        return view('seller.daftar-pesanan', compact(
-            'toko',
+            'statistik',
             'pesanan',
-            'jumlahDibayar',
-            'jumlahDiproses',
-            'jumlahDikirim',
-            'status'
+            'ringkasanPesanan',
+            'grafik',
+            'hari',
+            'grafikLinePath',
+            'grafikAreaPath',
+            'labelGrafik',
+            'totalPenjualanGrafik',
+            'trenGrafik'
         ));
-
     }
 
-    public function storeProduk(Request $request)
+    public function laporanToko()
     {
 
-        $validated = $request->validate([
-            'nama' => 'required|string|min:3|max:150',
-            'kategori_id' => 'required|integer|exists:kategori,id',
-            'deskripsi' => 'required|string|min:10|max:1000',
-            'thumbnail' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'preview_photos' => 'nullable|array|max:4',
-            'preview_photos.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
-            'harga' => 'required|numeric|min:1',
-            'stok' => 'required|integer|min:0',
-            'berat' => 'required|integer|min:1',
-            'is_active' => 'required|in:0,1',
-        ]);
+        $toko = auth()->user()->toko;
 
-        $toko = toko::where('user_id', auth()->id())->first();
+        abort_unless($toko, 404);
 
-        if (!$toko) {
-            return back()->withInput()
-                ->with('error', 'Toko tidak ditemukan. Silakan lengkapi data toko terlebih dahulu.');
-        }
+        $statusPenjualan = [
+            'dibayar',
+            'diproses',
+            'dikirim',
+            'selesai',
+        ];
 
-        $thumbnailPath = null;
-        $previewPaths = [];
+        $pesananToko = pesanan_toko::where('toko_id', $toko->id);
 
-        try {
+        $awalBulanIni = now()->startOfMonth();
+        $akhirBulanIni = now()->endOfMonth();
 
-            $thumbnailPath = $request->file('thumbnail')->store('produk/thumbnail', 'public');
+        $awalBulanLalu = now()->subMonthNoOverflow()->startOfMonth();
+        $akhirBulanLalu = now()->subMonthNoOverflow()->endOfMonth();
 
-            foreach ($request->file('preview_photos', []) as $foto) {
-                $previewPaths[] = $foto->store('produk/preview', 'public');
-            }
+        $pendapatanBulanIni = (clone $pesananToko)->whereIn('status', $statusPenjualan)->whereBetween('created_at', [$awalBulanIni, now()])->sum('total_penjual');
 
-            DB::transaction(function () use ($validated, $toko, $thumbnailPath, $previewPaths) {
+        $pendapatanBulanLalu = (clone $pesananToko)->whereIn('status', $statusPenjualan)->whereBetween('created_at', [$awalBulanLalu, $akhirBulanLalu])->sum('total_penjual');
 
-                $slugDasar = Str::slug($validated['nama']);
-                $slug = $slugDasar;
-                $nomor = 1;
+        $pertumbuhan = $pendapatanBulanLalu > 0 ? (($pendapatanBulanIni - $pendapatanBulanLalu) / $pendapatanBulanLalu) * 100 : ($pendapatanBulanIni > 0 ? 100 : 0);
 
-                while (produk::where('slug', $slug)->exists()) {
-                    $slug = $slugDasar . '-' . $nomor++;
-                }
+        $totalPesanan = (clone $pesananToko)->count();
 
-                $produk = produk::create([
-                    'nama' => $validated['nama'],
-                    'slug' => $slug,
-                    'deskripsi' => $validated['deskripsi'],
-                    'harga' => $validated['harga'],
-                    'stok' => $validated['stok'],
-                    'kategori_id' => $validated['kategori_id'],
-                    'toko_id' => $toko->id,
-                    'is_active' => $validated['is_active'],
-                ]);
+        $totalPelanggan = pesanan::whereHas('pesananToko', function ($query) use ($toko) {
 
-                $produk->foto()->create([
-                    'foto' => $thumbnailPath,
-                    'tipe' => 'thumbnail',
-                ]);
+            $query->where('toko_id', $toko->id);
 
-                foreach ($previewPaths as $path) {
-                    $produk->foto()->create([
-                        'foto' => $path,
-                        'tipe' => 'preview',
-                    ]);
-                }
+        })->distinct('user_id')->count('user_id');
 
-            });
+        $grafikPendapatan = collect();
 
-        } catch (\Throwable $e) {
+        for ($i = 5; $i >= 0; $i--) {
 
-            if ($thumbnailPath) {
-                Storage::disk('public')->delete($thumbnailPath);
-            }
+            $tanggal = now()->subMonthsNoOverflow($i);
 
-            if (!empty($previewPaths)) {
-                Storage::disk('public')->delete($previewPaths);
-            }
+            $awal = $tanggal->copy()->startOfMonth();
+            $akhir = $tanggal->copy()->endOfMonth();
 
-            report($e);
+            $pendapatan = (clone $pesananToko)->whereIn('status', $statusPenjualan)->whereBetween('created_at', [$awal, $akhir])->sum('total_penjual');
 
-            return back()->withInput()
-                ->with('error', 'Produk gagal disimpan. Silakan coba kembali.');
-
-        }
-
-        return redirect()->route('seller.produk')
-            ->with('success', 'Produk berhasil ditambahkan.');
-
-    }
-
-    public function editProdukPage(string $slug)
-    {
-
-        $toko = Toko::where('user_id', auth()->id())->firstOrFail();
-
-        $produk = Produk::with([
-            'kategori',
-            'thumbnail',
-            'preview',
-        ])->where('slug', $slug)->where('toko_id', $toko->id)->firstOrFail();
-
-        $kategori = Kategori::orderBy('nama')->get();
-
-        return view('seller.edit-produk', compact(
-            'produk',
-            'kategori'
-        ));
-
-    }
-
-    public function createPin()
-    {
-
-        $user = auth()->user();
-
-        $toko = $user->toko;
-
-        return view('seller.buat-pin-toko', compact('toko'));
-
-    }
-
-    public function storePin(Request $request)
-    {
-
-        $request->validate([
-            'pin' => 'required|string|digits:6|confirmed',
-        ], [
-            'pin.required' => 'PIN toko wajib diisi.',
-            'pin.string' => 'PIN toko harus berupa teks.',
-            'pin.digits' => 'PIN toko harus terdiri dari 6 angka.',
-            'pin.confirmed' => 'Konfirmasi PIN tidak cocok.',
-        ]);
-
-        $user = auth()->user();
-
-        $toko = $user;
-
-        $toko->update([
-            'pin' => Hash::make($request->pin),
-        ]);
-
-        return redirect()->route('seller.dashboard')
-            ->with(
-                'success',
-                'PIN toko berhasil dibuat. Selamat datang di dashboard toko.'
-            );
-    }
-
-    public function verifyPinPage()
-    {
-        if (!auth()->user()->pin) {
-            return redirect()->route('seller.createPin');
-        }
-
-        return view('user.verify-pin');
-    }
-
-    public function verifyPin(Request $request)
-    {
-
-        $request->validate([
-            'pin' => ['required', 'digits:6'],
-        ], [
-            'pin.required' => 'Masukkan PIN toko.',
-            'pin.digits' => 'PIN harus terdiri dari 6 angka.',
-        ]);
-
-        $user = $request->user();
-
-        if (!$user->pin || !Hash::check($request->pin, $user->pin)) {
-            throw ValidationException::withMessages([
-                'pin' => 'PIN toko salah.',
+            $grafikPendapatan->push([
+                'bulan' => $tanggal->translatedFormat('M'),
+                'total' => $pendapatan,
             ]);
+
         }
 
-        $request->session()->regenerate();
+        $maksPendapatan = max(
+            $grafikPendapatan->pluck('total')->all() ?: [1]
+        );
 
-        $request->session()->put([
-            'toko_pin_user_id' => $user->id,
-            'toko_pin_verified_at' => now()->timestamp,
-        ]);
+        $maksPendapatan = max($maksPendapatan, 1);
 
-        return redirect()->intended(route('seller.dashboard'));
+        $grafikPendapatan = $grafikPendapatan->map(function ($item) use ($maksPendapatan) {
+            return [
+                'bulan' => $item['bulan'],
+                'total' => $item['total'],
+                'label' => $item['total'] >= 1000000
+                    ? number_format($item['total'] / 1000000, 1, ',', '.').'jt'
+                    : ($item['total'] >= 1000
+                        ? number_format($item['total'] / 1000, 0, ',', '.').'rb'
+                        : number_format($item['total'], 0, ',', '.')),
+                'tinggi' => $item['total'] > 0
+                    ? max(5, round(($item['total'] / $maksPendapatan) * 100))
+                    : 0,
+            ];
+        });
 
+        $produkTerlaris = detail_pesanan::query()->selectRaw('produk_id, SUM(quantity) as total_terjual')->whereIn('pesanan_toko_id', (clone $pesananToko)->select('id'))
+            ->whereHas('pesananToko', function ($query) use ($statusPenjualan) {
+                $query->whereIn('status', $statusPenjualan);
+            })->with('produk')->groupBy('produk_id')->orderByDesc('total_terjual')->take(5)->get();
+
+        $jumlahTerjualMaksimum = max(
+            $produkTerlaris->pluck('total_terjual')->all() ?: [1]
+        );
+
+        foreach ($produkTerlaris as $produk) {
+
+            $produk->persentase = round(
+                ($produk->total_terjual / $jumlahTerjualMaksimum) * 100
+            );
+
+        }
+
+        $pesananTerbaru = (clone $pesananToko)
+            ->with(['pesanan.user'])
+            ->latest('created_at')
+            ->take(5)
+            ->get();
+
+        return view('seller.laporan-seller', compact(
+            'toko',
+            'pendapatanBulanIni',
+            'totalPesanan',
+            'pertumbuhan',
+            'totalPelanggan',
+            'grafikPendapatan',
+            'produkTerlaris',
+            'pesananTerbaru'
+        ));
     }
-
-    public function lockToko(Request $request)
-    {
-
-        $request->session()->forget([
-            'toko_pin_verified_at',
-            'toko_pin_user_id',
-        ]);
-
-        return redirect()->route('seller.verifyPin')
-            ->with('success', 'Akses toko berhasil dikunci.');
-
-    }
-
 }

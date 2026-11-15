@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\View\Composers\AdminLayoutComposer;
 use App\View\composers\CustomerLayoutComposer;
 use App\View\Composers\SellerLayoutComposer;
 use Illuminate\Support\Facades\View;
@@ -37,6 +38,11 @@ class AppServiceProvider extends ServiceProvider
         View::composer(
             'components.navbar-seller',
             SellerLayoutComposer::class
+        );
+
+        View::composer(
+            'components.navbar-admin',
+            AdminLayoutComposer::class
         );
     }
 }

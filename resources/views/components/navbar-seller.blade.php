@@ -1,4 +1,5 @@
 <nav class="sticky top-0 z-50 border-b border-orange-100 bg-white">
+
     <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 lg:px-8">
 
         <a href="{{ route('seller.dashboard') }}">
@@ -47,12 +48,14 @@
         </div>
 
         <div class="flex items-center gap-3">
-
-            <button type="button"
-                class="relative flex h-9 w-9 items-center justify-center rounded-full text-[#72594B] transition hover:bg-[#FFF3E5] hover:text-[#E85D04]">
-                <i class="fa-regular fa-bell text-sm"></i>
-                <span class="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-[#E85D04]"></span>
-            </button>
+            
+            @auth
+                <x-notification 
+                    prefix="seller" 
+                    :notifikasi="$notifikasiSeller" 
+                    :jumlahBelumDibaca="$jumlahNotifikasiBelumDibaca"
+                />
+            @endauth
 
             <div class="hidden h-7 w-px bg-orange-100 sm:block"></div>
 
@@ -71,23 +74,19 @@
                             </p>
 
                             <p class="text-[9px] text-[#A58C7D]">
-                                {{ Auth::user()->role === 'pemilik_toko'
-                                    ? 'Pemilik Toko'
-                                    : ucfirst(str_replace('_', ' ', Auth::user()->role)) }}
+                                {{ Auth::user()->role === 'pemilik_toko' ? 'Pemilik Toko' : ucfirst(str_replace('_', ' ', Auth::user()->role)) }}
                             </p>
                         </div>
 
                         <div class="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-orange-100 bg-gradient-to-br from-[#FFF3E5] to-[#FFD5AD]">
 
                             @if (Auth::user()->toko?->foto_profil)
-                                <img
-                                    src="{{ asset('storage/' . Auth::user()->toko->foto_profil) }}"
+                                <img src="{{ asset('storage/' . Auth::user()->toko->foto_profil) }}"
                                     alt="Foto Toko"
                                     class="h-full w-full object-cover"
                                     onerror="this.style.display='none'">
                             @elseif (Auth::user()->foto_profil)
-                                <img
-                                    src="{{ asset('storage/' . Auth::user()->foto_profil) }}"
+                                <img src="{{ asset('storage/' . Auth::user()->foto_profil) }}"
                                     alt="Foto Profil"
                                     class="h-full w-full object-cover"
                                     onerror="this.style.display='none'">

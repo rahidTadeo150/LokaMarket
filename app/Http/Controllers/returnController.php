@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\foto_return_produk;
 use App\Models\pesanan;
 use App\Models\return_produk;
+use App\Models\User;
+use App\Notifications\notificationLokaMarket;
 use App\Services\SaldoPenjualService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,11 +15,9 @@ use Illuminate\Validation\ValidationException;
 
 class returnController extends Controller
 {
+    private function konfigurasiTabReturn(array $statistik, array $jumlahStatus)
+    {
 
-    private function konfigurasiTabReturn(
-        array $statistik,
-        array $jumlahStatus
-    ): array {
         return [
             'semua' => [
                 'label' => 'Semua',
@@ -38,28 +37,32 @@ class returnController extends Controller
                 'count' => $statistik['ditolak'] ?? 0,
             ],
         ];
+
     }
 
     private function konfigurasiLabelStatusReturn(): array
     {
+
         return [
             'diajukan' => 'Menunggu Review',
             'menunggu_review' => 'Menunggu Review',
             'disetujui' => 'Disetujui',
             'ditolak' => 'Ditolak',
         ];
+
     }
 
     private function konfigurasiWarnaStatusReturn(): array
     {
+
         return [
             'diajukan' => 'bg-amber-50 text-amber-700',
             'menunggu_review' => 'bg-amber-50 text-amber-700',
             'disetujui' => 'bg-emerald-50 text-emerald-700',
             'ditolak' => 'bg-red-50 text-red-700',
         ];
-    }
 
+    }
 
     public function pengajuanReturnPage(Request $request)
     {
@@ -136,7 +139,6 @@ class returnController extends Controller
 
     }
 
-
     public function pengajuanReturn(Request $request, string $nomor_pesanan, SaldoPenjualService $saldoService)
     {
 
@@ -153,6 +155,7 @@ class returnController extends Controller
             'keterangan_return.required' => 'Silakan isi keterangan return.',
             'keterangan_return.string' => 'Keterangan return harus berupa teks.',
             'keterangan_return.max' => 'Keterangan maksimal 1000 karakter.',
+            'keterangan_return.min' => 'Keterangan minimal 20 karakter.',
 
             'foto_return.required' => 'Silakan unggah foto bukti return.',
             'foto_return.array' => 'Format foto bukti return tidak valid.',
@@ -167,9 +170,9 @@ class returnController extends Controller
 
         $user = Auth::user();
 
-        $pesanan = Pesanan::where('nomor_pesanan', $nomor_pesanan)->where('user_id', $user->id)->firstOrFail();
+        $pesanan = pesanan::where('nomor_pesanan', $nomor_pesanan)->where('user_id', $user->id)->firstOrFail();
 
-        if (!in_array($pesanan->status, ['dikirim', 'selesai'], true)) {
+        if (! in_array($pesanan->status, ['dikirim', 'selesai'], true)) {
 
             throw ValidationException::withMessages([
                 'return' => 'Pesanan tidak dapat diajukan return pada status saat ini.',
@@ -191,7 +194,14 @@ class returnController extends Controller
 
         try {
 
-            DB::transaction(function () use ($validated, $pesanan, $user, $request, &$fileTersimpan, $saldoService) {
+            DB::transaction(function () use (
+                $validated,
+                $pesanan,
+                $user,
+                $request,
+                &$fileTersimpan,
+                $saldoService
+            ) {
 
                 $return = return_produk::create([
                     'pesanan_id' => $pesanan->id,
@@ -205,12 +215,10 @@ class returnController extends Controller
 
                     $path = $foto->store('return', 'public');
 
-                    if (!$path) {
-
+                    if (! $path) {
                         throw new \RuntimeException(
                             'Gagal menyimpan foto bukti return.'
                         );
-
                     }
 
                     $fileTersimpan[] = $path;
@@ -231,9 +239,7 @@ class returnController extends Controller
         } catch (\Throwable $e) {
 
             foreach ($fileTersimpan as $path) {
-
                 Storage::disk('public')->delete($path);
-
             }
 
             report($e);
@@ -242,6 +248,71 @@ class returnController extends Controller
                 ->withErrors([
                     'return' => 'Pengajuan return gagal disimpan. Silakan coba kembali.',
                 ]);
+
+        }
+
+        try {
+
+            $nomorPesanan = $pesanan->nomor_pesanan;
+
+            $pesanan->load('detail.produk.toko');
+
+            $sellerUserIds = $pesanan->detail->pluck('produk.toko.user_id')->filter()->unique()->values();
+
+            $user->notify(
+
+                new notificationLokaMarket(
+                    'Pengajuan Return Berhasil',
+                    'Pengajuan return untuk pesanan '.$nomorPesanan.
+                    ' berhasil dikirim. Silakan tunggu proses pemeriksaan dari admin.',
+                    route('cust.checkout.status', [
+                        'nomor_pesanan' => $nomorPesanan,
+                    ]),
+                    'fa-circle-check'
+                )
+
+            );
+
+            $sellers = User::whereIn('id', $sellerUserIds)->get();
+
+            foreach ($sellers as $seller) {
+
+                $seller->notify(
+
+                    new notificationLokaMarket(
+                        'Pengajuan Return Masuk',
+                        'Pesanan '.$nomorPesanan.
+                        ' telah diajukan return oleh customer. Silakan periksa detail pesanan tersebut.',
+                        route('seller.pesanan'),
+                        'fa-rotate-left'
+                    )
+
+                );
+
+            }
+
+            $admins = User::where('role', 'admin')->get();
+
+            foreach ($admins as $admin) {
+
+                $admin->notify(
+
+                    new notificationLokaMarket(
+                        'Pengajuan Return Baru',
+                        'Terdapat pengajuan return baru untuk pesanan '.
+                        $nomorPesanan.
+                        '. Silakan periksa dan lakukan pemeriksaan pengajuan return.',
+                        route('admin.dashboard'),
+                        'fa-clipboard-list'
+                    )
+
+                );
+
+            }
+
+        } catch (\Throwable $e) {
+
+            report($e);
 
         }
 
@@ -297,7 +368,7 @@ class returnController extends Controller
 
                 $pengajuan = return_produk::whereKey($id)->lockForUpdate()->firstOrFail();
 
-                if (!in_array($pengajuan->status, ['diajukan', 'menunggu_review'], true)) {
+                if (! in_array($pengajuan->status, ['diajukan', 'menunggu_review'], true)) {
 
                     throw ValidationException::withMessages([
                         'return' => 'Pengajuan ini sudah diproses dan tidak dapat disetujui kembali.',
@@ -316,15 +387,59 @@ class returnController extends Controller
                     'status' => 'telah_direturn',
                 ]);
 
+                $customer = User::find($pesanan->user_id);
+
+                $pesanan->load('detail.produk.toko');
+
+                $sellerUserIds = $pesanan->detail->pluck('produk.toko.user_id')->filter()->unique();
+
+                if ($customer) {
+
+                    $customer->notify(
+
+                        new notificationLokaMarket(
+                            'Pengajuan Return Disetujui',
+                            'Pengajuan return untuk pesanan '.
+                            $pesanan->nomor_pesanan.
+                            ' telah disetujui oleh admin dan sedang memasuki tahap pemrosesan.',
+                            route('cust.checkout.status', [
+                                'nomor_pesanan' => $pesanan->nomor_pesanan,
+                            ]),
+                            'fa-circle-check'
+                        )
+                    );
+
+                }
+
+                $sellers = User::whereIn('id', $sellerUserIds)->get();
+
+                foreach ($sellers as $seller) {
+
+                    $seller->notify(
+
+                        new notificationLokaMarket(
+                            'Pengajuan Return Disetujui',
+                            'Pengajuan return untuk pesanan '.
+                            $pesanan->nomor_pesanan.
+                            ' telah disetujui oleh admin. Silakan ikuti proses return selanjutnya.',
+                            route('seller.pesanan'),
+                            'fa-circle-check'
+                        )
+
+                    );
+                }
+
             });
 
             return redirect()->route('admin.pengajuanReturn.detail', ['id' => $id])
-                ->with('success', 'Pengajuan return berhasil disetujui dan masuk ke tahap pemrosesan.');
+                ->with(
+                    'success',
+                    'Pengajuan return berhasil disetujui dan masuk ke tahap pemrosesan.'
+                );
 
         } catch (ValidationException $e) {
 
             throw $e;
-
         } catch (\Throwable $e) {
 
             report($e);
@@ -338,9 +453,8 @@ class returnController extends Controller
 
     }
 
-    public function rejectReturn(Request $request, string $id)
+    public function rejectReturn(Request $request, string $id, SaldoPenjualService $saldoService)
     {
-
         $validated = $request->validate([
             'catatan_admin' => 'required|string|min:10|max:1000',
         ], [
@@ -355,7 +469,7 @@ class returnController extends Controller
 
                 $pengajuan = return_produk::whereKey($id)->lockForUpdate()->firstOrFail();
 
-                if (!in_array($pengajuan->status, ['diajukan', 'menunggu_review'], true)) {
+                if (! in_array($pengajuan->status, ['diajukan', 'menunggu_review'], true)) {
 
                     throw ValidationException::withMessages([
                         'return' => 'Pengajuan ini sudah diproses dan tidak dapat ditolak kembali.',
@@ -376,6 +490,52 @@ class returnController extends Controller
                     'status' => 'return_ditolak',
                 ]);
 
+                $customer = User::find($pesanan->user_id);
+
+                $pesanan->load('detail.produk.toko');
+
+                $sellerUserIds = $pesanan->detail->pluck('produk.toko.user_id')->filter()->unique();
+
+                if ($customer) {
+
+                    $customer->notify(
+
+                        new notificationLokaMarket(
+                            'Pengajuan Return Ditolak',
+                            'Pengajuan return untuk pesanan '.
+                            $pesanan->nomor_pesanan.
+                            ' telah ditolak oleh admin. Alasan: '.
+                            $validated['catatan_admin'],
+                            route('cust.checkout.status', [
+                                'nomor_pesanan' => $pesanan->nomor_pesanan,
+                            ]),
+                            'fa-circle-xmark'
+                        )
+
+                    );
+
+                }
+
+                $sellers = User::whereIn('id', $sellerUserIds)->get();
+
+                foreach ($sellers as $seller) {
+
+                    $seller->notify(
+
+                        new notificationLokaMarket(
+                            'Pengajuan Return Ditolak',
+                            'Pengajuan return untuk pesanan '.
+                            $pesanan->nomor_pesanan.
+                            ' telah ditolak oleh admin. Alasan: '.
+                            $validated['catatan_admin'],
+                            route('seller.pesanan'),
+                            'fa-circle-xmark'
+                        )
+
+                    );
+
+                }
+
             });
 
             return redirect()->route('admin.pengajuanReturn.detail', ['id' => $id])
@@ -384,16 +544,14 @@ class returnController extends Controller
         } catch (ValidationException $e) {
 
             throw $e;
-
         } catch (\Throwable $e) {
 
             report($e);
 
-            return back()->withInput()
+            return back()
+                ->withInput()
                 ->with('error', 'Pengajuan return gagal ditolak. Silakan coba kembali.');
 
         }
-
     }
-
 }

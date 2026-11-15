@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\pengajuan_toko;
 use App\Models\produk;
-use App\Models\return_produk;
 use App\Models\toko;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class adminController extends Controller
 {
@@ -27,7 +25,6 @@ class adminController extends Controller
             'status',
             'pending'
         )->count();
-
 
         $pengajuanToko = pengajuan_toko::with('user')->where('status', 'pending')->latest()->take(5)->get();
 
@@ -57,15 +54,6 @@ class adminController extends Controller
         return view('admin.withdraw');
     }
 
-    public function pengajuanTokoPage(Request $request)
-    {
-        $pengajuanToko = pengajuan_toko::with('user')->latest()->paginate(10);
-
-        return view('admin.pengajuan-toko', compact(
-            'pengajuanToko'
-        ));
-    }
-
     public function detailPengajuanPage($id)
     {
         $toko = pengajuan_toko::with('user')->findOrFail($id);
@@ -75,5 +63,4 @@ class adminController extends Controller
         ));
 
     }
-
 }

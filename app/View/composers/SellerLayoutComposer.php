@@ -11,21 +11,36 @@ class SellerLayoutComposer
     public function compose(View $view): void
     {
         $jumlahPesananSeller = 0;
+        $notifikasiSeller = collect();
+        $jumlahNotifikasiBelumDibaca = 0;
+
         $user = Auth::user();
 
-        if ($user && $user->toko) {
-            $tokoId = $user->toko->id;
+        if ($user) {
 
-            $jumlahPesananSeller = Pesanan::query()
-                ->whereIn('status', [
+            $notifikasiSeller = $user->notifications()->latest()->take(8)->get();
+            $jumlahNotifikasiBelumDibaca = $user->unreadNotifications()->count();
+
+            if ($user->toko) {
+
+                $tokoId = $user->toko->id;
+
+                $jumlahPesananSeller = Pesanan::query()->whereIn('status', [
                     'dibayar',
                     'diproses',
-                    'dikirim',
                 ])->whereHas('detail.produk', function ($query) use ($tokoId) {
                     $query->where('toko_id', $tokoId);
                 })->count();
+
+            }
+
         }
 
-        $view->with('jumlahPesananSeller', $jumlahPesananSeller);
+        $view->with([
+            'jumlahPesananSeller' => $jumlahPesananSeller,
+            'notifikasiSeller' => $notifikasiSeller,
+            'jumlahNotifikasiBelumDibaca' => $jumlahNotifikasiBelumDibaca,
+        ]);
+
     }
 }

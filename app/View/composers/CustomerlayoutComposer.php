@@ -11,15 +11,34 @@ class CustomerLayoutComposer
     public function compose(View $view): void
     {
         $cartCount = 0;
+        $notifikasiCustomer = collect();
+        $jumlahNotifikasiBelumDibaca = 0;
 
-        if (Auth::check()) {
-            $keranjang = keranjang::where('user_id', Auth::id())->first();
+        $user = Auth::user();
+
+        if ($user) {
+
+            $keranjang = Keranjang::where('user_id', $user->id)
+                ->first();
 
             if ($keranjang) {
-                $cartCount = $keranjang->detail()->sum('quantity');
+
+                $cartCount = $keranjang->detail()
+                    ->sum('quantity');
+
             }
+
+            $notifikasiCustomer = $user->notifications()->latest()->take(8)->get();
+
+            // Menghitung notifikasi yang belum dibaca
+            $jumlahNotifikasiBelumDibaca = $user->unreadNotifications()->count();
+
         }
 
-        $view->with('cartCount', $cartCount);
+        $view->with([
+            'cartCount' => $cartCount,
+            'notifikasiCustomer' => $notifikasiCustomer,
+            'jumlahNotifikasiBelumDibaca' => $jumlahNotifikasiBelumDibaca,
+        ]);
     }
 }

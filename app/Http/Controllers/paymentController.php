@@ -2,29 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use App\Models\alamat_pengguna;
+use App\Models\detail_pesanan;
 use App\Models\keranjang;
 use App\Models\payments;
 use App\Models\pesanan;
-use App\Models\detail_pesanan;
 use App\Models\pesanan_toko;
 use App\Models\produk;
-use App\Models\return_produk;
-use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use App\Notifications\notificationLokaMarket;
+use App\Services\SaldoPenjualService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-use Illuminate\Validation\ValidationException;
 use Midtrans\Config;
 use Midtrans\Snap;
-use Midtrans\Transaction;
-use App\Services\SaldoPenjualService;
 
 class paymentController extends Controller
 {
-
     public function checkoutPayment(Request $request)
     {
 
@@ -45,7 +41,7 @@ class paymentController extends Controller
 
         $user = $request->user();
 
-        if (!$user) {
+        if (! $user) {
             return response()->json([
                 'message' => 'Silakan login terlebih dahulu.',
             ], 401);
@@ -57,7 +53,7 @@ class paymentController extends Controller
             'kecamatan',
         ])->where('user_id', $user->id)->where('is_default', true)->first();
 
-        if (!$alamat) {
+        if (! $alamat) {
             return response()->json([
                 'message' => 'Silakan pilih alamat pengiriman terlebih dahulu.',
             ], 422);
@@ -65,7 +61,7 @@ class paymentController extends Controller
 
         $checkoutLangsung = session('checkout_langsung');
 
-        $isCheckoutLangsung = !empty($checkoutLangsung['produk_id']) && isset($checkoutLangsung['quantity']) && (int) $checkoutLangsung['quantity'] > 0;
+        $isCheckoutLangsung = ! empty($checkoutLangsung['produk_id']) && isset($checkoutLangsung['quantity']) && (int) $checkoutLangsung['quantity'] > 0;
 
         $keranjang = null;
         $detailsCheckout = collect();
@@ -78,7 +74,7 @@ class paymentController extends Controller
                 'thumbnail',
             ])->where('is_active', true)->find($checkoutLangsung['produk_id']);
 
-            if (!$produkCheckoutInstan) {
+            if (! $produkCheckoutInstan) {
                 return response()->json([
                     'message' => 'Produk checkout instan tidak ditemukan atau sudah tidak aktif.',
                 ], 422);
@@ -99,13 +95,13 @@ class paymentController extends Controller
 
         } else {
 
-            $keranjang = Keranjang::with([
+            $keranjang = keranjang::with([
                 'detail.produk.kategori',
                 'detail.produk.toko',
                 'detail.produk.thumbnail',
             ])->where('user_id', $user->id)->first();
 
-            if (!$keranjang || $keranjang->detail->isEmpty()) {
+            if (! $keranjang || $keranjang->detail->isEmpty()) {
                 return response()->json([
                     'message' => 'Keranjang kamu masih kosong.',
                 ], 422);
@@ -140,7 +136,7 @@ class paymentController extends Controller
 
             $produk = $detail->produk;
 
-            if (!$produk) {
+            if (! $produk) {
 
                 return response()->json([
                     'message' => 'Ada produk yang sudah tidak tersedia.',
@@ -148,7 +144,7 @@ class paymentController extends Controller
 
             }
 
-            if (!$produk->toko_id || !$produk->toko) {
+            if (! $produk->toko_id || ! $produk->toko) {
 
                 return response()->json([
                     'message' => "Toko untuk produk {$produk->nama} tidak ditemukan.",
@@ -249,11 +245,11 @@ class paymentController extends Controller
             }
 
             $midtransItems[] = [
-                'id' => 'ONGKIR-' . $ringkasan['toko_id'],
+                'id' => 'ONGKIR-'.$ringkasan['toko_id'],
                 'price' => (int) $ringkasan['ongkir'],
                 'quantity' => 1,
                 'name' => Str::limit(
-                    'Ongkir - ' . $ringkasan['nama_toko'],
+                    'Ongkir - '.$ringkasan['nama_toko'],
                     50,
                     ''
                 ),
@@ -287,9 +283,9 @@ class paymentController extends Controller
 
             $pesanan = DB::transaction(function () use ($user, $alamat, $validated, $subtotal, $ongkir, $totalPembayaran, $itemsPesanan, $paymentMethod, $bankCode, $ringkasanOngkirToko) {
 
-                $pesanan = Pesanan::create([
+                $pesanan = pesanan::create([
                     'user_id' => $user->id,
-                    'nomor_pesanan' => 'LOKA-' . strtoupper(Str::random(12)),
+                    'nomor_pesanan' => 'LOKA-'.strtoupper(Str::random(12)),
                     'nama_penerima' => $alamat->nama_penerima,
                     'no_telepon' => $alamat->no_telepon,
                     'alamat_lengkap' => $alamat->alamat_lengkap,
@@ -397,7 +393,6 @@ class paymentController extends Controller
             $pesanan->snap_token = $snapToken;
             $pesanan->save();
 
-            // 11. Kosongkan sumber checkout setelah token berhasil dibuat.
             if ($isCheckoutLangsung) {
 
                 session()->forget('checkout_langsung');
@@ -408,7 +403,7 @@ class paymentController extends Controller
 
                     DB::transaction(function () use ($user, $keranjang) {
 
-                        $keranjangTerkunci = Keranjang::whereKey($keranjang->id)->where('user_id', $user->id)->lockForUpdate()->first();
+                        $keranjangTerkunci = keranjang::whereKey($keranjang->id)->where('user_id', $user->id)->lockForUpdate()->first();
 
                         if ($keranjangTerkunci) {
                             $keranjangTerkunci->detail()->delete();
@@ -437,12 +432,12 @@ class paymentController extends Controller
                 'error' => $e->getMessage(),
             ]);
 
-            if ($pesanan && !$pesanan->snap_token) {
+            if ($pesanan && ! $pesanan->snap_token) {
 
                 try {
 
                     DB::transaction(function () use ($pesanan) {
-                        $pesananTerkunci = Pesanan::whereKey($pesanan->id)->lockForUpdate()->first();
+                        $pesananTerkunci = pesanan::whereKey($pesanan->id)->lockForUpdate()->first();
 
                         if ($pesananTerkunci && $pesananTerkunci->status === 'menunggu_pembayaran' && empty($pesananTerkunci->snap_token)) {
 
@@ -473,13 +468,13 @@ class paymentController extends Controller
         }
 
     }
-    
+
     public function handleNotification(Request $request, SaldoPenjualService $saldoService)
     {
 
         $data = $request->all();
 
-        if (empty($data['order_id']) || empty($data['status_code']) || !isset($data['gross_amount']) || empty($data['signature_key']) || empty($data['transaction_status'])) {
+        if (empty($data['order_id']) || empty($data['status_code']) || ! isset($data['gross_amount']) || empty($data['signature_key']) || empty($data['transaction_status'])) {
             return response()->json([
                 'message' => 'Data notifikasi tidak lengkap.',
             ], 400);
@@ -499,10 +494,10 @@ class paymentController extends Controller
 
         $signatureExpected = hash(
             'sha512',
-            $data['order_id'] . $data['status_code'] . $data['gross_amount'] . $serverKey
+            $data['order_id'].$data['status_code'].$data['gross_amount'].$serverKey
         );
 
-        if (!hash_equals($signatureExpected, (string) $data['signature_key'])) {
+        if (! hash_equals($signatureExpected, (string) $data['signature_key'])) {
 
             Log::warning('Signature notifikasi Midtrans tidak valid.', [
                 'order_id' => $data['order_id'],
@@ -518,11 +513,11 @@ class paymentController extends Controller
 
             DB::transaction(function () use ($data, $saldoService) {
 
-                $pesanan = Pesanan::where('nomor_pesanan', $data['order_id'])->lockForUpdate()->first();
+                $pesanan = pesanan::where('nomor_pesanan', $data['order_id'])->lockForUpdate()->first();
 
-                if (!$pesanan) {
+                if (! $pesanan) {
                     throw new \RuntimeException(
-                        'Pesanan tidak ditemukan: ' . $data['order_id']
+                        'Pesanan tidak ditemukan: '.$data['order_id']
                     );
                 }
 
@@ -538,10 +533,10 @@ class paymentController extends Controller
 
                 $pembayaran = payments::where('pesanan_id', $pesanan->id)->lockForUpdate()->first();
 
-                if (!$pembayaran) {
+                if (! $pembayaran) {
                     throw new \RuntimeException(
                         'Data pembayaran tidak ditemukan untuk pesanan '
-                        . $pesanan->id
+                        .$pesanan->id
                     );
                 }
 
@@ -549,7 +544,6 @@ class paymentController extends Controller
                 $fraudStatus = $data['fraud_status'] ?? null;
 
                 $pembayaranBerhasil = $statusTransaksi === 'settlement' || ($statusTransaksi === 'capture' && $fraudStatus === 'accept');
-
 
                 if ($pembayaranBerhasil) {
 
@@ -598,7 +592,7 @@ class paymentController extends Controller
 
                         $pembayaran->status = 'success';
 
-                        if (!empty($data['transaction_id'])) {
+                        if (! empty($data['transaction_id'])) {
 
                             $pembayaran->transaction_id = $data['transaction_id'];
 
@@ -624,6 +618,50 @@ class paymentController extends Controller
 
                         $saldoService->catatPembayaran($pesanan);
 
+                        $pesanan->load('detail.produk.toko');
+
+                        $customer = User::find($pesanan->user_id);
+
+                        if ($customer) {
+
+                            $customer->notify(
+                                new notificationLokaMarket(
+                                    'Pembayaran Berhasil',
+                                    'Pembayaran untuk pesanan '.$pesanan->nomor_pesanan.
+                                    ' berhasil dikonfirmasi. Pesanan kamu sedang menunggu diproses oleh penjual.',
+                                    route('cust.checkout.status', [
+                                        'nomor_pesanan' => $pesanan->nomor_pesanan,
+                                    ]),
+                                    'fa-circle-check'
+                                )
+                            );
+
+                        }
+
+                        $sellerUserIds = $pesanan->detail->pluck('produk.toko.user_id')->filter()->unique()->values();
+
+                        $sellers = User::whereIn('id', $sellerUserIds)->get();
+
+                        foreach ($sellers as $seller) {
+
+                            $seller->notify(
+                                new notificationLokaMarket(
+                                    'Pesanan Masuk',
+                                    'Kamu menerima pesanan baru '.$pesanan->nomor_pesanan.
+                                    '. Pembayaran customer telah berhasil dikonfirmasi. Segera proses pesanan tersebut.',
+                                    route('seller.pesanan'),
+                                    'fa-box-open'
+                                )
+                            );
+
+                        }
+
+                        Log::info('Notifikasi pembayaran berhasil dikirim.', [
+                            'nomor_pesanan' => $pesanan->nomor_pesanan,
+                            'customer_id' => $customer?->id,
+                            'seller_ids' => $sellerUserIds->all(),
+                        ]);
+
                     } else {
 
                         if ($pesanan->status === 'menunggu_pembayaran') {
@@ -645,7 +683,7 @@ class paymentController extends Controller
                             'jumlah_pesanan_toko_diperbarui' => $jumlahPesananToko,
                         ]);
 
-                        if (!empty($data['transaction_id']) && empty($pembayaran->transaction_id)) {
+                        if (! empty($data['transaction_id']) && empty($pembayaran->transaction_id)) {
 
                             $pembayaran->transaction_id = $data['transaction_id'];
                             $pembayaran->save();
@@ -655,7 +693,7 @@ class paymentController extends Controller
 
                 } elseif (in_array($statusTransaksi, ['deny', 'expire', 'cancel'], true)) {
 
-                    if ($pesanan->status === 'menunggu_pembayaran' && $pembayaran->status === 'pending' ) {
+                    if ($pesanan->status === 'menunggu_pembayaran' && $pembayaran->status === 'pending') {
 
                         $pesanan->status = 'dibatalkan';
                         $pesanan->save();
@@ -667,10 +705,10 @@ class paymentController extends Controller
 
                         $pembayaran->status = $statusTransaksi;
 
-                        if (!empty($data['transaction_id'])) {
+                        if (! empty($data['transaction_id'])) {
 
                             $pembayaran->transaction_id = $data['transaction_id'];
-                            
+
                         }
 
                         $pembayaran->save();

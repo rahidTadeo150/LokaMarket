@@ -3,11 +3,9 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
 
 class User extends Authenticatable
 {
@@ -24,7 +22,7 @@ class User extends Authenticatable
         'tanggal_lahir',
         'alamat',
         'foto_profil',
-        'pin'
+        'pin',
     ];
 
     protected $hidden = [
@@ -70,11 +68,11 @@ class User extends Authenticatable
         return $this->hasOne(toko::class);
 
     }
+
     public function alamat()
     {
 
         return $this->hasMany(alamat_pengguna::class, 'user_id');
 
     }
-
 }

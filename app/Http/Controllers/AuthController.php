@@ -2,49 +2,56 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ResetPasswordMail;
+use App\Mail\VerifyRegistrationMail;
 use App\Models\pending_registration;
 use App\Models\User;
+use App\Notifications\notificationLokaMarket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
-use App\Mail\VerifyRegistrationMail;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\ResetPasswordMail;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
-    public function showRegisterForm() {
+    public function showRegisterForm()
+    {
         return view('auth.register-pembeli');
     }
 
-    public function showRegisterPenjualForm() {
+    public function showRegisterPenjualForm()
+    {
         return view('auth.register-penjual');
     }
 
-    public function showLoginForm() {
+    public function showLoginForm()
+    {
         return view('auth.login-page');
     }
 
-    public function showLoginAdmin() {
+    public function showLoginAdmin()
+    {
         return view('auth.login-admin-panel');
     }
 
-    public function showForgotPasswordForm() {
+    public function showForgotPasswordForm()
+    {
         return view('auth.lupa-password');
     }
 
-    public function sendResetLink(Request $request) {
+    public function sendResetLink(Request $request)
+    {
         $request->validate([
             'email' => 'required|email',
         ]);
 
         $user = User::where('email', $request->email)->first();
 
-        if (!$user) {
+        if (! $user) {
             return back()->withErrors([
-                'email' => 'Email tersebut tidak ditemukan.'
+                'email' => 'Email tersebut tidak ditemukan.',
             ]);
         }
 
@@ -68,14 +75,16 @@ class AuthController extends Controller
         );
     }
 
-    public function showResetPasswordForm(Request $request, string $token) {
+    public function showResetPasswordForm(Request $request, string $token)
+    {
         return view('auth.reset-password', [
             'token' => $token,
             'email' => $request->email,
         ]);
     }
 
-    public function resetPassword(Request $request) {
+    public function resetPassword(Request $request)
+    {
         $request->validate([
             'token' => 'required',
             'email' => 'required|email',
@@ -89,7 +98,7 @@ class AuthController extends Controller
                 'password_confirmation',
                 'token'
             ),
-            
+
             function ($user, $password) {
 
                 $user->update([
@@ -104,7 +113,7 @@ class AuthController extends Controller
             Auth::logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();
-            
+
             return redirect()
                 ->route('cust.login')
                 ->with(
@@ -114,11 +123,12 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'Link reset password tidak valid atau sudah kedaluwarsa.'
+            'email' => 'Link reset password tidak valid atau sudah kedaluwarsa.',
         ]);
     }
 
-    public function loginCustomer(Request $request) {
+    public function loginCustomer(Request $request)
+    {
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
@@ -144,7 +154,8 @@ class AuthController extends Controller
         );
     }
 
-    public function registerCustomer(Request $request) {
+    public function registerCustomer(Request $request)
+    {
         $request->validate([
             'username' => 'required|string|max:255',
             'nama' => 'required|string|max:255',
@@ -153,13 +164,13 @@ class AuthController extends Controller
             'password' => 'required|min:8',
             'konfirmasi_password' => 'required|same:password',
         ], [
-            'email.unique' => 'Email ini sudah digunakan. Silakan gunakan email lain'
+            'email.unique' => 'Email ini sudah digunakan. Silakan gunakan email lain',
         ]);
 
         $nama = Str::title(strtolower(trim($request->nama)));
 
         $noTelp = preg_replace('/\D/', '', $request->no_telp);
-        $noTelp = '+62' . $noTelp;
+        $noTelp = '+62'.$noTelp;
 
         $token = Str::random(64);
 
@@ -193,13 +204,14 @@ class AuthController extends Controller
         return redirect()->route('verification.notice');
     }
 
-    public function verificationNotice() {
+    public function verificationNotice()
+    {
         $email = session('verification_email');
 
-        if (!$email) {
+        if (! $email) {
             return redirect()->route('cust.register')
                 ->with(
-                    'error', 
+                    'error',
                     'Silakan melakukan pendaftaran terlebih dahulu.'
                 );
         }
@@ -209,17 +221,19 @@ class AuthController extends Controller
         ]);
     }
 
-    public function verifyRegistration($token) {
-        $pending = pending_registration::where('token', $token)
-            ->where('expires_at', '>', now())
-            ->first();
+    public function verifyRegistration($token)
+    {
 
-        if (!$pending) {
+        $pending = pending_registration::where('token', $token)->where('expires_at', '>', now())->first();
+
+        if (! $pending) {
+
             return redirect()->route('cust.login')
                 ->with('error', 'Link verifikasi tidak valid atau sudah kedaluwarsa.');
+
         }
 
-        User::create([
+        $user = User::create([
             'username' => $pending->username,
             'nama' => $pending->nama,
             'email' => $pending->email,
@@ -231,14 +245,28 @@ class AuthController extends Controller
 
         $pending->delete();
 
+        $user->notify(
+
+            new notificationLokaMarket(
+                'Selamat Datang di LokaMarket!',
+                'Halo @'.$user->username.
+                '! Selamat bergabung di LokaMarket. Terima kasih telah menjadi bagian dari komunitas kami. Temukan berbagai produk menarik dari UMKM lokal dan nikmati pengalaman berbelanja yang menyenangkan. Happy Shopping!',
+                route('cust.landingPage'),
+                'fa-gift'
+            )
+
+        );
+
         return redirect()->route('cust.login')
             ->with('success', 'Email berhasil diverifikasi. Akun Anda telah dibuat.');
+
     }
 
-    public function resendVerification(Request $request) {
+    public function resendVerification(Request $request)
+    {
         $email = session('verification_email');
 
-        if (!$email) {
+        if (! $email) {
             return redirect()
                 ->route('cust.register')
                 ->with('error', 'Sesi verifikasi tidak ditemukan.');
@@ -246,7 +274,7 @@ class AuthController extends Controller
 
         $pending = pending_registration::where('email', $email)->first();
 
-        if (!$pending) {
+        if (! $pending) {
             return redirect()
                 ->route('cust.register')
                 ->with('error', 'Data pendaftaran tidak ditemukan.');
@@ -275,8 +303,9 @@ class AuthController extends Controller
             'Link verifikasi baru telah dikirim ke email Anda.'
         );
     }
-    
-    public function logout(Request $request) {
+
+    public function logout(Request $request)
+    {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
@@ -286,7 +315,8 @@ class AuthController extends Controller
             ->with('success', 'Anda berhasil keluar dari akun anda');
     }
 
-    public function loginAdmin(Request $request)  {
+    public function loginAdmin(Request $request)
+    {
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
@@ -295,7 +325,7 @@ class AuthController extends Controller
         $credentials = [
             'email' => $request->email,
             'password' => $request->password,
-            'role' => 'admin'
+            'role' => 'admin',
         ];
 
         if (Auth::attempt($credentials)) {

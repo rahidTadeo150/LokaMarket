@@ -140,6 +140,8 @@
                         </span>
                     </a>
 
+                    <x-notification prefix="cust" :notifikasi="$notifikasiCustomer" :jumlahBelumDibaca="$jumlahNotifikasiBelumDibaca"/>
+
                     <div class="relative">
 
                         <button type="button"

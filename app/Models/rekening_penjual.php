@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Rekening_penjual extends Model
 {
-
     protected $table = 'rekening_penjual';
 
     protected $fillable = [
@@ -27,11 +26,10 @@ class Rekening_penjual extends Model
 
     }
 
-    public function toko()  
+    public function toko()
     {
 
         return $this->belongsTo(Toko::class, 'toko_id');
-        
+
     }
-    
 }

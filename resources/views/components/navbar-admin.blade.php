@@ -20,11 +20,9 @@
 
         <div class="flex items-center gap-2">
             
-            <button type="button"
-                    class="relative flex h-10 w-10 items-center justify-center rounded-xl border border-orange-100 text-[#72594B] transition hover:bg-orange-50 hover:text-orange-500">
-                <i class="fa-regular fa-bell text-sm"></i>
-                <span class="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white"></span>
-            </button>
+            @auth
+                <x-notification prefix="admin" :notifikasi="$notifikasiAdmin" :jumlahBelumDibaca="$jumlahNotifikasiBelumDibaca"/>
+            @endauth
 
             <div class="mx-1 hidden h-8 w-px bg-orange-100 sm:block"></div>
 

@@ -2,27 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\VerifikasiPengajuanTokoMail;
 use App\Models\kecamatan;
 use App\Models\pending_pengajuan_toko;
 use App\Models\pengajuan_Toko;
+use App\Models\provinsi;
 use App\Models\toko;
 use App\Models\User;
+use App\Notifications\notificationLokaMarket;
 use App\Services\RajaOngkirService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
-use App\Mail\VerifikasiPengajuanTokoMail;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use RuntimeException;
 
 class tokoController extends Controller
 {
+    public function pilihanKodePos(kecamatan $kecamatan, RajaOngkirService $locationService)
+    {
 
-    public function pilihanKodePos(
-        kecamatan $kecamatan,
-        RajaOngkirService $locationService
-    ) {
         try {
             $lokasi = $locationService->search($kecamatan);
 
@@ -48,6 +50,7 @@ class tokoController extends Controller
                 'data' => [],
             ], 500);
         }
+
     }
 
     public function registerToko(Request $request)
@@ -81,7 +84,7 @@ class tokoController extends Controller
 
             }
 
-            if (!$pending->token_expired_at || $pending->token_expired_at->isPast()) {
+            if (! $pending->token_expired_at || $pending->token_expired_at->isPast()) {
 
                 if ($pending->foto_profil && Storage::disk('public')->exists($pending->foto_profil)) {
                     Storage::disk('public')->delete(
@@ -100,7 +103,7 @@ class tokoController extends Controller
             }
         }
 
-        $pengajuanAktif = pengajuan_toko::where('user_id', Auth::id())->where('status', 'pending')->exists();
+        $pengajuanAktif = pengajuan_Toko::where('user_id', Auth::id())->where('status', 'pending')->exists();
 
         if ($pengajuanAktif) {
 
@@ -115,11 +118,11 @@ class tokoController extends Controller
         $noTelp = preg_replace('/\D/', '', $request->no_telepon);
 
         if (str_starts_with($noTelp, '0')) {
-            $noTelp = '+62' . substr($noTelp, 1);
+            $noTelp = '+62'.substr($noTelp, 1);
         } elseif (str_starts_with($noTelp, '62')) {
-            $noTelp = '+' . $noTelp;
+            $noTelp = '+'.$noTelp;
         } else {
-            $noTelp = '+62' . $noTelp;
+            $noTelp = '+62'.$noTelp;
         }
 
         $slug = Str::slug($request->nama_toko);
@@ -131,7 +134,7 @@ class tokoController extends Controller
             pengajuan_Toko::where('slug', $slug)->exists() ||
             pending_pengajuan_toko::where('slug', $slug)->exists()
         ) {
-            $slug = $slugAwal . '-' . $counter;
+            $slug = $slugAwal.'-'.$counter;
             $counter++;
         }
 
@@ -161,7 +164,7 @@ class tokoController extends Controller
             'kota_id' => $request->kota,
             'kecamatan_id' => $request->kecamatan,
             'kode_pos' => $request->kode_pos,
-            'alamat_lengkap' =>  Str::title($request->alamat_lengkap),
+            'alamat_lengkap' => Str::title($request->alamat_lengkap),
             'no_telepon' => $noTelp,
             'foto_ktp' => $fotoKtp,
             'token_verifikasi' => $token,
@@ -194,14 +197,14 @@ class tokoController extends Controller
             $token
         )->first();
 
-        if (!$pending) {
+        if (! $pending) {
 
             return redirect()->route('cust.login')
                 ->with(
                     'error',
                     'Link verifikasi tidak valid atau sudah digunakan.'
                 );
-                
+
         }
 
         if ($pending->token_expired_at && $pending->token_expired_at->isPast()) {
@@ -239,6 +242,44 @@ class tokoController extends Controller
 
         $pending->delete();
 
+        $customer = User::find($pengajuan->user_id);
+
+        if ($customer) {
+
+            $customer->notify(
+
+                new notificationLokaMarket(
+                    'Email Berhasil Diverifikasi',
+                    'Email kamu berhasil diverifikasi. Pengajuan toko "'.
+                    $pengajuan->nama_toko.
+                    '" telah dikirim dan sedang menunggu pemeriksaan admin.',
+                    route('cust.formDaftarToko'),
+                    'fa-circle-check'
+                )
+
+            );
+
+        }
+
+        $admins = User::where('role', 'admin')->get();
+
+        foreach ($admins as $admin) {
+
+            $admin->notify(
+
+                new notificationLokaMarket(
+                    'Pengajuan Toko Baru',
+                    'Terdapat pengajuan toko baru dari '.
+                    $pengajuan->nama_toko.
+                    '. Silakan periksa dan lakukan pemeriksaan pengajuan toko tersebut.',
+                    route('admin.pengajuanToko'),
+                    'fa-store'
+                )
+
+            );
+
+        }
+
         return redirect()
             ->route('cust.formDaftarToko')
             ->with(
@@ -257,7 +298,7 @@ class tokoController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        if (!$user) {
+        if (! $user) {
             return back()->with(
                 'error',
                 'Email tidak ditemukan.'
@@ -266,7 +307,7 @@ class tokoController extends Controller
 
         $pending = pending_pengajuan_toko::where('user_id', $user->id)->latest()->first();
 
-        if (!$pending) {
+        if (! $pending) {
             return back()->with(
                 'error',
                 'Data pengajuan toko tidak ditemukan.'
@@ -296,9 +337,9 @@ class tokoController extends Controller
 
         $user = auth()->user();
 
-        $pengajuanTerakhir = pengajuan_toko::where('user_id', $user->id)->latest()->first();
+        $pengajuanTerakhir = pengajuan_Toko::where('user_id', $user->id)->latest()->first();
 
-        if (!$pengajuanTerakhir) {
+        if (! $pengajuanTerakhir) {
             return redirect()->route('cust.formDaftarToko')
                 ->with(
                     'error',
@@ -326,7 +367,7 @@ class tokoController extends Controller
 
         if ($pengajuanTerakhir->status === 'rejected') {
 
-            if (!$pengajuanTerakhir->rejected_at) {
+            if (! $pengajuanTerakhir->rejected_at) {
                 return redirect()
                     ->route('cust.statusPengajuan')
                     ->with(
@@ -369,6 +410,24 @@ class tokoController extends Controller
             );
     }
 
+    public function editTokoPage()
+    {
+        $toko = toko::where('user_id', Auth::id())->first();
+
+        if (! $toko) {
+            return redirect()
+                ->route('seller.kelolaToko')
+                ->with('error', 'Data toko belum tersedia.');
+        }
+
+        $provinsi = provinsi::orderBy('nama')->get();
+
+        return view('seller.edit-profil-toko', compact(
+            'toko',
+            'provinsi'
+        ));
+    }
+
     public function updateToko(Request $request)
     {
 
@@ -398,8 +457,8 @@ class tokoController extends Controller
             $noTelepon = $request->no_telepon;
 
             if ($noTelepon !== $toko->no_telepon) {
-                if (!str_starts_with($noTelepon, '+62')) {
-                    $noTelepon = '+62' . $noTelepon;
+                if (! str_starts_with($noTelepon, '+62')) {
+                    $noTelepon = '+62'.$noTelepon;
                 }
             } else {
                 $noTelepon = $toko->no_telepon;
@@ -434,5 +493,94 @@ class tokoController extends Controller
             return redirect()->back()->withInput()
                 ->with('error', 'Gagal memperbarui profil toko. Silakan coba kembali.');
         }
+    }
+
+    public function createPin()
+    {
+
+        $user = auth()->user();
+
+        $toko = $user->toko;
+
+        return view('seller.buat-pin-toko', compact('toko'));
+
+    }
+
+    public function storePin(Request $request)
+    {
+
+        $request->validate([
+            'pin' => 'required|string|digits:6|confirmed',
+        ], [
+            'pin.required' => 'PIN toko wajib diisi.',
+            'pin.string' => 'PIN toko harus berupa teks.',
+            'pin.digits' => 'PIN toko harus terdiri dari 6 angka.',
+            'pin.confirmed' => 'Konfirmasi PIN tidak cocok.',
+        ]);
+
+        $user = Auth::user();
+
+        $toko = $user;
+
+        $toko->update([
+            'pin' => Hash::make($request->pin),
+        ]);
+
+        return redirect()->route('seller.dashboard')
+            ->with(
+                'success',
+                'PIN toko berhasil dibuat. Selamat datang di dashboard toko.'
+            );
+    }
+
+    public function verifyPinPage()
+    {
+        if (! auth()->user()->pin) {
+            return redirect()->route('seller.createPin');
+        }
+
+        return view('user.verify-pin');
+    }
+
+    public function verifyPin(Request $request)
+    {
+
+        $request->validate([
+            'pin' => ['required', 'digits:6'],
+        ], [
+            'pin.required' => 'Masukkan PIN toko.',
+            'pin.digits' => 'PIN harus terdiri dari 6 angka.',
+        ]);
+
+        $user = $request->user();
+
+        if (! $user->pin || ! Hash::check($request->pin, $user->pin)) {
+            throw ValidationException::withMessages([
+                'pin' => 'PIN toko salah.',
+            ]);
+        }
+
+        $request->session()->regenerate();
+
+        $request->session()->put([
+            'toko_pin_user_id' => $user->id,
+            'toko_pin_verified_at' => now()->timestamp,
+        ]);
+
+        return redirect()->intended(route('seller.dashboard'));
+
+    }
+
+    public function lockToko(Request $request)
+    {
+
+        $request->session()->forget([
+            'toko_pin_verified_at',
+            'toko_pin_user_id',
+        ]);
+
+        return redirect()->route('seller.verifyPin')
+            ->with('success', 'Akses toko berhasil dikunci.');
+
     }
 }

@@ -7,10 +7,12 @@ use App\Models\produk;
 use App\Models\produk_foto;
 use App\Models\toko;
 use App\Models\wishlist;
+use App\Notifications\notificationLokaMarket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class ProductController extends Controller
@@ -20,32 +22,29 @@ class ProductController extends Controller
 
         $userId = Auth::id();
 
-        $kategori = Kategori::orderBy('nama', 'asc')->get();
+        $kategori = kategori::orderBy('nama', 'asc')->get();
 
-        $query = Produk::with([
-            'kategori',
-            'toko',
-            'thumbnail',
-        ])->where('is_active', true);
+        $query = produk::with(['kategori', 'toko', 'thumbnail'])->withAvg('ulasan', 'rating')->withCount('ulasan')->where('is_active', true);
 
         if ($request->filled('search')) {
+
             $keyword = trim($request->input('search'));
 
             $query->where(function ($q) use ($keyword) {
-                
+
                 $q->where('nama', 'like', "%{$keyword}%")
                     ->orWhereHas('toko', function ($toko) use ($keyword) {
 
                         $toko->where('nama_toko', 'like', "%{$keyword}%");
 
-                    })
-                    ->orWhereHas('kategori', function ($kategori) use ($keyword) {
+                    })->orWhereHas('kategori', function ($kategori) use ($keyword) {
 
                         $kategori->where('nama', 'like', "%{$keyword}%");
-                        
+
                     });
 
             });
+
         }
 
         if ($request->filled('kategori')) {
@@ -55,6 +54,7 @@ class ProductController extends Controller
             $query->whereHas('kategori', function ($q) use ($slugKategori) {
                 $q->where('slug', $slugKategori);
             });
+
         }
 
         switch ($request->input('sort', 'default')) {
@@ -98,29 +98,232 @@ class ProductController extends Controller
 
     public function detailProdukPage(Request $request)
     {
-        $produk = produk::with([
-            'kategori',
-            'toko',
-            'thumbnail',
-            'preview',
-        ])->where('slug', $request->produk)->where('is_active', true)->firstOrFail();
 
-        $anotherProduk = produk::with([
-            'kategori',
-            'toko',
-            'thumbnail',
-        ])->where('toko_id', $produk->toko_id)->where('id', '!=', $produk->id)->where('is_active', true)->latest()->take(4)->get();
+        $produk = produk::with(['kategori', 'toko', 'thumbnail', 'preview'])
+            ->withAvg('ulasan', 'rating')
+            ->withCount('ulasan')
+            ->where('slug', $request->produk)
+            ->where('is_active', true)
+            ->firstOrFail();
 
-        $jumlahProduk = produk::where('toko_id', $produk->toko_id)->where('is_active', true)->count();
+        $ulasan = $produk->ulasan()->with(['user', 'foto'])
+            ->latest()
+            ->paginate(5, ['*'], 'ulasan_page');
+
+        $anotherProduk = produk::with(['kategori', 'toko', 'thumbnail'])
+            ->withAvg('ulasan', 'rating')
+            ->withCount('ulasan')
+            ->where('toko_id', $produk->toko_id)
+            ->where('id', '!=', $produk->id)
+            ->where('is_active', true)
+            ->latest()
+            ->take(4)
+            ->get();
+
+        $jumlahProduk = produk::where('toko_id', $produk->toko_id)
+            ->where('is_active', true)
+            ->count();
 
         $isWishlisted = Auth::check() ? wishlist::where('user_id', Auth::id())->where('produk_id', $produk->id)->exists() : false;
 
         return view('user.detail-produk', compact(
             'produk',
+            'ulasan',
             'anotherProduk',
             'jumlahProduk',
             'isWishlisted'
         ));
+
+    }
+
+    public function produkSeller(Request $request)
+    {
+
+        $user = auth()->user();
+
+        $toko = $user->toko;
+
+        if (! $toko) {
+            abort(404, 'Toko tidak ditemukan.');
+        }
+
+        $query = produk::with(['kategori', 'thumbnail'])->where('toko_id', $toko->id);
+
+        if ($request->filled('search')) {
+            $query->where('nama', 'like', '%'.$request->search.'%');
+        }
+
+        if ($request->filled('kategori')) {
+            $query->whereHas('kategori', function ($q) use ($request) {
+                $q->where('slug', $request->kategori);
+            });
+        }
+
+        if ($request->filled('status') && $request->status !== 'semua') {
+
+            switch ($request->status) {
+
+                case 'aktif':
+                    $query->where('is_active', true)->where('stok', '>', 0);
+                    break;
+
+                case 'habis':
+                    $query->where('stok', '<=', 0);
+                    break;
+
+                case 'nonaktif':
+                    $query->where('is_active', false)->where('stok', '>', 0);
+                    break;
+
+            }
+
+        }
+
+        $produk = $query->latest()->paginate(10)->withQueryString();
+
+        $kategori = kategori::orderBy('nama')->get();
+
+        $jumlahSemua = produk::where('toko_id', $toko->id)->count();
+        $jumlahAktif = produk::where('toko_id', $toko->id)->where('is_active', true)->where('stok', '>', 0)->count();
+        $jumlahHabis = produk::where('toko_id', $toko->id)->where('stok', '<=', 0)->count();
+        $jumlahNonaktif = produk::where('toko_id', $toko->id)->where('is_active', false)->where('stok', '>', 0)->count();
+
+        return view('seller.produk-seller', compact(
+            'produk',
+            'kategori',
+            'jumlahSemua',
+            'jumlahAktif',
+            'jumlahHabis',
+            'jumlahNonaktif'
+        ));
+
+    }
+
+    public function tambahProdukPage()
+    {
+        $kategori = kategori::orderBy('nama', 'asc')->get();
+
+        return view('seller.form-tambah-produk', compact('kategori'));
+    }
+
+    public function storeProduk(Request $request)
+    {
+
+        $validated = $request->validate([
+            'nama' => 'required|string|min:3|max:150',
+            'kategori_id' => 'required|integer|exists:kategori,id',
+            'deskripsi' => 'required|string|min:10|max:1000',
+            'thumbnail' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'preview_photos' => 'nullable|array|max:4',
+            'preview_photos.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
+            'harga' => 'required|numeric|min:1',
+            'stok' => 'required|integer|min:0',
+            'berat' => 'required|integer|min:1',
+            'is_active' => 'required|in:0,1',
+        ]);
+
+        $toko = toko::where('user_id', auth()->id())->first();
+
+        if (! $toko) {
+            return back()->withInput()
+                ->with('error', 'Toko tidak ditemukan. Silakan lengkapi data toko terlebih dahulu.');
+        }
+
+        $thumbnailPath = null;
+        $previewPaths = [];
+
+        try {
+
+            $thumbnailPath = $request->file('thumbnail')->store('produk/thumbnail', 'public');
+
+            foreach ($request->file('preview_photos', []) as $foto) {
+                $previewPaths[] = $foto->store('produk/preview', 'public');
+            }
+
+            DB::transaction(function () use ($validated, $toko, $thumbnailPath, $previewPaths) {
+
+                $slugDasar = Str::slug($validated['nama']);
+                $slug = $slugDasar;
+                $nomor = 1;
+
+                while (produk::where('slug', $slug)->exists()) {
+                    $slug = $slugDasar.'-'.$nomor++;
+                }
+
+                $produk = produk::create([
+                    'nama' => $validated['nama'],
+                    'slug' => $slug,
+                    'deskripsi' => $validated['deskripsi'],
+                    'harga' => $validated['harga'],
+                    'stok' => $validated['stok'],
+                    'kategori_id' => $validated['kategori_id'],
+                    'toko_id' => $toko->id,
+                    'is_active' => $validated['is_active'],
+                ]);
+
+                $produk->foto()->create([
+                    'foto' => $thumbnailPath,
+                    'tipe' => 'thumbnail',
+                ]);
+
+                foreach ($previewPaths as $path) {
+                    $produk->foto()->create([
+                        'foto' => $path,
+                        'tipe' => 'preview',
+                    ]);
+                }
+
+                auth()->user()->notify(
+                    new notificationLokaMarket(
+                        'Produk Berhasil Ditambahkan',
+                        'Produk "'.$produk->nama.'" berhasil ditambahkan ke toko kamu.',
+                        route('seller.produk'),
+                        'fa-box-open'
+                    )
+                );
+
+            });
+
+        } catch (\Throwable $e) {
+
+            if ($thumbnailPath) {
+                Storage::disk('public')->delete($thumbnailPath);
+            }
+
+            if (! empty($previewPaths)) {
+                Storage::disk('public')->delete($previewPaths);
+            }
+
+            report($e);
+
+            return back()->withInput()
+                ->with('error', 'Produk gagal disimpan. Silakan coba kembali.');
+
+        }
+
+        return redirect()->route('seller.produk')
+            ->with('success', 'Produk berhasil ditambahkan.');
+
+    }
+
+    public function editProdukPage(string $slug)
+    {
+
+        $toko = toko::where('user_id', auth()->id())->firstOrFail();
+
+        $produk = produk::with([
+            'kategori',
+            'thumbnail',
+            'preview',
+        ])->where('slug', $slug)->where('toko_id', $toko->id)->firstOrFail();
+
+        $kategori = kategori::orderBy('nama')->get();
+
+        return view('seller.edit-produk', compact(
+            'produk',
+            'kategori'
+        ));
+
     }
 
     public function updateProduk(Request $request, string $slug)
@@ -128,7 +331,7 @@ class ProductController extends Controller
 
         $toko = toko::where('user_id', auth()->id())->firstOrFail();
 
-        $produk = Produk::where('slug', $slug)->where('toko_id', $toko->id)->firstOrFail();
+        $produk = produk::where('slug', $slug)->where('toko_id', $toko->id)->firstOrFail();
 
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
@@ -144,7 +347,7 @@ class ProductController extends Controller
             'hapus_foto_ids.*' => 'required|integer|distinct',
         ]);
 
-        $idsHapus = collect($request->input('hapus_foto_ids', []))->map(fn($id) => (int) $id)->unique()->values();
+        $idsHapus = collect($request->input('hapus_foto_ids', []))->map(fn ($id) => (int) $id)->unique()->values();
 
         $fotoDihapus = $produk->preview()->whereIn('id', $idsHapus)->get();
 
@@ -253,7 +456,6 @@ class ProductController extends Controller
             }
 
             throw $e;
-
         }
 
         $semuaFileLama = array_filter([...$fileLama, $thumbnailLama]);
@@ -272,7 +474,7 @@ class ProductController extends Controller
     public function deleteProduk(string $slug)
     {
 
-        $produk = Produk::where('slug', $slug)->firstOrFail();
+        $produk = produk::where('slug', $slug)->firstOrFail();
 
         abort_unless($produk->toko && (int) $produk->toko->user_id === (int) auth()->id(), 403);
 
@@ -294,7 +496,8 @@ class ProductController extends Controller
     {
 
         $kategoriList = kategori::withCount('produk')->orderBy('nama', 'asc')->get();
+
         return view('user.kategori-produk', compact('kategoriList'));
-        
+
     }
 }

@@ -3,15 +3,69 @@
 namespace App\Http\Controllers;
 
 use App\Models\pesanan;
+use App\Models\User;
+use App\Notifications\notificationLokaMarket;
+use App\Services\SaldoPenjualService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Midtrans\Transaction;
-use App\Services\SaldoPenjualService;
 
 class pesananController extends Controller
 {
+    public function daftarPesananPage(Request $request)
+    {
+
+        $user = auth()->user();
+
+        $toko = $user->toko;
+
+        if (! $toko) {
+            return redirect()->back()->with('error', 'Data toko tidak ditemukan.');
+        }
+
+        $statusValid = ['dibayar', 'diproses', 'dikirim'];
+
+        $status = $request->query('status', 'dibayar');
+
+        if (! in_array($status, $statusValid, true)) {
+            $status = 'dibayar';
+        }
+
+        $query = pesanan::query()->where('status', $status)->whereHas('detail.produk', function ($q) use ($toko) {
+            $q->where('toko_id', $toko->id);
+        })->with([
+            'user',
+            'provinsi',
+            'kota',
+            'kecamatan',
+            'detail.produk.thumbnail',
+        ])->when($request->filled('search'), function ($q) use ($request) {
+            $search = $request->search;
+
+            $q->where(function ($subQuery) use ($search) {
+                $subQuery->where('nomor_pesanan', 'like', "%{$search}%")
+                    ->orWhere('nama_penerima', 'like', "%{$search}%");
+            });
+        })->latest();
+
+        $pesanan = $query->paginate(10)->withQueryString();
+
+        $jumlahDibayar = pesanan::where('status', 'dibayar')->whereHas('detail.produk', fn ($q) => $q->where('toko_id', $toko->id))->count();
+        $jumlahDiproses = pesanan::where('status', 'diproses')->whereHas('detail.produk', fn ($q) => $q->where('toko_id', $toko->id))->count();
+        $jumlahDikirim = pesanan::where('status', 'dikirim')->whereHas('detail.produk', fn ($q) => $q->where('toko_id', $toko->id))->count();
+
+        return view('seller.daftar-pesanan', compact(
+            'toko',
+            'pesanan',
+            'jumlahDibayar',
+            'jumlahDiproses',
+            'jumlahDikirim',
+            'status'
+        ));
+
+    }
 
     public function prosesPesanan($nomor_pesanan)
     {
@@ -20,32 +74,61 @@ class pesananController extends Controller
 
         $toko = $user?->toko;
 
-        if (!$toko) {
+        if (! $toko) {
+
             return redirect()->back()
                 ->with('error', 'Data toko tidak ditemukan.');
+
         }
 
-        $pesanan = Pesanan::where('nomor_pesanan', $nomor_pesanan)->whereHas('detail.produk', function ($query) use ($toko) {
-            $query->where('toko_id', $toko->id);
-        })
-            ->first();
+        $pesanan = pesanan::where('nomor_pesanan', $nomor_pesanan)
+            ->whereHas('detail.produk', function ($query) use ($toko) {
 
-        if (!$pesanan) {
+                $query->where('toko_id', $toko->id);
+
+            })->first();
+
+        if (! $pesanan) {
+
             return redirect()->back()
                 ->with('error', 'Pesanan tidak ditemukan atau bukan milik tokomu.');
+
         }
 
         if ($pesanan->status !== 'dibayar') {
+
             return redirect()->back()
                 ->with(
                     'error',
                     'Pesanan tidak dapat diproses karena statusnya bukan dibayar.'
                 );
+
         }
 
         $pesanan->update([
             'status' => 'diproses',
         ]);
+
+        $customer = User::find($pesanan->user_id);
+
+        if ($customer) {
+
+            $customer->notify(
+
+                new notificationLokaMarket(
+                    'Pesanan Sedang Diproses',
+                    'Pesanan '.
+                    $pesanan->nomor_pesanan.
+                    ' telah mulai diproses oleh penjual. Silakan tunggu informasi pengiriman selanjutnya.',
+                    route('cust.checkout.status', [
+                        'nomor_pesanan' => $pesanan->nomor_pesanan,
+                    ]),
+                    'fa-box-open'
+                )
+
+            );
+
+        }
 
         return redirect()
             ->route('seller.pesanan', ['status' => 'dibayar'])
@@ -61,31 +144,61 @@ class pesananController extends Controller
 
         $toko = auth()->user()?->toko;
 
-        if (!$toko) {
+        if (! $toko) {
+
             return back()->with('error', 'Data toko tidak ditemukan.');
+
         }
 
-        $pesanan = Pesanan::where('nomor_pesanan', $nomor_pesanan)->whereHas('detail.produk', function ($query) use ($toko) {
-            $query->where('toko_id', $toko->id);
-        })->first();
+        $pesanan = pesanan::where('nomor_pesanan', $nomor_pesanan)
+            ->whereHas('detail.produk', function ($query) use ($toko) {
 
-        if (!$pesanan) {
+                $query->where('toko_id', $toko->id);
+
+            })->first();
+
+        if (! $pesanan) {
+
             return back()->with(
                 'error',
                 'Pesanan tidak ditemukan atau bukan milik tokomu.'
             );
+
         }
 
         if ($pesanan->status !== 'diproses') {
+
             return back()->with(
                 'error',
                 'Hanya pesanan yang sedang diproses yang dapat dikirim.'
             );
+
         }
 
         $pesanan->update([
             'status' => 'dikirim',
         ]);
+
+        $customer = User::find($pesanan->user_id);
+
+        if ($customer) {
+
+            $customer->notify(
+
+                new notificationLokaMarket(
+                    'Pesanan Telah Dikirim',
+                    'Pesanan '.
+                    $pesanan->nomor_pesanan.
+                    ' telah dikirim oleh penjual. Silakan pantau status pengiriman dan tunggu pesanan tiba di alamat tujuan.',
+                    route('cust.checkout.status', [
+                        'nomor_pesanan' => $pesanan->nomor_pesanan,
+                    ]),
+                    'fa-truck-fast'
+                )
+
+            );
+
+        }
 
         return redirect()->route('seller.pesanan', ['status' => 'dikirim'])
             ->with(
@@ -102,9 +215,9 @@ class pesananController extends Controller
 
             DB::transaction(function () use ($nomor_pesanan, $saldoService) {
 
-                $pesanan = Pesanan::where('nomor_pesanan', $nomor_pesanan)->where('user_id', Auth::id())->lockForUpdate()->firstOrFail();
+                $pesanan = pesanan::where('nomor_pesanan', $nomor_pesanan)->where('user_id', Auth::id())->lockForUpdate()->firstOrFail();
 
-                if (!in_array($pesanan->status, ['diantar', 'dikirim'], true)) {
+                if (! in_array($pesanan->status, ['diantar', 'dikirim'], true)) {
                     throw new \RuntimeException(
                         'Status pesanan tidak valid untuk diselesaikan.'
                     );
@@ -129,7 +242,7 @@ class pesananController extends Controller
     public function cancelPesanan(Request $request, string $nomor_pesanan)
     {
 
-        $pesanan = Pesanan::where('nomor_pesanan', $nomor_pesanan)->where('user_id', auth()->id())->firstOrFail();
+        $pesanan = pesanan::where('nomor_pesanan', $nomor_pesanan)->where('user_id', auth()->id())->firstOrFail();
 
         if ($pesanan->status !== 'menunggu_pembayaran') {
 
@@ -167,5 +280,4 @@ class pesananController extends Controller
         }
 
     }
-
 }

@@ -2,26 +2,27 @@
 
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\alamatController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\keranjangController;
+use App\Http\Controllers\notificationController;
 use App\Http\Controllers\ongkirController;
 use App\Http\Controllers\paymentController;
 use App\Http\Controllers\pengajuanTokoController;
 use App\Http\Controllers\pesananController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ratingController;
 use App\Http\Controllers\regions;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\rekeningSellerController;
 use App\Http\Controllers\returnController;
+use App\Http\Controllers\SaldoController;
 use App\Http\Controllers\sellerController;
 use App\Http\Controllers\tokoController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\WishlistController;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/rajaongkir/test-connection', [ongkirController::class, 'testConnection'])->name('ongkir.testConnection');
-
 
 Route::get('/register/verify', [AuthController::class, 'verificationNotice'])->name('verification.notice');
 Route::get('/register/verify/{token}', [AuthController::class, 'verifyRegistration'])->name('verification.verify');
@@ -29,7 +30,6 @@ Route::post('/register/verification-notification', [AuthController::class, 'rese
 
 Route::get('/form-daftar-toko/verifikasi-notif-me/{email}', [tokoController::class, 'VerificationNotice'])->name('cust.formDaftarToko.notice');
 Route::get('/form-daftar-toko/verifikasi/{token}', [tokoController::class, 'verifikasiEmail'])->name('cust.formDaftarToko.verify');
-
 
 Route::get('/login-admin', [AuthController::class, 'showLoginAdmin'])->name('admin.login');
 Route::post('/login-admin', [AuthController::class, 'loginAdmin'])->name('admin.loginAdmin');
@@ -68,6 +68,12 @@ Route::middleware(['auth', 'role:customer,pemilik_toko'])->group(function () {
 
     Route::get('/rajaongkir/kecamatan/{kecamatan}/mapping', [ongkirController::class, 'mappingRajaOngkir'])->name('ongkir.mapping');
 
+    Route::get('/notifikasi-cust', [notificationController::class, 'index'])->name('cust.notifikasi.index');
+    Route::get('/notifikasi-cust/{id}/baca', [notificationController::class, 'read'])->name('cust.notifikasi.read');
+    Route::post('/notifikasi-cust/baca-semua', [notificationController::class, 'readAll'])->name('cust.notifikasi.readAll');
+    Route::delete('/notifikasi-cust/{id}', [notificationController::class, 'delete'])->name('cust.notifikasi.delete');
+    Route::delete('/notifikasi-cust', [notificationController::class, 'deleteAll'])->name('cust.notifikasi.deleteAll');
+
     Route::get('/my-profile', [UserController::class, 'myProfilePage'])->name('cust.myProfile');
     Route::get('/edit-profil', [UserController::class, 'editProfilePage'])->name('cust.editProfile');
     Route::put('/edit-profil', [UserController::class, 'updateProfile'])->name('cust.updateProfile');
@@ -78,7 +84,7 @@ Route::middleware(['auth', 'role:customer,pemilik_toko'])->group(function () {
 
     Route::get('/benefit-upgrade-account', [UserController::class, 'benefitUpgradeAccount'])->name('cust.benefitUpgradeAccount');
     Route::get('/form-daftar-toko', [UserController::class, 'formDaftarToko'])->name('cust.formDaftarToko');
-    Route::get('/lokasi/kecamatan/{kecamatan}/pilihan', [TokoController::class, 'pilihanKodePos'])->name('lokasi.pilihanKodePos');
+    Route::get('/lokasi/kecamatan/{kecamatan}/pilihan', [tokoController::class, 'pilihanKodePos'])->name('lokasi.pilihanKodePos');
     Route::post('/form-daftar-toko', [tokoController::class, 'registerToko'])->name('cust.formDaftarToko.register');
     Route::post('/form-daftar-toko/resend-verifikasi', [tokoController::class, 'resendVerifikasi'])->name('cust.resendVerifikasi');
     Route::get('/pengajuan-ulang', [tokoController::class, 'pengajuanUlang'])->name('cust.pengajuanUlang');
@@ -87,7 +93,7 @@ Route::middleware(['auth', 'role:customer,pemilik_toko'])->group(function () {
 
     Route::get('/keranjang', [UserController::class, 'keranjangPage'])->name('cust.keranjang');
     Route::post('/keranjang/add-to-cart', [keranjangController::class, 'addToCart'])->name('cust.keranjang.add');
-    Route::patch('/keranjang/{detailId}/quantity', [KeranjangController::class, 'updateQuantity'])->name('keranjang.updateQuantity');
+    Route::patch('/keranjang/{detailId}/quantity', [keranjangController::class, 'updateQuantity'])->name('keranjang.updateQuantity');
     Route::delete('/keranjang/clear-all', [keranjangController::class, 'clearCart'])->name('cust.keranjang.clearAll');
     Route::delete('/keranjang/{id}', [keranjangController::class, 'removeItem'])->name('cust.keranjang.delete');
 
@@ -101,7 +107,10 @@ Route::middleware(['auth', 'role:customer,pemilik_toko'])->group(function () {
 
     Route::post('checkout/pembayaran', [paymentController::class, 'checkoutPayment'])->name('cust.checkout.pay');
     Route::get('checkout/status/{nomor_pesanan}', [CheckoutController::class, 'checkoutStatusPage'])->name('cust.checkout.status');
-    Route::post('/checkout/{nomor_pesanan}/cancel', [pesananController::class, 'cancelPesanan',])->name('cust.checkout.cancel');
+    Route::post('/checkout/{nomor_pesanan}/cancel', [pesananController::class, 'cancelPesanan'])->name('cust.checkout.cancel');
+
+    Route::get('/rating-pesanan/{nomor_pesanan}', [ratingController::class, 'ratingPage'])->name('cust.ratingPesanan');
+    Route::post('/rating-pesanan/{nomor_pesanan}', [ratingController::class, 'simpanRating'])->name('cust.ratingPesanan.send');
 
     Route::get('checkout/invoice', [UserController::class, 'invoicePage'])->name('cust.invoice');
 
@@ -120,54 +129,72 @@ Route::middleware(['auth', 'role:customer,pemilik_toko'])->group(function () {
 
 Route::middleware(['auth', 'role:pemilik_toko'])->group(function () {
 
-    Route::get('/toko/create-pin', [SellerController::class, 'createPin'])->name('seller.createPin');
-    Route::post('/toko/create-pin', [SellerController::class, 'storePin'])->name('seller.storePin');
-    Route::get('/toko/verify-pin', [SellerController::class, 'verifyPinPage'])->name('seller.verifyPin');
-    Route::post('/toko/verify-pin', [SellerController::class, 'verifyPin'])->middleware('throttle:5,1')->name('seller.verifyPin.submit');
+    Route::get('/toko/create-pin', [tokoController::class, 'createPin'])->name('seller.createPin');
+    Route::post('/toko/create-pin', [tokoController::class, 'storePin'])->name('seller.storePin');
+    Route::get('/toko/verify-pin', [tokoController::class, 'verifyPinPage'])->name('seller.verifyPin');
+    Route::post('/toko/verify-pin', [tokoController::class, 'verifyPin'])->middleware('throttle:5,1')->name('seller.verifyPin.submit');
 
     Route::middleware('cekPinToko')->group(function () {
-        Route::post('/toko/logout', [SellerController::class, 'lockToko'])->name('seller.logoutToko');
+
+        Route::post('/toko/logout', [tokoController::class, 'lockToko'])->name('seller.logoutToko');
+
+        Route::get('/notifikasi-seller', [notificationController::class, 'index'])->name('seller.notifikasi.index');
+        Route::get('/notifikasi-seller/{id}/baca', [notificationController::class, 'read'])->name('seller.notifikasi.read');
+        Route::post('/notifikasi-seller/baca-semua', [notificationController::class, 'readAll'])->name('seller.notifikasi.readAll');
+        Route::delete('/notifikasi-seller/{id}', [notificationController::class, 'delete'])->name('seller.notifikasi.delete');
+        Route::delete('/notifikasi-seller', [notificationController::class, 'deleteAll'])->name('seller.notifikasi.deleteAll');
 
         Route::get('/dashboard-seller', [sellerController::class, 'dashboardSeller'])->name('seller.dashboard');
-        Route::get('/saldo-saya', [sellerController::class, 'saldoSayaPage'])->name('seller.balance');
-        Route::view('/laporan', 'seller.laporan-seller')->name('seller.laporan');
+        Route::get('/laporan', [sellerController::class, 'laporanToko'])->name('seller.laporan');
 
+        Route::get('/saldo-saya', [SaldoController::class, 'saldoSayaPage'])->name('seller.balance');
 
-        Route::get('/pesanan', [sellerController::class, 'daftarPesananPage'])->name('seller.pesanan');
+        Route::post('/saldo-saya/tambah-rekening', [rekeningSellerController::class, 'storeRekening'])->name('seller.balance.addRekening');
+        Route::post('/saldo/rekening/{id}/utama', [rekeningSellerController::class, 'setRekeningUtama'])->name('seller.balance.setUtama');
+        Route::delete('/saldo/rekening/{id}', [rekeningSellerController::class, 'deleteRekening'])->name('seller.balance.deleteRekening');
+
+        Route::get('/pesanan', [pesananController::class, 'daftarPesananPage'])->name('seller.pesanan');
         Route::patch('/pesanan/{nomor_pesanan}/proses', [pesananController::class, 'prosesPesanan'])->name('seller.pesanan.proses');
         Route::patch('/pesanan/{nomor_pesanan}/kirim', [pesananController::class, 'kirimPesanan'])->name('seller.pesanan.kirim');
 
-        Route::get('/toko-saya', [sellerController::class, 'editTokoPage'])->name('seller.editToko');
+        Route::get('/toko-saya', [tokoController::class, 'editTokoPage'])->name('seller.editToko');
         Route::get('/form-edit-toko', [sellerController::class, 'formEditToko'])->name('seller.formEditToko');
         Route::put('/form-edit-toko/update', [tokoController::class, 'updateToko'])->name('seller.formEditToko.update');
 
-        Route::get('/produk-seller', [sellerController::class, 'produkSeller'])->name('seller.produk');
-        Route::get('/form-tambah-produk', [sellerController::class, 'tambahProdukPage'])->name('seller.FormTambahProduk');
-        Route::post('/form-tambah-produk/store', [sellerController::class, 'storeProduk'])->name('seller.storeProduk');
+        Route::get('/produk-seller', [ProductController::class, 'produkSeller'])->name('seller.produk');
+        Route::get('/form-tambah-produk', [ProductController::class, 'tambahProdukPage'])->name('seller.FormTambahProduk');
+        Route::post('/form-tambah-produk/store', [ProductController::class, 'storeProduk'])->name('seller.storeProduk');
 
-        Route::get('/edit-produk/{slug}', [sellerController::class, 'editProdukPage'])->name('seller.editProduk');
-        Route::put('/edit-produk/update/{slug}', [productController::class, 'updateProduk'])->name('seller.editProduk.update');
-        Route::delete('/edit-produk/delete/{slug}', [productController::class, 'deleteProduk'])->name('seller.deleteProduk');
+        Route::get('/edit-produk/{slug}', [ProductController::class, 'editProdukPage'])->name('seller.editProduk');
+        Route::put('/edit-produk/update/{slug}', [ProductController::class, 'updateProduk'])->name('seller.editProduk.update');
+
+        Route::delete('/edit-produk/delete/{slug}', [ProductController::class, 'deleteProduk'])->name('seller.deleteProduk');
 
     });
 
 });
 
-
 Route::middleware(['auth', 'role:admin'])->group(function () {
+
+    Route::get('/notifikasi-admin', [notificationController::class, 'index'])->name('admin.notifikasi.index');
+    Route::get('/notifikasi-admin/{id}/baca', [notificationController::class, 'read'])->name('admin.notifikasi.read');
+    Route::post('/notifikasi-admin/baca-semua', [notificationController::class, 'readAll'])->name('admin.notifikasi.readAll');
+    Route::delete('/notifikasi-admin/{id}', [notificationController::class, 'delete'])->name('admin.notifikasi.delete');
+    Route::delete('/notifikasi-admin', [notificationController::class, 'deleteAll'])->name('admin.notifikasi.deleteAll');
+
     Route::get('/dashboard-admin', [adminController::class, 'dashboardAdmin'])->name('admin.dashboard');
     Route::get('/pengguna', [adminController::class, 'penggunaPage'])->name('admin.pengguna');
     Route::get('/withdraw', [adminController::class, 'withdrawPage'])->name('admin.withdraw');
 
     Route::get('/pengajuan-return', [returnController::class, 'pengajuanReturnPage'])->name('admin.pengajuanReturn');
 
-
     Route::get('/pengajuan-return', [returnController::class, 'pengajuanReturnPage'])->name('admin.pengajuanReturn');
     Route::get('/pengajuan-return/detail/{id}', [returnController::class, 'detailPengajuanReturn'])->name('admin.pengajuanReturn.detail');
     Route::patch('/pengajuan-return/detail/{id}/approve', [returnController::class, 'approveReturn'])->name('admin.pengajuanReturn.approve');
     Route::patch('/pengajuan-return/detail/{id}/reject', [returnController::class, 'rejectReturn'])->name('admin.pengajuanReturn.reject');
 
-    Route::get('/pengajuan-toko', [adminController::class, 'pengajuanTokoPage'])->name('admin.pengajuanToko');
+    Route::get('/pengajuan-toko', [pengajuanTokoController::class, 'pengajuanTokoPage'])->name('admin.pengajuanToko');
     Route::post('/approve-toko/{id}', [pengajuanTokoController::class, 'approvePengajuan'])->name('admin.approvePengajuan');
     Route::post('/reject-toko/{id}', [pengajuanTokoController::class, 'rejectPengajuan'])->name('admin.rejectPengajuan');
+
 });

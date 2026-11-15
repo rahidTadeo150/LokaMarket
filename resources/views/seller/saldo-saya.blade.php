@@ -186,68 +186,114 @@
                 </div>
 
                 <div class="space-y-3 p-5">
+                    
+                @forelse ($rekening as $item)
+                    <div class="flex items-start gap-3 rounded-2xl border border-orange-100 p-4 transition hover:border-orange-300 hover:bg-orange-50/40">
 
-                    @forelse ($rekening as $item)
-                        <div class="flex items-start gap-3 rounded-2xl border border-orange-100 p-4 transition hover:border-orange-300 hover:bg-orange-50/40">
-                            
-                            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-orange-600">
-                                <i class="{{ $item->metode === 'bank' ? 'fa-solid fa-building-columns' : 'fa-solid fa-mobile-screen-button' }}"></i>
-                            </span>
+                        <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-orange-600">
+                            <i class="{{ $item->metode === 'bank' ? 'fa-solid fa-building-columns' : 'fa-solid fa-mobile-screen-button' }}"></i>
+                        </span>
 
-                            <div class="min-w-0 flex-1">
+                        <div class="min-w-0 flex-1">
 
-                                <div class="flex flex-wrap items-center gap-2">
+                            <div class="flex flex-wrap items-center gap-2">
 
-                                    <p class="text-sm font-extrabold text-[#3B2115]">
-                                        {{ $item->nama_bank }}
-                                    </p>
-
-                                    @if ($item->is_default)
-                                        <span
-                                            class="rounded-full bg-green-50 px-2 py-1 text-[9px] font-bold text-green-600">
-                                            <i class="fa-solid fa-check mr-1"></i>Utama
-                                        </span>
-                                    @endif
-
-                                </div>
-
-                                <p class="mt-1 text-xs text-[#72594B]">
-                                    {{ $item->nama_pemilik }}
+                                <p class="text-sm font-extrabold text-[#3B2115]">
+                                    {{ $item->nama_bank }}
                                 </p>
 
-                                <p class="mt-1 break-all text-sm font-semibold tracking-wide text-[#3B2115]">
-                                    {{ $item->nomor_rekening }}
-                                </p>
+                                @if ($item->is_default)
+                                    <span class="rounded-full bg-green-50 px-2 py-1 text-[9px] font-bold text-green-600">
+                                        <i class="fa-solid fa-check mr-1"></i>
+                                        Utama
+                                    </span>
+                                @endif
 
-                                <p class="mt-1 text-[10px] uppercase text-[#A58E81]">
-                                    {{ $item->metode === 'bank' ? 'Transfer bank' : 'E-wallet' }}
-                                </p>
+                            </div>
+
+                            <p class="mt-1 text-xs text-[#72594B]">
+                                {{ $item->nama_pemilik }}
+                            </p>
+
+                            <p class="mt-1 break-all text-sm font-semibold tracking-wide text-[#3B2115]">
+                                {{ $item->nomor_rekening }}
+                            </p>
+
+                            <p class="mt-1 text-[10px] uppercase text-[#A58E81]">
+                                {{ $item->metode === 'bank' ? 'Transfer bank' : 'E-wallet' }}
+                            </p>
+                                
+                            <div class="mt-3 flex flex-wrap items-center gap-2">
+
+                                @unless ($item->is_default)
+                                    <form action="{{ route('seller.balance.setUtama', $item->id) }}"
+                                        method="POST">
+
+                                        @csrf
+
+                                        <button type="submit"
+                                            class="inline-flex items-center gap-1.5 rounded-lg border border-orange-200 px-3 py-2 text-[10px] font-bold text-orange-600 transition hover:bg-orange-50 hover:border-orange-400">
+
+                                            <i class="fa-solid fa-star"></i>
+                                            Jadikan Utama
+
+                                        </button>
+
+                                    </form>
+                                @endunless
+
+                                <form action="{{ route('seller.balance.deleteRekening', $item->id) }}"
+                                    id="deleteRekening"
+                                    method="POST">
+
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button type="button"
+                                            data-confirm
+                                            data-form="deleteRekening"
+                                            data-theme="red"
+                                            data-title="Hapus Rekening Ini?"
+                                            data-message="Apakah kamu yakin ingin menghapus rekening ini?"
+                                            data-confirm-text="Ya, hapus"
+                                            data-icon="fa-solid fa-trash-can"
+                                            class="inline-flex items-center gap-1.5 rounded-lg border border-red-200 px-3 py-2 text-[10px] font-bold text-red-600 transition hover:border-red-300 hover:bg-red-50">
+
+                                        <i class="fa-solid fa-trash-can"></i>
+                                        Hapus
+
+                                    </button>
+
+                                </form>
 
                             </div>
 
                         </div>
-                    @empty
-                        <div class="rounded-2xl border border-dashed border-orange-200 bg-[#FFFCF9] px-5 py-10 text-center">
-                            
-                            <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-50 text-orange-500">
-                                <i class="fa-solid fa-building-columns text-xl"></i>
-                            </div>
 
-                            <p class="mt-4 text-sm font-extrabold text-[#3B2115]">
-                                Belum ada rekening
-                            </p>
+                    </div>
+                @empty
+                    <div class="rounded-2xl border border-dashed border-orange-200 bg-[#FFFCF9] px-5 py-10 text-center">
 
-                            <p class="mx-auto mt-2 max-w-sm text-xs leading-5 text-[#8A7264]">
-                                Tambahkan rekening bank atau e-wallet untuk menerima pencairan saldo.
-                            </p>
-
-                            <button type="button" onclick="openRekeningModal()"
-                                class="mt-5 rounded-xl bg-orange-500 px-4 py-2.5 text-xs font-bold text-white transition hover:bg-orange-600">
-                                Tambah rekening pertama
-                            </button>
-
+                        <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-50 text-orange-500">
+                            <i class="fa-solid fa-building-columns text-xl"></i>
                         </div>
-                    @endforelse
+
+                        <p class="mt-4 text-sm font-extrabold text-[#3B2115]">
+                            Belum ada rekening
+                        </p>
+
+                        <p class="mx-auto mt-2 max-w-sm text-xs leading-5 text-[#8A7264]">
+                            Tambahkan rekening bank atau e-wallet untuk menerima pencairan saldo.
+                        </p>
+
+                        <button type="button" onclick="openRekeningModal()"
+                            class="mt-5 rounded-xl bg-orange-500 px-4 py-2.5 text-xs font-bold text-white transition hover:bg-orange-600">
+                            Tambah rekening pertama
+                        </button>
+
+                    </div>
+                @endforelse
+
 
                 </div>
 
@@ -296,7 +342,7 @@
                                         <p class="text-xs font-bold text-[#3B2115]">
                                             {{ ucfirst(str_replace('_', ' ', $item->jenis)) }}
                                         </p>
-                                        <p class="mt-1 max-w-[220px] truncate text-[10px] text-[#A58E81]">
+                                        <p class="mt-1 max-w-55 truncate text-[10px] text-[#A58E81]">
                                             {{ $item->keterangan ?: 'Tidak ada keterangan' }}
                                         </p>
                                     </td>
@@ -360,7 +406,7 @@
             <div class="flex items-center justify-between border-b border-orange-50 p-5">
 
                 <div>
-                    <h2 class="text-lg font-extrabold text-[#3B2115]">Tambah Rekening</h2>
+                    <p class="text-lg font-extrabold text-[#3B2115]">Tambah Rekening</p>
                     <p class="mt-1 text-xs text-[#8A7264]">Masukkan data rekening pencairan kamu.</p>
                 </div>
 
@@ -371,8 +417,8 @@
 
             </div>
 
-            <form id="rekeningForm" 
-                action="" 
+            <form id="rekeningForm"
+                action="{{ route('seller.balance.addRekening') }}"
                 method="POST"
                 class="space-y-4 p-5">
 
@@ -444,14 +490,17 @@
                 </label>
 
                 <div class="flex gap-3 pt-2">
+
                     <button type="button" onclick="closeRekeningModal()"
                         class="flex-1 rounded-xl border border-orange-100 px-4 py-3 text-xs font-bold text-[#72594B] transition hover:bg-orange-50">
                         Batal
                     </button>
+
                     <button type="submit"
                         class="flex-1 rounded-xl bg-orange-500 px-4 py-3 text-xs font-bold text-white transition hover:bg-orange-600">
                         Simpan Rekening
                     </button>
+
                 </div>
 
             </form>
@@ -483,7 +532,7 @@
 
                 @csrf
 
-                <div class="rounded-2xl bg-gradient-to-br from-orange-50 to-[#FFF8F1] p-4">
+                <div class="rounded-2xl bg-linear-to-br from-orange-50 to-[#FFF8F1] p-4">
                     <p class="text-xs text-[#8A7264]">Saldo tersedia</p>
                     <p class="mt-2 text-2xl font-extrabold text-[#D9490B]">
                         Rp {{ number_format($saldo->saldo_tersedia, 0, ',', '.') }}
@@ -521,33 +570,40 @@
                     </label>
                     
                     <div class="flex overflow-hidden rounded-xl border border-orange-100 focus-within:border-orange-400 focus-within:ring-4 focus-within:ring-orange-100">
-                        <span
-                            class="flex items-center border-r border-orange-100 bg-orange-50 px-4 text-sm font-bold text-orange-700">
+                        
+                        <span class="flex items-center border-r border-orange-100 bg-orange-50 px-4 text-sm font-bold text-orange-700">
                             Rp
                         </span>
+
                         <input id="jumlah_withdraw" name="jumlah" type="number" min="10000"
                             max="{{ (int) $saldo->saldo_tersedia }}" step="1" value="{{ old('jumlah') }}"
                             required placeholder="Minimal 10000" class="w-full min-w-0 px-4 py-3 text-sm outline-none">
+
                     </div>
 
                 </div>
 
                 <div class="rounded-xl border border-amber-100 bg-amber-50 p-3">
+
                     <p class="text-[11px] leading-5 text-amber-800">
                         <i class="fa-solid fa-circle-info mr-1"></i>
                         Pengajuan akan berstatus pending. Saldo ditahan sampai admin menyelesaikan atau menolak pencairan.
                     </p>
+
                 </div>
 
                 <div class="flex gap-3">
+
                     <button type="button" onclick="closeWithdrawModal()"
                         class="flex-1 rounded-xl border border-orange-100 px-4 py-3 text-xs font-bold text-[#72594B] transition hover:bg-orange-50">
                         Batal
                     </button>
+
                     <button type="submit"
                         class="flex-1 rounded-xl bg-orange-500 px-4 py-3 text-xs font-bold text-white transition hover:bg-orange-600">
                         Ajukan Withdraw
                     </button>
+
                 </div>
 
             </form>
@@ -555,6 +611,22 @@
         </div>
 
     </div>
+
+    <div id="saldo-modal-validation"
+        data-rekening-error="{{ $errors->hasAny([
+            'metode',
+            'nama_bank',
+            'nama_pemilik',
+            'nomor_rekening',
+            'is_default'
+        ]) ? 'true' : 'false' }}"
+        data-withdraw-error="{{ $errors->hasAny([
+            'rekening_penjual_id',
+            'jumlah'
+        ]) ? 'true' : 'false' }}"
+        hidden></div>
+
+    <x-custom-alert-confirmation/>  
 
     <script>
         function openModal(id) 
